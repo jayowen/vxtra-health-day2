@@ -1460,7 +1460,47 @@ ul li::before {
 <!-- Navigation -->
 <div class="nav-bar">
   <button onclick="prevSlide()">&#8592; Previous</button>
-  <span class="slide-counter" id="counter">1 / 26</span>
+  <select id="slideNav" onchange="showSlide(parseInt(this.value))" style="
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--white);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    cursor: pointer;
+    max-width: 260px;
+    outline: none;
+  ">
+    <option value="0">1. Title</option>
+    <option value="1" style="color:#1B2A3D;">── DAY 1 RECAP ──</option>
+    <option value="2" style="color:#1B2A3D;">3. The Villain</option>
+    <option value="3" style="color:#1B2A3D;">4. The Heroes</option>
+    <option value="4" style="color:#1B2A3D;">5. The Problem</option>
+    <option value="5" style="color:#1B2A3D;">6. The Guide</option>
+    <option value="6" style="color:#1B2A3D;">7. The Plan</option>
+    <option value="7" style="color:#1B2A3D;">8. Success vs. Failure</option>
+    <option value="8" style="color:#1B2A3D;">9. Our Town Model</option>
+    <option value="9" style="color:#1B2A3D;">10. Capital Rx</option>
+    <option value="10" style="color:#1B2A3D;">11. Messaging Rules</option>
+    <option value="11" style="color:#1B2A3D;">12. Open Questions</option>
+    <option value="12" style="color:#1B2A3D;">── DAY 2 AGENDA ──</option>
+    <option value="13" style="color:#1B2A3D;">14. Workshop Plan</option>
+    <option value="14" style="color:#1B2A3D;">15. Deliverables</option>
+    <option value="15" style="color:#1B2A3D;">16. Guiding Principles</option>
+    <option value="16" style="color:#1B2A3D;">── LET'S CREATE ──</option>
+    <option value="17" style="color:#1B2A3D;">18. One-Liners (Employer/Broker)</option>
+    <option value="18" style="color:#1B2A3D;">19. One-Liners (Physician/Employee)</option>
+    <option value="19" style="color:#1B2A3D;">20. BrandScript: Employer</option>
+    <option value="20" style="color:#1B2A3D;">21. BrandScript: Broker</option>
+    <option value="21" style="color:#1B2A3D;">22. BrandScript: Physician</option>
+    <option value="22" style="color:#1B2A3D;">23. BrandScript: Employee</option>
+    <option value="23" style="color:#1B2A3D;">24. PEACE: Employer</option>
+    <option value="24" style="color:#1B2A3D;">25. PEACE: Broker</option>
+    <option value="25" style="color:#1B2A3D;">26. PEACE: Physician</option>
+    <option value="26" style="color:#1B2A3D;">27. PEACE: Employee</option>
+    <option value="27" style="color:#1B2A3D;">28. Closing</option>
+  </select>
   <img src="../assets/bb-logo-white.png" alt="Business Builders" style="height:20px; opacity:0.35;" />
   <button onclick="nextSlide()">Next &#8594;</button>
 </div>
@@ -1469,6 +1509,7 @@ ul li::before {
 const slides = document.querySelectorAll('.slide');
 const counter = document.getElementById('counter');
 const progress = document.getElementById('progress');
+const slideNav = document.getElementById('slideNav');
 let current = 0;
 
 function showSlide(n) {
@@ -1477,6 +1518,7 @@ function showSlide(n) {
   slides[current].classList.add('active');
   counter.textContent = `${current + 1} / ${slides.length}`;
   progress.style.width = `${((current + 1) / slides.length) * 100}%`;
+  slideNav.value = current;
 }
 
 function nextSlide() { showSlide(current + 1); }
