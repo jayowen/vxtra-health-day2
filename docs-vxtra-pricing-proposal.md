@@ -42,7 +42,7 @@ All three plans build on the StoryBrand Blueprint work completed February 10–1
 | **Investor-Facing Materials** | — | Included | Included |
 | **2027 Marketing Plan** | — | Draft included | Draft included |
 | **Additional Landing Pages** | — | — | Broker microsite + extra LP variants |
-| **Hosting & Website Support** | Hosting + unlimited maintenance & support | Hosting + unlimited maintenance & support | Hosting + unlimited maintenance & support |
+| **Hosting & Website Support** | Hosting + 2 hrs/mo maintenance | Hosting + unlimited changes + Growth-Driven Design | Hosting + unlimited changes + Growth-Driven Design |
 | **Fractional CMO (Jay)** | — | Monthly session (1 hr) + quarterly planning (3 hrs) | Monthly session (1 hr) + quarterly planning (3 hrs) |
 | **Analytics & Reporting** | GA + Tag Manager + pixels | Full analytics + monthly performance reviews | Full analytics + bi-weekly performance reviews |
 
@@ -78,7 +78,7 @@ All three plans build on the StoryBrand Blueprint work completed February 10–1
 
 **Hosting & Support**
 - Website hosting
-- Unlimited website maintenance & support
+- Website maintenance (up to 2 hours/month)
 
 **Not included:** Fractional CMO, interactive tools (calculator, qualification), paid media management, case studies, testimonial videos, newsletter production, webinar production, Gainesville market prep, investor materials, A/B testing, PR outreach, additional presentation decks, physician/employee brand videos.
 
@@ -124,6 +124,10 @@ All three plans build on the StoryBrand Blueprint work completed February 10–1
 - Google remarketing
 - Meta remarketing
 - Monthly optimization and reporting
+
+**Hosting & Support (upgraded from Minimum)**
+- Unlimited website changes (vs. 2 hrs/mo)
+- Growth-Driven Design included
 
 **Strategic**
 - Fractional CMO (Jay): monthly strategy session (1 hr) + quarterly planning (3 hrs)
