@@ -743,7 +743,7 @@ The full 12-month marketing plan. ~80 BB-owned deliverables across four phases.
 Everything in Target with compressed timelines and higher volume.
 
 **Website & Digital**
-- Full website (delivered Month 1)
+- Full website (**delivered Month 1**)
 - GA, Tag Manager, remarketing pixels
 - Full HubSpot + advanced scoring
 - HubSpot support (up to 6 hrs/mo)
