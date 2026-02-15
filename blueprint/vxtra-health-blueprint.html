@@ -1096,7 +1096,8 @@ p { font-size: 16px; line-height: 1.7; }
    PRINT
    ═══════════════════════════════════════ */
 @media print {
-  .sidebar, .mobile-nav, .mobile-menu, .back-to-top, .copy-btn, .collapsible-toggle { display: none !important; }
+  .sidebar, .mobile-nav, .mobile-menu, .back-to-top, .copy-btn, .collapsible-toggle,
+  .feedback-bar, .feedback-progress, .feedback-summary, .reviewer-modal { display: none !important; }
   .collapsible-content { max-height: none !important; overflow: visible !important; }
   .main { margin-left: 0 !important; }
   .cover { min-height: auto; padding: 60px 40px; break-after: page; }
@@ -1109,9 +1110,164 @@ p { font-size: 16px; line-height: 1.7; }
     box-shadow: none;
   }
 }
+
+/* ═══════════════════════════════════════
+   FEEDBACK SYSTEM
+   ═══════════════════════════════════════ */
+.reviewer-modal {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(27,42,61,0.7); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+}
+.reviewer-modal.hidden { display: none; }
+.reviewer-modal-box {
+  background: var(--white); border-radius: 16px; padding: 40px;
+  max-width: 400px; width: 90%; text-align: center;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.3);
+}
+.reviewer-modal-box h3 {
+  font-family: var(--font-heading); font-size: 22px; margin-bottom: 8px;
+}
+.reviewer-modal-box p { color: var(--mid-gray); font-size: 14px; margin-bottom: 20px; }
+.reviewer-modal-box input {
+  width: 100%; padding: 12px 16px; border: 2px solid var(--border);
+  border-radius: 8px; font-size: 16px; font-family: var(--font-body);
+  outline: none; transition: border-color 0.2s;
+}
+.reviewer-modal-box input:focus { border-color: var(--teal); }
+.reviewer-modal-box button {
+  margin-top: 16px; padding: 12px 32px; background: var(--teal);
+  color: var(--white); border: none; border-radius: 8px;
+  font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s;
+}
+.reviewer-modal-box button:hover { background: var(--teal-dark); }
+
+.feedback-bar {
+  background: var(--light-gray); border-bottom: 1px solid var(--border);
+  padding: 12px 48px; display: flex; align-items: center;
+  justify-content: space-between; gap: 16px; flex-wrap: wrap;
+}
+.feedback-bar-label {
+  font-size: 13px; font-weight: 600; color: var(--mid-gray);
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.feedback-bar-actions { display: flex; align-items: center; gap: 8px; }
+.feedback-btn {
+  padding: 7px 18px; border-radius: 20px; border: 2px solid var(--border);
+  background: var(--white); font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; font-family: var(--font-body);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.feedback-btn:hover { border-color: var(--mid-gray); }
+.feedback-btn.approve.active {
+  background: var(--teal); color: var(--white); border-color: var(--teal);
+}
+.feedback-btn.changes.active {
+  background: var(--coral); color: var(--white); border-color: var(--coral);
+}
+.feedback-btn .fb-icon { font-size: 14px; }
+.feedback-saved {
+  font-size: 12px; color: var(--teal); font-weight: 600;
+  opacity: 0; transition: opacity 0.3s; margin-left: 4px;
+}
+.feedback-saved.show { opacity: 1; }
+
+.feedback-comment {
+  max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease;
+  background: var(--off-white); border-bottom: 1px solid var(--border);
+  padding: 0 48px;
+}
+.feedback-comment.open { max-height: 200px; padding: 16px 48px; }
+.feedback-comment textarea {
+  width: 100%; min-height: 60px; padding: 10px 14px;
+  border: 2px solid var(--border); border-radius: 8px;
+  font-family: var(--font-body); font-size: 14px; resize: vertical;
+  outline: none; transition: border-color 0.2s;
+}
+.feedback-comment textarea:focus { border-color: var(--teal); }
+.feedback-comment-actions {
+  display: flex; align-items: center; gap: 12px; margin-top: 8px;
+}
+.feedback-comment-save {
+  padding: 6px 20px; background: var(--ink); color: var(--white);
+  border: none; border-radius: 6px; font-size: 13px; font-weight: 600;
+  cursor: pointer; font-family: var(--font-body); transition: background 0.2s;
+}
+.feedback-comment-save:hover { background: var(--ink-light); }
+
+.feedback-progress {
+  position: fixed; bottom: 32px; left: 32px; z-index: 95;
+  background: var(--ink); color: var(--white); border-radius: 28px;
+  padding: 10px 20px; display: flex; align-items: center; gap: 12px;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25); transition: transform 0.2s;
+  text-decoration: none;
+}
+.feedback-progress:hover { transform: translateY(-2px); }
+.feedback-progress-bar {
+  width: 60px; height: 6px; background: rgba(255,255,255,0.15);
+  border-radius: 3px; overflow: hidden;
+}
+.feedback-progress-fill {
+  height: 100%; background: var(--teal); border-radius: 3px;
+  transition: width 0.4s ease;
+}
+
+.feedback-summary {
+  margin-top: 48px; background: var(--white); border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+}
+.feedback-summary-header {
+  padding: 24px 32px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.feedback-summary-header h3 {
+  font-family: var(--font-heading); font-size: 20px; font-weight: 400;
+}
+.feedback-summary-table { width: 100%; border-collapse: collapse; }
+.feedback-summary-table th {
+  text-align: left; padding: 12px 24px; font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.8px; color: var(--mid-gray);
+  background: var(--off-white); border-bottom: 1px solid var(--border);
+}
+.feedback-summary-table td {
+  padding: 14px 24px; font-size: 14px; border-bottom: 1px solid var(--light-gray);
+  vertical-align: top;
+}
+.fb-status-badge {
+  display: inline-block; padding: 3px 12px; border-radius: 12px;
+  font-size: 12px; font-weight: 600;
+}
+.fb-status-badge.approved { background: var(--teal-light); color: var(--teal-dark); }
+.fb-status-badge.changes { background: var(--coral-light); color: var(--coral-dark); }
+.fb-status-badge.pending { background: var(--light-gray); color: var(--mid-gray); }
+.feedback-clear {
+  font-size: 13px; color: var(--mid-gray); cursor: pointer;
+  text-decoration: underline; background: none; border: none;
+  font-family: var(--font-body);
+}
+.feedback-clear:hover { color: var(--coral); }
+
+@media (max-width: 900px) {
+  .feedback-bar { padding: 12px 24px; }
+  .feedback-comment { padding: 0 24px; }
+  .feedback-comment.open { padding: 16px 24px; }
+  .feedback-progress { bottom: 20px; left: 20px; }
+}
 </style>
 </head>
 <body>
+
+<!-- REVIEWER NAME MODAL -->
+<div class="reviewer-modal hidden" id="reviewerModal">
+  <div class="reviewer-modal-box">
+    <h3>Welcome, Reviewer</h3>
+    <p>Enter your name so we can track your feedback on each section.</p>
+    <input type="text" id="reviewerNameInput" placeholder="e.g. Larry" autocomplete="off">
+    <br>
+    <button onclick="saveReviewerName()">Continue</button>
+  </div>
+</div>
 
 <!-- ═══════════════════════════════════════
      SIDEBAR TOC
@@ -1311,6 +1467,21 @@ p { font-size: 16px; line-height: 1.7; }
     <h2>The Employer</h2>
     <p class="band-sub">Self-Funded, 200–2,000 Employees</p>
   </div>
+  <div class="feedback-bar" data-section="employer">
+    <span class="feedback-bar-label">Employer Messaging</span>
+    <div class="feedback-bar-actions">
+      <button class="feedback-btn approve" onclick="setFeedback('employer','approved',this)"><span class="fb-icon">&#10003;</span> Looks Good</button>
+      <button class="feedback-btn changes" onclick="setFeedback('employer','changes',this)"><span class="fb-icon">&#9998;</span> Needs Changes</button>
+      <span class="feedback-saved" id="saved-employer">Saved</span>
+    </div>
+  </div>
+  <div class="feedback-comment" id="comment-employer">
+    <textarea placeholder="What needs to change?" id="commentText-employer"></textarea>
+    <div class="feedback-comment-actions">
+      <button class="feedback-comment-save" onclick="saveComment('employer')">Save Comment</button>
+      <span class="feedback-saved" id="savedComment-employer">Saved</span>
+    </div>
+  </div>
 
   <section class="section">
     <!-- BRANDSCRIPT -->
@@ -1449,6 +1620,21 @@ p { font-size: 16px; line-height: 1.7; }
     <span class="badge">ICP #2</span>
     <h2>The Broker</h2>
     <p class="band-sub">Benefits Advisor</p>
+  </div>
+  <div class="feedback-bar" data-section="broker">
+    <span class="feedback-bar-label">Broker Messaging</span>
+    <div class="feedback-bar-actions">
+      <button class="feedback-btn approve" onclick="setFeedback('broker','approved',this)"><span class="fb-icon">&#10003;</span> Looks Good</button>
+      <button class="feedback-btn changes" onclick="setFeedback('broker','changes',this)"><span class="fb-icon">&#9998;</span> Needs Changes</button>
+      <span class="feedback-saved" id="saved-broker">Saved</span>
+    </div>
+  </div>
+  <div class="feedback-comment" id="comment-broker">
+    <textarea placeholder="What needs to change?" id="commentText-broker"></textarea>
+    <div class="feedback-comment-actions">
+      <button class="feedback-comment-save" onclick="saveComment('broker')">Save Comment</button>
+      <span class="feedback-saved" id="savedComment-broker">Saved</span>
+    </div>
   </div>
 
   <section class="section">
@@ -1590,6 +1776,21 @@ p { font-size: 16px; line-height: 1.7; }
     <h2>The Physician</h2>
     <p class="band-sub">Independent Physicians &amp; Practice Owners</p>
   </div>
+  <div class="feedback-bar" data-section="physician">
+    <span class="feedback-bar-label">Physician Messaging</span>
+    <div class="feedback-bar-actions">
+      <button class="feedback-btn approve" onclick="setFeedback('physician','approved',this)"><span class="fb-icon">&#10003;</span> Looks Good</button>
+      <button class="feedback-btn changes" onclick="setFeedback('physician','changes',this)"><span class="fb-icon">&#9998;</span> Needs Changes</button>
+      <span class="feedback-saved" id="saved-physician">Saved</span>
+    </div>
+  </div>
+  <div class="feedback-comment" id="comment-physician">
+    <textarea placeholder="What needs to change?" id="commentText-physician"></textarea>
+    <div class="feedback-comment-actions">
+      <button class="feedback-comment-save" onclick="saveComment('physician')">Save Comment</button>
+      <span class="feedback-saved" id="savedComment-physician">Saved</span>
+    </div>
+  </div>
 
   <section class="section">
     <!-- BRANDSCRIPT -->
@@ -1718,6 +1919,21 @@ p { font-size: 16px; line-height: 1.7; }
     <h2>The Employee</h2>
     <p class="band-sub">End Beneficiary</p>
   </div>
+  <div class="feedback-bar" data-section="employee">
+    <span class="feedback-bar-label">Employee Messaging</span>
+    <div class="feedback-bar-actions">
+      <button class="feedback-btn approve" onclick="setFeedback('employee','approved',this)"><span class="fb-icon">&#10003;</span> Looks Good</button>
+      <button class="feedback-btn changes" onclick="setFeedback('employee','changes',this)"><span class="fb-icon">&#9998;</span> Needs Changes</button>
+      <span class="feedback-saved" id="saved-employee">Saved</span>
+    </div>
+  </div>
+  <div class="feedback-comment" id="comment-employee">
+    <textarea placeholder="What needs to change?" id="commentText-employee"></textarea>
+    <div class="feedback-comment-actions">
+      <button class="feedback-comment-save" onclick="saveComment('employee')">Save Comment</button>
+      <span class="feedback-saved" id="savedComment-employee">Saved</span>
+    </div>
+  </div>
 
   <section class="section">
     <!-- BRANDSCRIPT -->
@@ -1845,6 +2061,21 @@ p { font-size: 16px; line-height: 1.7; }
     <h2>Website Concept</h2>
     <p class="band-sub">StoryBrand-Based Homepage Prototype</p>
   </div>
+  <div class="feedback-bar" data-section="website">
+    <span class="feedback-bar-label">Website Concept</span>
+    <div class="feedback-bar-actions">
+      <button class="feedback-btn approve" onclick="setFeedback('website','approved',this)"><span class="fb-icon">&#10003;</span> Looks Good</button>
+      <button class="feedback-btn changes" onclick="setFeedback('website','changes',this)"><span class="fb-icon">&#9998;</span> Needs Changes</button>
+      <span class="feedback-saved" id="saved-website">Saved</span>
+    </div>
+  </div>
+  <div class="feedback-comment" id="comment-website">
+    <textarea placeholder="What needs to change?" id="commentText-website"></textarea>
+    <div class="feedback-comment-actions">
+      <button class="feedback-comment-save" onclick="saveComment('website')">Save Comment</button>
+      <span class="feedback-saved" id="savedComment-website">Saved</span>
+    </div>
+  </div>
 
   <section class="section">
     <div class="reveal">
@@ -1882,6 +2113,21 @@ p { font-size: 16px; line-height: 1.7; }
   <div class="section-band" id="audiences">
     <h2>Audience Pages Preview</h2>
     <p class="band-sub">What each landing page will say at a glance</p>
+  </div>
+  <div class="feedback-bar" data-section="audiences">
+    <span class="feedback-bar-label">Audience Pages</span>
+    <div class="feedback-bar-actions">
+      <button class="feedback-btn approve" onclick="setFeedback('audiences','approved',this)"><span class="fb-icon">&#10003;</span> Looks Good</button>
+      <button class="feedback-btn changes" onclick="setFeedback('audiences','changes',this)"><span class="fb-icon">&#9998;</span> Needs Changes</button>
+      <span class="feedback-saved" id="saved-audiences">Saved</span>
+    </div>
+  </div>
+  <div class="feedback-comment" id="comment-audiences">
+    <textarea placeholder="What needs to change?" id="commentText-audiences"></textarea>
+    <div class="feedback-comment-actions">
+      <button class="feedback-comment-save" onclick="saveComment('audiences')">Save Comment</button>
+      <span class="feedback-saved" id="savedComment-audiences">Saved</span>
+    </div>
   </div>
 
   <section class="section">
@@ -1928,6 +2174,21 @@ p { font-size: 16px; line-height: 1.7; }
   <div class="section-band" id="assets">
     <h2>Asset Inventory</h2>
     <p class="band-sub">Everything we&rsquo;ll create for the Augusta pilot launch</p>
+  </div>
+  <div class="feedback-bar" data-section="assets">
+    <span class="feedback-bar-label">Asset Inventory</span>
+    <div class="feedback-bar-actions">
+      <button class="feedback-btn approve" onclick="setFeedback('assets','approved',this)"><span class="fb-icon">&#10003;</span> Looks Good</button>
+      <button class="feedback-btn changes" onclick="setFeedback('assets','changes',this)"><span class="fb-icon">&#9998;</span> Needs Changes</button>
+      <span class="feedback-saved" id="saved-assets">Saved</span>
+    </div>
+  </div>
+  <div class="feedback-comment" id="comment-assets">
+    <textarea placeholder="What needs to change?" id="commentText-assets"></textarea>
+    <div class="feedback-comment-actions">
+      <button class="feedback-comment-save" onclick="saveComment('assets')">Save Comment</button>
+      <span class="feedback-saved" id="savedComment-assets">Saved</span>
+    </div>
   </div>
 
   <section class="section">
@@ -2073,6 +2334,21 @@ p { font-size: 16px; line-height: 1.7; }
   <div class="section-band" id="marketing-plan">
     <h2>12-Month Marketing Plan</h2>
     <p class="band-sub">March 2026 &ndash; February 2027</p>
+  </div>
+  <div class="feedback-bar" data-section="marketing-plan">
+    <span class="feedback-bar-label">Marketing Plan</span>
+    <div class="feedback-bar-actions">
+      <button class="feedback-btn approve" onclick="setFeedback('marketing-plan','approved',this)"><span class="fb-icon">&#10003;</span> Looks Good</button>
+      <button class="feedback-btn changes" onclick="setFeedback('marketing-plan','changes',this)"><span class="fb-icon">&#9998;</span> Needs Changes</button>
+      <span class="feedback-saved" id="saved-marketing-plan">Saved</span>
+    </div>
+  </div>
+  <div class="feedback-comment" id="comment-marketing-plan">
+    <textarea placeholder="What needs to change?" id="commentText-marketing-plan"></textarea>
+    <div class="feedback-comment-actions">
+      <button class="feedback-comment-save" onclick="saveComment('marketing-plan')">Save Comment</button>
+      <span class="feedback-saved" id="savedComment-marketing-plan">Saved</span>
+    </div>
   </div>
 
   <section class="section">
@@ -2236,6 +2512,21 @@ p { font-size: 16px; line-height: 1.7; }
   <div class="section-band" id="next-steps">
     <h2>Next Steps</h2>
     <p class="band-sub">Engagement Options &amp; Pricing</p>
+  </div>
+  <div class="feedback-bar" data-section="next-steps">
+    <span class="feedback-bar-label">Pricing &amp; Next Steps</span>
+    <div class="feedback-bar-actions">
+      <button class="feedback-btn approve" onclick="setFeedback('next-steps','approved',this)"><span class="fb-icon">&#10003;</span> Looks Good</button>
+      <button class="feedback-btn changes" onclick="setFeedback('next-steps','changes',this)"><span class="fb-icon">&#9998;</span> Needs Changes</button>
+      <span class="feedback-saved" id="saved-next-steps">Saved</span>
+    </div>
+  </div>
+  <div class="feedback-comment" id="comment-next-steps">
+    <textarea placeholder="What needs to change?" id="commentText-next-steps"></textarea>
+    <div class="feedback-comment-actions">
+      <button class="feedback-comment-save" onclick="saveComment('next-steps')">Save Comment</button>
+      <span class="feedback-saved" id="savedComment-next-steps">Saved</span>
+    </div>
   </div>
 
   <section class="section">
@@ -2512,6 +2803,22 @@ p { font-size: 16px; line-height: 1.7; }
       </div>
     </div>
 
+    <!-- FEEDBACK SUMMARY -->
+    <div class="reveal" id="feedback-summary-section">
+      <div class="feedback-summary">
+        <div class="feedback-summary-header">
+          <h3>Your Feedback Summary</h3>
+          <button class="feedback-clear" onclick="clearAllFeedback()">Clear All Feedback</button>
+        </div>
+        <table class="feedback-summary-table">
+          <thead>
+            <tr><th>Section</th><th>Status</th><th>Comment</th></tr>
+          </thead>
+          <tbody id="feedbackSummaryBody"></tbody>
+        </table>
+      </div>
+    </div>
+
     <!-- Closing -->
     <div class="reveal" style="text-align:center; margin-top:64px; padding-bottom:40px;">
       <img src="../assets/vxtra-logo-color.png" alt="Vxtra Health" style="height:36px; margin-bottom:16px; opacity:0.6;">
@@ -2521,6 +2828,12 @@ p { font-size: 16px; line-height: 1.7; }
   </section>
 
 </main>
+
+<!-- FEEDBACK PROGRESS PILL -->
+<a class="feedback-progress" id="feedbackProgress" onclick="document.getElementById('feedback-summary-section').scrollIntoView({behavior:'smooth'})">
+  <span id="progressText">0/9 reviewed</span>
+  <div class="feedback-progress-bar"><div class="feedback-progress-fill" id="progressFill" style="width:0%"></div></div>
+</a>
 
 <!-- BACK TO TOP -->
 <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0})">&#8593;</button>
@@ -2599,6 +2912,190 @@ function copyText(btn) {
     }, 2000);
   });
 }
+
+/* ═══════════════════════════════════════
+   FEEDBACK SYSTEM
+   ═══════════════════════════════════════ */
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzfkXASakf7Wmedw95rHbUIWch8MBvkw431YHYy76qOf6At2OKUdBRwO_xraSJLPojwBw/exec';
+
+var FB_SECTIONS = [
+  { id: 'employer', label: 'Employer Messaging' },
+  { id: 'broker', label: 'Broker Messaging' },
+  { id: 'physician', label: 'Physician Messaging' },
+  { id: 'employee', label: 'Employee Messaging' },
+  { id: 'website', label: 'Website Concept' },
+  { id: 'audiences', label: 'Audience Pages' },
+  { id: 'assets', label: 'Asset Inventory' },
+  { id: 'marketing-plan', label: 'Marketing Plan' },
+  { id: 'next-steps', label: 'Pricing & Next Steps' }
+];
+
+function getFeedbackState() {
+  try { return JSON.parse(localStorage.getItem('vxtra-feedback') || '{}'); } catch(e) { return {}; }
+}
+function saveFeedbackState(state) {
+  localStorage.setItem('vxtra-feedback', JSON.stringify(state));
+}
+
+function getReviewerName() {
+  return localStorage.getItem('vxtra-reviewer') || '';
+}
+
+function saveReviewerName() {
+  var name = document.getElementById('reviewerNameInput').value.trim();
+  if (!name) return;
+  localStorage.setItem('vxtra-reviewer', name);
+  document.getElementById('reviewerModal').classList.add('hidden');
+}
+
+function showSavedToast(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.classList.add('show');
+  setTimeout(function() { el.classList.remove('show'); }, 2000);
+}
+
+function postToSheet(sectionId, status, comment) {
+  if (!APPS_SCRIPT_URL) return;
+  var reviewer = getReviewerName();
+  var label = '';
+  FB_SECTIONS.forEach(function(s) { if (s.id === sectionId) label = s.label; });
+  var payload = {
+    reviewer: reviewer,
+    section: label,
+    status: status === 'approved' ? 'Looks Good' : 'Needs Changes',
+    comment: comment || ''
+  };
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).catch(function() {});
+}
+
+function setFeedback(sectionId, status, btn) {
+  var state = getFeedbackState();
+  if (!state[sectionId]) state[sectionId] = {};
+  state[sectionId].status = status;
+  saveFeedbackState(state);
+
+  // Update button active states
+  var bar = btn.closest('.feedback-bar');
+  bar.querySelectorAll('.feedback-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+
+  // Show/hide comment textarea
+  var commentEl = document.getElementById('comment-' + sectionId);
+  if (status === 'changes') {
+    commentEl.classList.add('open');
+  } else {
+    commentEl.classList.remove('open');
+    postToSheet(sectionId, status, state[sectionId].comment || '');
+    showSavedToast('saved-' + sectionId);
+  }
+
+  updateProgress();
+  renderSummary();
+}
+
+function saveComment(sectionId) {
+  var text = document.getElementById('commentText-' + sectionId).value.trim();
+  var state = getFeedbackState();
+  if (!state[sectionId]) state[sectionId] = {};
+  state[sectionId].comment = text;
+  saveFeedbackState(state);
+  postToSheet(sectionId, state[sectionId].status || 'changes', text);
+  showSavedToast('savedComment-' + sectionId);
+  showSavedToast('saved-' + sectionId);
+  updateProgress();
+  renderSummary();
+}
+
+function updateProgress() {
+  var state = getFeedbackState();
+  var count = 0;
+  FB_SECTIONS.forEach(function(s) {
+    if (state[s.id] && state[s.id].status) count++;
+  });
+  document.getElementById('progressText').textContent = count + '/9 reviewed';
+  document.getElementById('progressFill').style.width = Math.round((count / 9) * 100) + '%';
+}
+
+function renderSummary() {
+  var state = getFeedbackState();
+  var tbody = document.getElementById('feedbackSummaryBody');
+  // Clear existing rows
+  while (tbody.firstChild) tbody.removeChild(tbody.firstChild);
+  // Build rows using safe DOM methods
+  FB_SECTIONS.forEach(function(s) {
+    var fb = state[s.id] || {};
+    var statusClass = fb.status === 'approved' ? 'approved' : fb.status === 'changes' ? 'changes' : 'pending';
+    var statusLabel = fb.status === 'approved' ? 'Approved' : fb.status === 'changes' ? 'Needs Changes' : 'Not Reviewed';
+    var tr = document.createElement('tr');
+
+    var tdLabel = document.createElement('td');
+    tdLabel.style.fontWeight = '600';
+    tdLabel.textContent = s.label;
+    tr.appendChild(tdLabel);
+
+    var tdStatus = document.createElement('td');
+    var badge = document.createElement('span');
+    badge.className = 'fb-status-badge ' + statusClass;
+    badge.textContent = statusLabel;
+    tdStatus.appendChild(badge);
+    tr.appendChild(tdStatus);
+
+    var tdComment = document.createElement('td');
+    tdComment.style.color = 'var(--mid-gray)';
+    tdComment.textContent = fb.comment || '\u2014';
+    tr.appendChild(tdComment);
+
+    tbody.appendChild(tr);
+  });
+}
+
+function clearAllFeedback() {
+  if (!confirm('Clear all your feedback? This cannot be undone.')) return;
+  localStorage.removeItem('vxtra-feedback');
+  // Reset all button states
+  document.querySelectorAll('.feedback-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.querySelectorAll('.feedback-comment').forEach(function(c) { c.classList.remove('open'); });
+  document.querySelectorAll('.feedback-comment textarea').forEach(function(t) { t.value = ''; });
+  updateProgress();
+  renderSummary();
+}
+
+function restoreFeedbackState() {
+  var state = getFeedbackState();
+  FB_SECTIONS.forEach(function(s) {
+    var fb = state[s.id];
+    if (!fb || !fb.status) return;
+    var bar = document.querySelector('.feedback-bar[data-section="' + s.id + '"]');
+    if (!bar) return;
+    var btnClass = fb.status === 'approved' ? '.approve' : '.changes';
+    var btn = bar.querySelector(btnClass);
+    if (btn) btn.classList.add('active');
+    if (fb.status === 'changes') {
+      var commentEl = document.getElementById('comment-' + s.id);
+      if (commentEl) commentEl.classList.add('open');
+    }
+    if (fb.comment) {
+      var textarea = document.getElementById('commentText-' + s.id);
+      if (textarea) textarea.value = fb.comment;
+    }
+  });
+}
+
+// Init on page load
+(function() {
+  if (!getReviewerName()) {
+    document.getElementById('reviewerModal').classList.remove('hidden');
+  }
+  restoreFeedbackState();
+  updateProgress();
+  renderSummary();
+})();
 </script>
 </body>
 </html>
