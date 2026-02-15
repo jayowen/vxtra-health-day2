@@ -791,6 +791,42 @@ Everything in Target with compressed timelines and higher volume.
 
 ---
 
+## In-House vs. Agency Cost Comparison
+
+**What it would cost to build this in-house:**
+
+| Role / Line Item | Annual Cost | Monthly Cost |
+|---|---|---|
+| CMO (full-time, healthcare exp., salary + 31% benefits) | $240,000 | $20,000 |
+| Marketing Coordinator (full-time + 31% benefits) | $82,000 | $6,833 |
+| Website design & development (one-time) | $20,000 | — |
+| Website hosting & maintenance | $6,000 | $500 |
+| Video production (one-time) | $50,000 | — |
+| HubSpot management & automation (specialist) | $24,000 | $2,000 |
+| Paid media management (agency outsource) | $18,000 | $1,500 |
+| Content writing — blogs, LinkedIn, email (freelance) | $24,000 | $2,000 |
+| Sales collateral design (freelance designer) | $12,000 | $1,000 |
+| **Year 1 In-House Total** | **$476,000** | — |
+
+*Note: Salaries include 31% benefits burden (BLS employer cost data).*
+
+**Business Builders Target Plan:**
+
+| | Monthly | Annual |
+|---|---|---|
+| Target retainer (all deliverables included) | $17,000 | $204,000 |
+| **Year 1 savings** | | **$272,000** |
+| **Savings percentage** | | **~57%** |
+
+**Key advantages:**
+
+- One team, one relationship — no vendor juggling
+- No recruiting, onboarding, or HR overhead
+- Senior strategy (Fractional CMO) included
+- Proven healthcare marketing playbook from day one
+
+---
+
 ## Terms
 
 ### Commitment

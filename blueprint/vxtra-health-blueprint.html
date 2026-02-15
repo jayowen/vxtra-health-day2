@@ -896,6 +896,81 @@ p { font-size: 16px; line-height: 1.7; }
 .collapsible-toggle.open .toggle-icon { transform: rotate(180deg); }
 
 /* ═══════════════════════════════════════
+   COST COMPARISON
+   ═══════════════════════════════════════ */
+.cost-comparison {
+  background: linear-gradient(135deg, var(--ink) 0%, var(--ink-light) 100%);
+  border-radius: 12px;
+  padding: 40px;
+  color: var(--white);
+}
+.cost-comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 32px;
+}
+.cost-line {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  font-size: 14px;
+}
+.cost-line:last-child { border-bottom: none; }
+.cost-line .amount { font-weight: 600; white-space: nowrap; }
+.cost-line.total-line {
+  border-top: 2px solid var(--teal);
+  border-bottom: none;
+  margin-top: 8px;
+  padding-top: 12px;
+  font-weight: 700;
+  font-size: 15px;
+}
+.savings-callout { text-align: center; padding: 24px; }
+.savings-callout .plan-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 8px;
+}
+.savings-callout .plan-price {
+  font-family: var(--font-heading);
+  font-size: 36px;
+  margin-bottom: 24px;
+}
+.savings-callout .save-amount {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  color: var(--teal);
+  margin-bottom: 4px;
+}
+.savings-callout .save-pct { font-size: 14px; color: rgba(255,255,255,0.6); }
+.cost-advantages {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.cost-advantages li {
+  font-size: 14px;
+  color: rgba(255,255,255,0.85);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.cost-advantages .adv-check { color: var(--teal); font-weight: 700; flex-shrink: 0; }
+@media (max-width: 768px) {
+  .cost-comparison-grid { grid-template-columns: 1fr; }
+  .cost-advantages { grid-template-columns: 1fr; }
+  .cost-comparison { padding: 24px; }
+}
+
+/* ═══════════════════════════════════════
    PRICING TABLE
    ═══════════════════════════════════════ */
 .pricing-grid {
@@ -1121,10 +1196,11 @@ p { font-size: 16px; line-height: 1.7; }
   .section-band { break-before: page; }
   .reveal { opacity: 1 !important; transform: none !important; }
   body { background: white; }
-  .card, .quote-block, .peace-container, .explainer {
+  .card, .quote-block, .peace-container, .explainer, .cost-comparison {
     break-inside: avoid;
     box-shadow: none;
   }
+  .cost-comparison { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
 
 /* ═══════════════════════════════════════
@@ -2722,6 +2798,51 @@ p { font-size: 16px; line-height: 1.7; }
 
           <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border); text-align:center;">
             <p style="font-size:13px; color:var(--mid-gray);">12-month: <strong style="color:var(--ink);">$288,000</strong> + media</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- In-House vs Agency Cost Comparison -->
+    <div class="reveal" style="margin-top:32px; margin-bottom:8px;">
+      <div class="collapsible-toggle" onclick="toggleCollapsible(this)" style="background:var(--ink); color:var(--white); border-radius:12px;">
+        <h3 style="color:var(--white); font-size:15px;">See how this compares to an in-house team</h3>
+        <span class="toggle-icon" style="color:var(--teal);">&#9660;</span>
+      </div>
+      <div class="collapsible-content">
+        <div class="cost-comparison">
+          <div class="cost-comparison-grid">
+            <div>
+              <p style="font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--teal); margin-bottom:16px;">Building It In-House</p>
+              <div class="cost-line"><span>CMO (full-time + benefits)</span><span class="amount">$20,000/mo</span></div>
+              <div class="cost-line"><span>Marketing Coordinator (full-time + benefits)</span><span class="amount">$6,833/mo</span></div>
+              <div class="cost-line"><span>Website design &amp; dev (one-time)</span><span class="amount">$20,000</span></div>
+              <div class="cost-line"><span>Website hosting &amp; maintenance</span><span class="amount">$500/mo</span></div>
+              <div class="cost-line"><span>Video production (one-time)</span><span class="amount">$50,000</span></div>
+              <div class="cost-line"><span>HubSpot management</span><span class="amount">$2,000/mo</span></div>
+              <div class="cost-line"><span>Paid media management</span><span class="amount">$1,500/mo</span></div>
+              <div class="cost-line"><span>Content writing (freelance)</span><span class="amount">$2,000/mo</span></div>
+              <div class="cost-line"><span>Sales collateral design</span><span class="amount">$1,000/mo</span></div>
+              <div class="cost-line total-line"><span>Year 1 In-House Total</span><span class="amount">$476,000</span></div>
+              <p style="font-size:11px; color:rgba(255,255,255,0.4); margin-top:12px;">Salaries include 31% benefits burden (BLS employer cost data).</p>
+            </div>
+            <div class="savings-callout">
+              <p class="plan-label">Your Investment</p>
+              <p class="plan-price">$17,000<span style="font-size:16px; font-weight:400;">/mo</span></p>
+              <div style="border-top:1px solid rgba(255,255,255,0.15); padding-top:24px;">
+                <p class="plan-label" style="margin-bottom:8px;">You Save</p>
+                <p class="save-amount">$272,000/yr</p>
+                <p class="save-pct">57% less than in-house</p>
+              </div>
+            </div>
+          </div>
+          <div style="border-top:1px solid rgba(255,255,255,0.1); padding-top:20px;">
+            <ul class="cost-advantages">
+              <li><span class="adv-check">&#10003;</span> One team, one relationship &mdash; no vendor juggling</li>
+              <li><span class="adv-check">&#10003;</span> No recruiting, onboarding, or HR overhead</li>
+              <li><span class="adv-check">&#10003;</span> Senior strategy (Fractional CMO) included</li>
+              <li><span class="adv-check">&#10003;</span> Proven healthcare marketing playbook from day one</li>
+            </ul>
           </div>
         </div>
       </div>
