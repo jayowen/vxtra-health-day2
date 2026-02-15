@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vxtra Health — Implementation Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   VARIABLES & RESET
+   ═══════════════════════════════════════ */
+:root {
+  --teal: #22BAB4;
+  --teal-dark: #1a9e99;
+  --teal-light: #e6f7f6;
+  --coral: #E8734A;
+  --coral-dark: #d45e36;
+  --coral-light: #fdf0eb;
+  --ink: #1B2A3D;
+  --ink-light: #2d3f55;
+  --white: #ffffff;
+  --off-white: #f8f9fa;
+  --light-gray: #f1f3f5;
+  --mid-gray: #6c757d;
+  --border: #dee2e6;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-heading: 'DM Serif Display', Georgia, serif;
+  --sidebar-w: 260px;
+  --section-max: 900px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--off-white);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════════════════════
+   SIDEBAR TOC (Desktop)
+   ═══════════════════════════════════════ */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  background: var(--ink);
+  padding: 32px 0;
+  overflow-y: auto;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-logo {
+  padding: 0 24px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 16px;
+}
+
+.sidebar-logo img { height: 32px; width: auto; }
+
+.sidebar nav { flex: 1; }
+
+.sidebar nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 24px;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+}
+
+.sidebar nav a:hover {
+  color: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.04);
+}
+
+.sidebar nav a.active {
+  color: var(--white);
+  border-left-color: var(--teal);
+  background: rgba(34,186,180,0.08);
+}
+
+.sidebar nav a .nav-num {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--teal);
+  min-width: 20px;
+}
+
+.sidebar-footer {
+  padding: 20px 24px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.sidebar-footer img { height: 22px; width: auto; opacity: 0.35; }
+.sidebar-footer p {
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  margin-top: 8px;
+}
+
+/* ═══════════════════════════════════════
+   MOBILE NAV
+   ═══════════════════════════════════════ */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: var(--ink);
+  z-index: 200;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.mobile-nav img { height: 26px; }
+
+.hamburger {
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  line-height: 1;
+}
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--ink);
+  z-index: 199;
+  padding: 16px 0;
+  overflow-y: auto;
+}
+
+.mobile-menu.open { display: block; }
+
+.mobile-menu a {
+  display: block;
+  padding: 12px 24px;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.mobile-menu a.active { color: var(--teal); }
+
+/* ═══════════════════════════════════════
+   MAIN CONTENT AREA
+   ═══════════════════════════════════════ */
+.main {
+  margin-left: var(--sidebar-w);
+  min-height: 100vh;
+}
+
+/* ═══════════════════════════════════════
+   COVER / HERO
+   ═══════════════════════════════════════ */
+.cover {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--ink) 0%, #0f1c2e 60%, #112233 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 80px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -20%;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34,186,180,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cover::after {
+  content: '';
+  position: absolute;
+  bottom: -20%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,115,74,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cover-logos {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 1;
+}
+
+.cover-logos img { height: 44px; width: auto; }
+
+.cover-logos .divider {
+  width: 1px;
+  height: 32px;
+  background: rgba(255,255,255,0.2);
+}
+
+.cover-label {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.cover h1 {
+  font-family: var(--font-heading);
+  font-size: 64px;
+  font-weight: 400;
+  color: var(--white);
+  line-height: 1.1;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.cover .subtitle {
+  font-size: 20px;
+  color: rgba(255,255,255,0.55);
+  max-width: 500px;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
+
+.cover-meta {
+  margin-top: 56px;
+  display: flex;
+  gap: 48px;
+  position: relative;
+  z-index: 1;
+}
+
+.cover-meta .meta-item { text-align: center; }
+
+.cover-meta .meta-value {
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--teal);
+  line-height: 1;
+}
+
+.cover-meta .meta-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 6px;
+}
+
+.cover-footer {
+  position: absolute;
+  bottom: 40px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.25);
+  z-index: 1;
+}
+
+.cover-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 32px;
+  padding: 10px 20px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s;
+  position: relative;
+  z-index: 1;
+}
+
+.cover-back:hover {
+  color: var(--teal);
+  border-color: var(--teal);
+  background: rgba(34,186,180,0.06);
+}
+
+/* ═══════════════════════════════════════
+   SECTIONS (shared)
+   ═══════════════════════════════════════ */
+.section {
+  padding: 80px 48px;
+  max-width: calc(var(--section-max) + 96px);
+}
+
+.section-band {
+  background: var(--ink);
+  color: var(--white);
+  padding: 48px 48px;
+  max-width: 100%;
+}
+
+.section-band .badge {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: var(--coral);
+  color: var(--white);
+  margin-bottom: 12px;
+}
+
+.section-band h2 {
+  font-family: var(--font-heading);
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--white);
+}
+
+.section-band .band-sub {
+  font-size: 16px;
+  color: rgba(255,255,255,0.55);
+  margin-top: 8px;
+}
+
+/* ═══════════════════════════════════════
+   TYPOGRAPHY
+   ═══════════════════════════════════════ */
+h2 {
+  font-family: var(--font-heading);
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 24px;
+  color: var(--ink);
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+
+h4 {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 6px;
+}
+
+p { font-size: 16px; line-height: 1.7; }
+
+.label {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--coral);
+  margin-bottom: 12px;
+}
+
+/* ═══════════════════════════════════════
+   CARDS
+   ═══════════════════════════════════════ */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.card-coral { border-left: 4px solid var(--coral); }
+.card-teal { border-left: 4px solid var(--teal); }
+
+.card h4.coral { color: var(--coral); }
+.card h4.teal { color: var(--teal); }
+
+.card p { font-size: 15px; }
+.card p + p { margin-top: 10px; }
+
+/* ═══════════════════════════════════════
+   TABLES
+   ═══════════════════════════════════════ */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.data-table thead tr { background: var(--light-gray); }
+
+.data-table th {
+  padding: 14px 20px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--mid-gray);
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table td {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.data-table tbody tr:last-child td { border-bottom: none; }
+
+.data-table .group-header td {
+  background: var(--light-gray);
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ink);
+  padding: 10px 20px;
+}
+
+.badge-must {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 50px;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--teal-light);
+  color: var(--teal-dark);
+}
+
+.badge-nice {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 50px;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--coral-light);
+  color: var(--coral-dark);
+}
+
+.badge-post {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 50px;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--light-gray);
+  color: var(--mid-gray);
+}
+
+/* ═══════════════════════════════════════
+   AUDIENCE CARDS (2x2 Grid)
+   ═══════════════════════════════════════ */
+.audience-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 32px;
+}
+
+.audience-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.audience-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+}
+
+.audience-card.employer::before { background: var(--coral); }
+.audience-card.broker::before { background: var(--teal); }
+.audience-card.physician::before { background: var(--ink); }
+.audience-card.employee::before { background: var(--mid-gray); }
+
+.audience-card .aud-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 50px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.audience-card.employer .aud-badge { background: var(--coral); color: white; }
+.audience-card.broker .aud-badge { background: var(--teal); color: white; }
+.audience-card.physician .aud-badge { background: var(--ink); color: white; }
+.audience-card.employee .aud-badge { background: var(--mid-gray); color: white; }
+
+.audience-card h3 {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+
+.audience-card .aud-sub {
+  font-size: 14px;
+  color: var(--mid-gray);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.audience-card .aud-cta {
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.audience-card.employer .aud-cta { background: var(--coral-light); color: var(--coral-dark); }
+.audience-card.broker .aud-cta { background: var(--teal-light); color: var(--teal-dark); }
+.audience-card.physician .aud-cta { background: var(--light-gray); color: var(--ink); }
+.audience-card.employee .aud-cta { background: var(--light-gray); color: var(--mid-gray); }
+
+/* ═══════════════════════════════════════
+   TIMELINE
+   ═══════════════════════════════════════ */
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin: 32px 0;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 24px;
+  left: 5%;
+  right: 5%;
+  height: 3px;
+  background: var(--border);
+  z-index: 0;
+}
+
+.timeline-phase {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  padding: 0 8px;
+}
+
+.timeline-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--teal);
+  margin: 14px auto 16px;
+  border: 4px solid var(--off-white);
+  box-shadow: 0 0 0 2px var(--teal);
+}
+
+.timeline-phase .phase-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--teal);
+  margin-bottom: 4px;
+}
+
+.timeline-phase .phase-dates {
+  font-size: 12px;
+  color: var(--mid-gray);
+  margin-bottom: 12px;
+}
+
+.timeline-phase .phase-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.timeline-items {
+  text-align: left;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 8px;
+}
+
+.timeline-items li {
+  font-size: 13px;
+  color: var(--ink-light);
+  margin-bottom: 6px;
+  list-style: none;
+  padding-left: 16px;
+  position: relative;
+}
+
+.timeline-items li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--teal);
+}
+
+.timeline-items li:last-child { margin-bottom: 0; }
+
+/* ═══════════════════════════════════════
+   BLOCKQUOTE
+   ═══════════════════════════════════════ */
+.brand-quote {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--teal);
+  border-radius: 0 12px 12px 0;
+  padding: 28px 32px;
+  margin: 32px 0;
+}
+
+.brand-quote p {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+/* ═══════════════════════════════════════
+   MESSAGING COMPARISON
+   ═══════════════════════════════════════ */
+.msg-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.msg-col {
+  border-radius: 12px;
+  padding: 28px;
+}
+
+.msg-col.phase1 {
+  background: var(--teal-light);
+  border: 1px solid rgba(34,186,180,0.2);
+}
+
+.msg-col.phase2 {
+  background: var(--coral-light);
+  border: 1px solid rgba(232,115,74,0.2);
+}
+
+.msg-col h4 { margin-bottom: 16px; }
+
+.msg-col ul {
+  list-style: none;
+  padding: 0;
+}
+
+.msg-col ul li {
+  font-size: 14px;
+  padding: 6px 0;
+  padding-left: 20px;
+  position: relative;
+  color: var(--ink-light);
+}
+
+.msg-col ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.msg-col.phase1 ul li::before { background: var(--teal); }
+.msg-col.phase2 ul li::before { background: var(--coral); }
+
+/* ═══════════════════════════════════════
+   HIGHLIGHT / CTA BLOCK
+   ═══════════════════════════════════════ */
+.highlight {
+  background: var(--teal-light);
+  border: 1px solid rgba(34,186,180,0.15);
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+
+.highlight p { font-size: 15px; }
+
+/* ═══════════════════════════════════════
+   BACK TO TOP
+   ═══════════════════════════════════════ */
+.back-to-top {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--white);
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: all 0.3s;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.back-to-top:hover { background: var(--teal); }
+
+/* ═══════════════════════════════════════
+   SCROLL REVEAL
+   ═══════════════════════════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .sidebar { width: 220px; }
+  .main { margin-left: 220px; }
+  .cover h1 { font-size: 48px; }
+  .audience-grid { grid-template-columns: 1fr; }
+  .msg-compare { grid-template-columns: 1fr; }
+  .timeline { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .timeline::before { display: none; }
+}
+
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .mobile-nav { display: flex; }
+  .main { margin-left: 0; padding-top: 56px; }
+  .cover { min-height: calc(100vh - 56px); padding: 60px 24px; }
+  .cover h1 { font-size: 36px; }
+  .cover-meta { gap: 24px; }
+  .cover-meta .meta-value { font-size: 28px; }
+  .section { padding: 48px 24px; }
+  .section-band { padding: 36px 24px; }
+  .section-band h2 { font-size: 28px; }
+  .audience-grid { grid-template-columns: 1fr; }
+  .msg-compare { grid-template-columns: 1fr; }
+  .timeline { grid-template-columns: 1fr; gap: 20px; }
+  .timeline::before { display: none; }
+  .data-table { font-size: 13px; }
+  .data-table th, .data-table td { padding: 10px 12px; }
+  .cover-logos img { height: 32px; }
+}
+
+/* ═══════════════════════════════════════
+   PRINT
+   ═══════════════════════════════════════ */
+@media print {
+  .sidebar, .mobile-nav, .mobile-menu, .back-to-top { display: none !important; }
+  .main { margin-left: 0 !important; }
+  .cover { min-height: auto; padding: 60px 40px; break-after: page; }
+  .section { padding: 40px; }
+  .section-band { break-before: page; }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  body { background: white; }
+  .card, .brand-quote, .audience-card, .timeline-items {
+    break-inside: avoid;
+    box-shadow: none;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     SIDEBAR TOC
+     ═══════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <img src="../assets/vxtra-logo-color.png" alt="Vxtra Health">
+  </div>
+  <nav>
+    <a href="#cover" class="active"><span class="nav-num"></span> Cover</a>
+    <a href="#assets"><span class="nav-num">01</span> What We're Building</a>
+    <a href="#audiences"><span class="nav-num">02</span> Audience Pages</a>
+    <a href="#marketing"><span class="nav-num">03</span> Marketing Approach</a>
+    <a href="#roadmap"><span class="nav-num">04</span> 12-Month Roadmap</a>
+    <a href="#partnership"><span class="nav-num">05</span> Partnership</a>
+  </nav>
+  <div class="sidebar-footer">
+    <img src="../assets/bb-logo-white.png" alt="Business Builders">
+    <p>Prepared by Business Builders</p>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════
+     MOBILE NAV
+     ═══════════════════════════════════════ -->
+<div class="mobile-nav">
+  <img src="../assets/vxtra-logo-color.png" alt="Vxtra Health">
+  <button class="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">&#9776;</button>
+</div>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#cover" onclick="closeMobileMenu()">Cover</a>
+  <a href="#assets" onclick="closeMobileMenu()">01 — What We're Building</a>
+  <a href="#audiences" onclick="closeMobileMenu()">02 — Audience Pages</a>
+  <a href="#marketing" onclick="closeMobileMenu()">03 — Marketing Approach</a>
+  <a href="#roadmap" onclick="closeMobileMenu()">04 — 12-Month Roadmap</a>
+  <a href="#partnership" onclick="closeMobileMenu()">05 — Partnership</a>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MAIN CONTENT
+     ═══════════════════════════════════════ -->
+<main class="main">
+
+  <!-- ═══════════════════════════════════
+       COVER
+       ═══════════════════════════════════ -->
+  <section class="cover" id="cover">
+    <div class="cover-logos">
+      <img src="../assets/vxtra-logo-color.png" alt="Vxtra Health">
+      <div class="divider"></div>
+      <img src="../assets/bb-logo-white.png" alt="Business Builders">
+    </div>
+    <span class="cover-label">Part II &mdash; Implementation Brief</span>
+    <h1>Execution<br>Plan</h1>
+    <p class="subtitle">Asset inventory, audience previews, timeline &amp; partnership recommendation</p>
+    <div class="cover-meta">
+      <div class="meta-item">
+        <div class="meta-value">44</div>
+        <div class="meta-label">Total Assets</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-value">4</div>
+        <div class="meta-label">Phases</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-value">12</div>
+        <div class="meta-label">Month Plan</div>
+      </div>
+    </div>
+    <a href="vxtra-health-blueprint.html" class="cover-back">&larr; Back to Part I &mdash; StoryBrand Blueprint</a>
+    <div class="cover-footer">Business Builders &times; Vxtra Health &nbsp;|&nbsp; February 2026</div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       SECTION 1: WHAT WE'RE BUILDING
+       ═══════════════════════════════════ -->
+  <div class="section-band" id="assets">
+    <span class="badge">Section 1</span>
+    <h2>What We're Building</h2>
+    <p class="band-sub">Complete asset inventory for the Augusta pilot launch</p>
+  </div>
+
+  <section class="section">
+    <div class="reveal">
+      <p style="max-width:720px; color:var(--mid-gray); margin-bottom:16px;">Every marketing asset needed to launch the Augusta pilot by July 2026 &mdash; organized by category with priority and target date. Detailed briefs for each item live in our working documents.</p>
+      <div style="display:flex; gap:16px; margin-bottom:32px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:6px;"><span class="badge-must">Must Have</span><span style="font-size:13px; color:var(--mid-gray);">30 assets</span></div>
+        <div style="display:flex; align-items:center; gap:6px;"><span class="badge-nice">Nice to Have</span><span style="font-size:13px; color:var(--mid-gray);">10 assets</span></div>
+        <div style="display:flex; align-items:center; gap:6px;"><span class="badge-post">Post-Launch</span><span style="font-size:13px; color:var(--mid-gray);">4 assets</span></div>
+      </div>
+    </div>
+
+    <div class="reveal" style="background:var(--white); border:1px solid var(--border); border-radius:12px; overflow:hidden;">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:50%;">Asset</th>
+            <th style="width:25%;">Priority</th>
+            <th style="width:25%;">Target</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- WEBSITE PAGES -->
+          <tr class="group-header"><td colspan="3">Website Pages</td></tr>
+          <tr><td>Homepage (StoryBrand structure)</td><td><span class="badge-must">Must Have</span></td><td>April 2026</td></tr>
+          <tr><td>Employer Landing Page</td><td><span class="badge-must">Must Have</span></td><td>May 2026</td></tr>
+          <tr><td>Broker Landing Page</td><td><span class="badge-must">Must Have</span></td><td>May 2026</td></tr>
+          <tr><td>Physician Landing Page</td><td><span class="badge-must">Must Have</span></td><td>May 2026</td></tr>
+          <tr><td>Employee Landing Page</td><td><span class="badge-must">Must Have</span></td><td>June 2026</td></tr>
+          <tr><td>About Page</td><td><span class="badge-must">Must Have</span></td><td>April 2026</td></tr>
+          <tr><td>Contact Page</td><td><span class="badge-must">Must Have</span></td><td>April 2026</td></tr>
+          <tr><td>Blog / Resources Hub</td><td><span class="badge-nice">Nice to Have</span></td><td>May 2026</td></tr>
+
+          <!-- INTERACTIVE TOOLS -->
+          <tr class="group-header"><td colspan="3">Interactive Tools</td></tr>
+          <tr><td>Employer Cost Calculator</td><td><span class="badge-must">Must Have</span></td><td>June 2026</td></tr>
+          <tr><td>Employer Qualification Tool</td><td><span class="badge-must">Must Have</span></td><td>June 2026</td></tr>
+
+          <!-- SALES ENABLEMENT -->
+          <tr class="group-header"><td colspan="3">Sales Enablement</td></tr>
+          <tr><td>Broker Presentation Deck (15&ndash;20 slides)</td><td><span class="badge-must">Must Have</span></td><td>April 2026</td></tr>
+          <tr><td>Civic Group Presentation Deck</td><td><span class="badge-must">Must Have</span></td><td>April 2026</td></tr>
+          <tr><td>Employer Presentation Deck</td><td><span class="badge-must">Must Have</span></td><td>May 2026</td></tr>
+          <tr><td>Qualification Checklist (internal)</td><td><span class="badge-must">Must Have</span></td><td>April 2026</td></tr>
+          <tr><td>ROI Calculator / Analysis Tool</td><td><span class="badge-must">Must Have</span></td><td>May 2026</td></tr>
+          <tr><td>Objection Handling Guide</td><td><span class="badge-must">Must Have</span></td><td>May 2026</td></tr>
+          <tr><td>Case Study Template</td><td><span class="badge-post">Post-Launch</span></td><td>Oct 2026</td></tr>
+          <tr><td>Competitive Comparison Sheet</td><td><span class="badge-nice">Nice to Have</span></td><td>May 2026</td></tr>
+
+          <!-- VIDEO CONTENT -->
+          <tr class="group-header"><td colspan="3">Video Content</td></tr>
+          <tr><td>Brand Story Video (3&ndash;5 min)</td><td><span class="badge-must">Must Have</span></td><td>April 2026</td></tr>
+          <tr><td>FAQ Video Series (12+ videos)</td><td><span class="badge-must">Must Have</span></td><td>Jul&ndash;Sep 2026</td></tr>
+          <tr><td>LinkedIn Short-Form Clips</td><td><span class="badge-must">Must Have</span></td><td>May 2026+</td></tr>
+          <tr><td>Civic Group Presentation Insert</td><td><span class="badge-nice">Nice to Have</span></td><td>May 2026</td></tr>
+          <tr><td>Employer Testimonial Video</td><td><span class="badge-post">Post-Launch</span></td><td>Oct 2026</td></tr>
+          <tr><td>Physician Testimonial Video</td><td><span class="badge-post">Post-Launch</span></td><td>Oct 2026</td></tr>
+
+          <!-- PRINT MATERIALS -->
+          <tr class="group-header"><td colspan="3">Print Materials</td></tr>
+          <tr><td>Broker Sales Sheet (1-page)</td><td><span class="badge-must">Must Have</span></td><td>April 2026</td></tr>
+          <tr><td>Employer Overview Brochure</td><td><span class="badge-must">Must Have</span></td><td>April 2026</td></tr>
+          <tr><td>Employee Welcome Packet</td><td><span class="badge-must">Must Have</span></td><td>June 2026</td></tr>
+          <tr><td>Business Cards</td><td><span class="badge-must">Must Have</span></td><td>March 2026</td></tr>
+          <tr><td>Trade Show / Event Banner</td><td><span class="badge-must">Must Have</span></td><td>April 2026</td></tr>
+          <tr><td>Physician Recruitment Packet</td><td><span class="badge-must">Must Have</span></td><td>May 2026</td></tr>
+          <tr><td>Pocket Guide (&ldquo;What is Vxtra Health?&rdquo;)</td><td><span class="badge-nice">Nice to Have</span></td><td>April 2026</td></tr>
+          <tr><td>Table Display Materials</td><td><span class="badge-nice">Nice to Have</span></td><td>May 2026</td></tr>
+
+          <!-- DIGITAL MARKETING -->
+          <tr class="group-header"><td colspan="3">Digital Marketing</td></tr>
+          <tr><td>Employer Lead Magnet (PDF Guide)</td><td><span class="badge-must">Must Have</span></td><td>May 2026</td></tr>
+          <tr><td>Broker Lead Magnet (Market Brief)</td><td><span class="badge-must">Must Have</span></td><td>May 2026</td></tr>
+          <tr><td>Employer Nurture Email Sequence (6&ndash;8)</td><td><span class="badge-must">Must Have</span></td><td>June 2026</td></tr>
+          <tr><td>Broker Nurture Email Sequence (5&ndash;6)</td><td><span class="badge-must">Must Have</span></td><td>June 2026</td></tr>
+          <tr><td>Physician Outreach Sequence (4&ndash;5)</td><td><span class="badge-must">Must Have</span></td><td>June 2026</td></tr>
+          <tr><td>Employee Welcome Email Series (3&ndash;4)</td><td><span class="badge-must">Must Have</span></td><td>July 2026</td></tr>
+          <tr><td>LinkedIn Post Templates (12&ndash;15)</td><td><span class="badge-must">Must Have</span></td><td>May 2026</td></tr>
+          <tr><td>Monthly Newsletter Template</td><td><span class="badge-nice">Nice to Have</span></td><td>July 2026</td></tr>
+          <tr><td>LinkedIn Sponsored Content Ads</td><td><span class="badge-nice">Nice to Have</span></td><td>June 2026</td></tr>
+          <tr><td>Google Remarketing Banners</td><td><span class="badge-nice">Nice to Have</span></td><td>June 2026</td></tr>
+          <tr><td>Meta Remarketing Ads</td><td><span class="badge-nice">Nice to Have</span></td><td>July 2026</td></tr>
+          <tr><td>Webinar Landing Page</td><td><span class="badge-post">Post-Launch</span></td><td>Q4 2026</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       SECTION 2: AUDIENCE PAGES PREVIEW
+       ═══════════════════════════════════ -->
+  <div class="section-band" id="audiences">
+    <span class="badge">Section 2</span>
+    <h2>Audience Pages Preview</h2>
+    <p class="band-sub">What each landing page will say at a glance</p>
+  </div>
+
+  <section class="section">
+    <div class="reveal">
+      <p style="max-width:720px; color:var(--mid-gray); margin-bottom:8px;">Each audience gets a dedicated landing page built from their StoryBrand BrandScript. Full copy, wireframes, and page specs are in our working documents &mdash; here are the headlines and primary calls to action.</p>
+    </div>
+
+    <div class="audience-grid">
+      <div class="audience-card employer reveal">
+        <span class="aud-badge">Employers</span>
+        <h3>Health insurance costs are crushing your business. <em>We built a way out.</em></h3>
+        <p class="aud-sub">Vxtra Health connects self-insured employers with Fortune 100 technology and the best local physicians &mdash; for predictable costs and benefits employees love.</p>
+        <span class="aud-cta">Schedule a Call</span>
+      </div>
+
+      <div class="audience-card broker reveal">
+        <span class="aud-badge">Brokers</span>
+        <h3>Every broker in town is selling the same thing. You don&rsquo;t have to.</h3>
+        <p class="aud-sub">Exclusive access to a physician-led health plan backed by Fortune 100 technology, transparent data, and a product your competitors cannot match.</p>
+        <span class="aud-cta">Schedule a Call</span>
+      </div>
+
+      <div class="audience-card physician reveal">
+        <span class="aud-badge">Physicians</span>
+        <h3>You became a physician to practice medicine &mdash; not to fight insurance companies.</h3>
+        <p class="aud-sub">A physician-led network where you make the clinical decisions, work directly with local employers, and run an independent practice. No pre-authorizations. No denials.</p>
+        <span class="aud-cta">Join the Network</span>
+      </div>
+
+      <div class="audience-card employee reveal">
+        <span class="aud-badge">Employees</span>
+        <h3>Your employer just gave you something incredible.</h3>
+        <p class="aud-sub">Better healthcare. A real doctor who knows your name. $0 copays, $0 deductibles, and you never have to worry about the bill.</p>
+        <span class="aud-cta">See the Benefits</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       SECTION 3: MARKETING APPROACH
+       ═══════════════════════════════════ -->
+  <div class="section-band" id="marketing">
+    <span class="badge">Section 3</span>
+    <h2>Marketing Approach</h2>
+    <p class="band-sub">How we reach each audience &mdash; channels, timing, and messaging</p>
+  </div>
+
+  <section class="section">
+    <!-- Brand Position -->
+    <div class="reveal">
+      <span class="label">Brand Position</span>
+      <div class="brand-quote">
+        <p>Vxtra Health is a physician-led health plan that brings Fortune 100 healthcare technology to mid-market employers &mdash; connecting them with the best local doctors in their community for predictable costs and a better experience for everyone.</p>
+      </div>
+    </div>
+
+    <!-- Channel Strategy Table -->
+    <div class="reveal" style="margin-top:40px;">
+      <span class="label">6-Channel Strategy</span>
+      <h2 style="font-size:28px;">How We Reach Them</h2>
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:12px; overflow:hidden;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:25%;">Channel</th>
+              <th style="width:45%;">Purpose</th>
+              <th style="width:30%;">When</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>LinkedIn</strong><br><span style="font-size:12px; color:var(--mid-gray);">Larry&rsquo;s personal profile</span></td>
+              <td>Primary thought leadership &mdash; educational posts, industry stats, Capital Rx &ldquo;wake&rdquo; amplification, FAQ video clips</td>
+              <td>3&ndash;4 posts/week, starting March 2026</td>
+            </tr>
+            <tr>
+              <td><strong>Website</strong><br><span style="font-size:12px; color:var(--mid-gray);">vxtrahealth.com</span></td>
+              <td>Conversion hub &mdash; every channel drives here. Persona routing, PEACE copy, lead capture, scheduling</td>
+              <td>Refresh live by April 2026</td>
+            </tr>
+            <tr>
+              <td><strong>Broker Materials</strong><br><span style="font-size:12px; color:var(--mid-gray);">Sales enablement</span></td>
+              <td>Gateway to employers &mdash; sales sheets, presentation decks, talking points. Outcomes-focused, not operational details</td>
+              <td>First materials by April 2026</td>
+            </tr>
+            <tr>
+              <td><strong>Civic Group Speaking</strong><br><span style="font-size:12px; color:var(--mid-gray);">Larry in-person</span></td>
+              <td>Awareness + authority &mdash; Rotary, Chamber, business owner groups. Educate without selling. QR code to website</td>
+              <td>Ongoing, starting April 2026</td>
+            </tr>
+            <tr>
+              <td><strong>Remarketing</strong><br><span style="font-size:12px; color:var(--mid-gray);">Google, LinkedIn, Meta</span></td>
+              <td>Low-cost nurture &mdash; tag website visitors, serve educational content. Segmented by persona page visited</td>
+              <td>Pixels live by June 2026</td>
+            </tr>
+            <tr>
+              <td><strong>Email Sequences</strong><br><span style="font-size:12px; color:var(--mid-gray);">HubSpot</span></td>
+              <td>Post-lead-capture follow-up &mdash; automated education between first touch and scheduled call. 4 persona-specific sequences</td>
+              <td>All sequences live by June 2026</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Phase 1 vs Phase 2 Messaging -->
+    <div class="reveal" style="margin-top:48px;">
+      <span class="label">Critical Constraint</span>
+      <h2 style="font-size:28px;">Phase 1 vs. Phase 2 Messaging</h2>
+      <p style="max-width:720px; color:var(--mid-gray); margin-bottom:8px;">Vxtra must operate within the existing Cigna network in Augusta for the initial launch. This shapes everything we say publicly until proprietary networks are live.</p>
+
+      <div class="msg-compare">
+        <div class="msg-col phase1">
+          <h4 style="color:var(--teal-dark);">Phase 1: Now &ndash; Mid-2027</h4>
+          <p style="font-size:13px; color:var(--teal-dark); font-weight:600; margin-bottom:12px;">Pro-employer. Pro-transparency. Solution-forward.</p>
+          <ul>
+            <li>&ldquo;We built a better way for employers and doctors&rdquo;</li>
+            <li>&ldquo;Fortune 100 technology, now available to you&rdquo;</li>
+            <li>&ldquo;Transparent data, local physicians, predictable costs&rdquo;</li>
+            <li>Reference Capital Rx capabilities and partnerships</li>
+            <li>Share cost trends and data delays (factual, not accusatory)</li>
+          </ul>
+          <div style="margin-top:16px; padding:12px; background:rgba(34,186,180,0.1); border-radius:8px;">
+            <p style="font-size:12px; font-weight:700; color:var(--teal-dark);">Do NOT name Cigna, BCBS, United, or Aetna negatively. Do not use &ldquo;hijacked&rdquo; or &ldquo;broken&rdquo; in public materials.</p>
+          </div>
+        </div>
+
+        <div class="msg-col phase2">
+          <h4 style="color:var(--coral-dark);">Phase 2: Mid-2027 Onward</h4>
+          <p style="font-size:13px; color:var(--coral-dark); font-weight:600; margin-bottom:12px;">Direct contrast. Data-backed. Authoritative.</p>
+          <ul>
+            <li>Real dollar savings from Augusta data</li>
+            <li>Direct carrier comparisons using Vxtra&rsquo;s own performance data</li>
+            <li>Employee and physician testimonials</li>
+            <li>Larry&rsquo;s full thought leadership voice unlocked</li>
+            <li>Case studies with named employers</li>
+          </ul>
+          <div style="margin-top:16px; padding:12px; background:rgba(232,115,74,0.1); border-radius:8px;">
+            <p style="font-size:12px; font-weight:700; color:var(--coral-dark);">Proprietary networks live. Cigna dependency removed. Stronger positioning becomes viable.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       SECTION 4: 12-MONTH ROADMAP
+       ═══════════════════════════════════ -->
+  <div class="section-band" id="roadmap">
+    <span class="badge">Section 4</span>
+    <h2>12-Month Roadmap</h2>
+    <p class="band-sub">Four phases from February through December 2026</p>
+  </div>
+
+  <section class="section">
+    <!-- Timeline Visual -->
+    <div class="reveal">
+      <div class="timeline">
+        <div class="timeline-phase">
+          <div class="phase-label">Phase 1</div>
+          <div class="timeline-dot"></div>
+          <div class="phase-dates">Feb &ndash; Mar</div>
+          <div class="phase-title">Foundation</div>
+          <div class="timeline-items">
+            <ul>
+              <li>Finalize all brand messaging</li>
+              <li>Blueprint presentation (Zoom)</li>
+              <li>Larry headshot photography</li>
+              <li>Business cards designed &amp; printed</li>
+              <li>Website architecture &amp; wireframes</li>
+              <li>HubSpot audit &amp; pipeline setup</li>
+              <li>Broker sales sheet &amp; employer brochure</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="timeline-phase">
+          <div class="phase-label">Phase 2</div>
+          <div class="timeline-dot"></div>
+          <div class="phase-dates">Apr &ndash; Jun</div>
+          <div class="phase-title">Launch Prep</div>
+          <div class="timeline-items">
+            <ul>
+              <li>Website live (homepage + about + contact)</li>
+              <li>Brand story video produced</li>
+              <li>4 persona landing pages live</li>
+              <li>All presentation decks built</li>
+              <li>Lead magnets &amp; email sequences</li>
+              <li>Cost calculator &amp; qualification tool</li>
+              <li>Remarketing pixels &amp; paid media</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="timeline-phase">
+          <div class="phase-label">Phase 3</div>
+          <div class="timeline-dot"></div>
+          <div class="phase-dates">Jul &ndash; Sep</div>
+          <div class="phase-title">Market Launch</div>
+          <div class="timeline-items">
+            <ul>
+              <li>First employers go live (July 1)</li>
+              <li>Employee onboarding campaigns</li>
+              <li>FAQ video production begins</li>
+              <li>LinkedIn content cadence starts</li>
+              <li>Blog publishing begins</li>
+              <li>First newsletter sent</li>
+              <li>Remarketing campaign optimization</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="timeline-phase">
+          <div class="phase-label">Phase 4</div>
+          <div class="timeline-dot"></div>
+          <div class="phase-dates">Oct &ndash; Dec</div>
+          <div class="phase-title">Growth</div>
+          <div class="timeline-items">
+            <ul>
+              <li>First case studies published</li>
+              <li>Gainesville market prep begins</li>
+              <li>Content optimization from analytics</li>
+              <li>Webinar series launch</li>
+              <li>12+ FAQ videos complete</li>
+              <li>Annual review &amp; 2027 plan</li>
+              <li>Phase 2 market plan finalized</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase Milestones -->
+    <div class="reveal" style="margin-top:40px;">
+      <h3 style="margin-bottom:16px;">Phase Milestones</h3>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+        <div class="card card-teal">
+          <h4 class="teal">Phase 1 &mdash; End of March</h4>
+          <p>Larry has printed sales materials in hand and HubSpot is structured for lead tracking before April broker and civic group meetings.</p>
+        </div>
+        <div class="card card-teal">
+          <h4 class="teal">Phase 2 &mdash; End of June</h4>
+          <p>Every tool Larry, Sandra, Kelly, and Salem need to sell is built, tested, and deployed before the first employer goes live July 1.</p>
+        </div>
+        <div class="card card-teal">
+          <h4 class="teal">Phase 3 &mdash; End of September</h4>
+          <p>500 employees on the Vxtra system. FAQ video library growing. LinkedIn engagement building Larry&rsquo;s thought leadership. First case study data collecting.</p>
+        </div>
+        <div class="card card-teal">
+          <h4 class="teal">Phase 4 &mdash; End of December</h4>
+          <p>Augusta pilot proven with data. First case studies live. Gainesville launch plan finalized. 2027 marketing roadmap approved.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Funding Alignment -->
+    <div class="reveal" style="margin-top:40px;">
+      <h3 style="margin-bottom:16px;">Funding Alignment</h3>
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:12px; overflow:hidden;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Funding Event</th>
+              <th>Marketing Milestone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>March 1</strong></td>
+              <td>Capital Rx funding received</td>
+              <td>Phase 1 complete &mdash; sales materials in hand, HubSpot structured</td>
+            </tr>
+            <tr>
+              <td><strong>June 30</strong></td>
+              <td>Earn-out advance (~$1M)</td>
+              <td>Phase 2 complete &mdash; full digital infrastructure live</td>
+            </tr>
+            <tr>
+              <td><strong>July 1</strong></td>
+              <td>First employers go live</td>
+              <td>Phase 3 begins &mdash; employee onboarding, content engine running</td>
+            </tr>
+            <tr>
+              <td><strong>Q3 2026</strong></td>
+              <td>Private placement ($3.5M)</td>
+              <td>Traction demonstrated &mdash; pipeline growing, employees enrolling</td>
+            </tr>
+            <tr>
+              <td><strong>October 1</strong></td>
+              <td>Target: 500 employees enrolled</td>
+              <td>Phase 4 begins &mdash; proof published, Gainesville prep starts</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Success Metrics -->
+    <div class="reveal" style="margin-top:40px;">
+      <h3 style="margin-bottom:16px;">Success Metrics (12-Month Targets)</h3>
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:12px; overflow:hidden;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:45%;">Metric</th>
+              <th style="width:30%;">Target</th>
+              <th style="width:25%;">Tracking</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Employees enrolled (Augusta)</td><td><strong>500</strong> by Oct 2026</td><td>HubSpot + Ops</td></tr>
+            <tr><td>Letters of intent signed</td><td><strong>10</strong> by Dec 2026</td><td>HubSpot Pipeline</td></tr>
+            <tr><td>Website monthly visitors</td><td><strong>500+</strong> by Sep 2026</td><td>Google Analytics</td></tr>
+            <tr><td>Lead magnet downloads</td><td><strong>50+</strong> by Sep 2026</td><td>HubSpot</td></tr>
+            <tr><td>Email nurture conversion rate</td><td><strong>15%+</strong> to scheduled call</td><td>HubSpot</td></tr>
+            <tr><td>LinkedIn impressions (Larry)</td><td><strong>10K+/mo</strong> by Q4 2026</td><td>LinkedIn Analytics</td></tr>
+            <tr><td>FAQ videos published</td><td><strong>12+</strong> by Dec 2026</td><td>Content Calendar</td></tr>
+            <tr><td>Active broker partners</td><td><strong>3&ndash;5</strong> by Jul 2026</td><td>HubSpot Pipeline</td></tr>
+            <tr><td>Qualified employer leads</td><td><strong>20+</strong> by Jul 2026</td><td>HubSpot Pipeline</td></tr>
+            <tr><td>Case studies published</td><td><strong>2+</strong> by Dec 2026</td><td>Website / Sales</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       SECTION 5: PARTNERSHIP RECOMMENDATION
+       ═══════════════════════════════════ -->
+  <div class="section-band" id="partnership">
+    <span class="badge">Section 5</span>
+    <h2>Partnership Recommendation</h2>
+    <p class="band-sub">Why fractional CMO is the right model for Vxtra&rsquo;s first 12 months</p>
+  </div>
+
+  <section class="section">
+    <!-- Why Fractional -->
+    <div class="reveal">
+      <span class="label">The Case for Fractional</span>
+      <h2 style="font-size:28px;">Why This Model Over a Full-Time Hire</h2>
+
+      <div style="display:grid; gap:16px; margin-top:24px;">
+        <div class="card card-teal">
+          <h4 class="teal">Cost Efficiency</h4>
+          <p>A full-time VP of Marketing or CMO costs $150K&ndash;$250K+ in salary and benefits. A fractional engagement delivers senior strategic leadership at a fraction of that cost &mdash; critical when working capital is $2M and every dollar needs to drive toward 500 enrolled employees.</p>
+        </div>
+        <div class="card card-teal">
+          <h4 class="teal">Immediate Capability</h4>
+          <p>No 3-month ramp-up period. Business Builders already has full context from the StoryBrand workshop, understands the messaging, knows the personas, and has the production team ready to execute. Day one is productive.</p>
+        </div>
+        <div class="card card-teal">
+          <h4 class="teal">Full Team, Not One Person</h4>
+          <p>A fractional model through Business Builders provides a strategist, designer, developer, copywriter, and video coordinator &mdash; not a single marketing generalist trying to do everything alone.</p>
+        </div>
+        <div class="card card-teal">
+          <h4 class="teal">Flexibility</h4>
+          <p>As Vxtra grows and funding scales (private placement $3.5M in Q3, additional markets in 2027), the engagement can scale up or transition to an in-house hire supported by the agency. The fractional model bridges the gap.</p>
+        </div>
+        <div class="card card-teal">
+          <h4 class="teal">Sandra&rsquo;s Bandwidth</h4>
+          <p>Sandra is running full-time operations and no one on the Vxtra team is dedicated to marketing. A fractional partner handles execution so the Vxtra team can focus on building the health plan and serving employers.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Engagement Structure -->
+    <div class="reveal" style="margin-top:48px;">
+      <div style="background:linear-gradient(135deg, var(--ink) 0%, var(--ink-light) 100%); border-radius:12px; padding:48px; color:var(--white);">
+        <p style="font-family:var(--font-heading); font-size:24px; line-height:1.4; margin-bottom:20px; color:var(--white);">Ready to bring the blueprint to life?</p>
+        <p style="color:rgba(255,255,255,0.7); margin-bottom:32px; max-width:640px;">We&rsquo;ll discuss scope, timeline, and investment during the follow-up call. The right time to evaluate a full-time marketing hire is after Augusta has proven the model (Q1 2027) and Gainesville launch planning demands dedicated in-house coordination.</p>
+
+        <div style="display:flex; gap:40px; flex-wrap:wrap; margin-bottom:32px;">
+          <div>
+            <p style="font-size:13px; color:var(--teal); font-weight:700; text-transform:uppercase; letter-spacing:1px;">Engagement</p>
+            <p style="color:rgba(255,255,255,0.9); font-size:17px; font-weight:600;">12-month partnership</p>
+          </div>
+          <div>
+            <p style="font-size:13px; color:var(--teal); font-weight:700; text-transform:uppercase; letter-spacing:1px;">Approach</p>
+            <p style="color:rgba(255,255,255,0.9); font-size:17px; font-weight:600;">Fractional CMO</p>
+          </div>
+          <div>
+            <p style="font-size:13px; color:var(--teal); font-weight:700; text-transform:uppercase; letter-spacing:1px;">Go-Live Target</p>
+            <p style="color:rgba(255,255,255,0.9); font-size:17px; font-weight:600;">July 1, 2026</p>
+          </div>
+        </div>
+
+        <div style="padding:20px 24px; background:rgba(34,186,180,0.1); border:1px solid rgba(34,186,180,0.2); border-radius:8px;">
+          <p style="font-size:15px; color:rgba(255,255,255,0.85); line-height:1.6;">Business Builders offers a fractional CMO approach &mdash; ongoing strategic marketing leadership without the overhead of a full-time hire. One team that already knows your story, your messaging, and your market.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Back to Part I -->
+    <div class="reveal" style="margin-top:32px;">
+      <a href="vxtra-health-blueprint.html" style="display:block; background:linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%); border-radius:12px; padding:32px 40px; color:var(--white); text-decoration:none; transition:transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(34,186,180,0.3)'" onmouseout="this.style.transform='none';this.style.boxShadow='none'">
+        <p style="font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; opacity:0.8;">Back to Part I</p>
+        <p style="font-family:var(--font-heading); font-size:24px; line-height:1.3; margin-bottom:8px;">&larr; StoryBrand Blueprint</p>
+        <p style="font-size:15px; opacity:0.8;">BrandScripts, one-liners, PEACE frameworks &amp; website concept</p>
+      </a>
+    </div>
+
+    <!-- Closing -->
+    <div class="reveal" style="text-align:center; margin-top:64px; padding-bottom:40px;">
+      <img src="../assets/vxtra-logo-color.png" alt="Vxtra Health" style="height:36px; margin-bottom:16px; opacity:0.6;">
+      <p style="color:var(--mid-gray); font-size:14px;">Prepared by Business Builders &nbsp;|&nbsp; businessbldrs.com</p>
+      <p style="color:var(--mid-gray); font-size:13px; margin-top:4px;">February 2026</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0})">&#8593;</button>
+
+<script>
+/* Mobile Menu */
+function toggleMobileMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+function closeMobileMenu() {
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+
+/* IntersectionObserver — Active TOC highlighting */
+var sections = document.querySelectorAll('section[id], .section-band[id]');
+var navLinks = document.querySelectorAll('.sidebar nav a');
+
+var tocObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      navLinks.forEach(function(link) { link.classList.remove('active'); });
+      var active = document.querySelector('.sidebar nav a[href="#' + entry.target.id + '"]');
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+
+sections.forEach(function(s) { tocObserver.observe(s); });
+
+/* Scroll Reveal */
+var revealObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(function(el) { revealObserver.observe(el); });
+
+/* Back to Top */
+window.addEventListener('scroll', function() {
+  var btn = document.getElementById('backToTop');
+  if (window.scrollY > 600) {
+    btn.classList.add('visible');
+  } else {
+    btn.classList.remove('visible');
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,2579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vxtra Health: StoryBrand Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   VARIABLES & RESET
+   ═══════════════════════════════════════ */
+:root {
+  --teal: #22BAB4;
+  --teal-dark: #1a9e99;
+  --teal-light: #e6f7f6;
+  --coral: #E8734A;
+  --coral-dark: #d45e36;
+  --coral-light: #fdf0eb;
+  --ink: #1B2A3D;
+  --ink-light: #2d3f55;
+  --white: #ffffff;
+  --off-white: #f8f9fa;
+  --light-gray: #f1f3f5;
+  --mid-gray: #6c757d;
+  --border: #dee2e6;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-heading: 'DM Serif Display', Georgia, serif;
+  --sidebar-w: 260px;
+  --section-max: 900px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--off-white);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════════════════════
+   SIDEBAR TOC (Desktop)
+   ═══════════════════════════════════════ */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  background: var(--ink);
+  padding: 32px 0;
+  overflow-y: auto;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-logo {
+  padding: 0 24px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 16px;
+}
+
+.sidebar-logo img { height: 32px; width: auto; }
+
+.sidebar nav { flex: 1; }
+
+.sidebar nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 24px;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+}
+
+.sidebar nav a:hover {
+  color: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.04);
+}
+
+.sidebar nav a.active {
+  color: var(--white);
+  border-left-color: var(--teal);
+  background: rgba(34,186,180,0.08);
+}
+
+.sidebar nav a .nav-num {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--teal);
+  min-width: 20px;
+}
+
+.sidebar-group-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 24px;
+  padding-left: 57px;
+  color: rgba(255,255,255,0.5);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: all 0.2s;
+  user-select: none;
+}
+.sidebar-group-toggle:hover {
+  color: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.04);
+}
+.sidebar-group-toggle .chevron {
+  font-size: 10px;
+  transition: transform 0.2s;
+}
+.sidebar-group.open .sidebar-group-toggle .chevron {
+  transform: rotate(90deg);
+}
+.sidebar-group.open .sidebar-group-toggle {
+  color: rgba(255,255,255,0.75);
+}
+.sidebar-group-items {
+  display: none;
+  padding-left: 12px;
+}
+.sidebar-group.open .sidebar-group-items {
+  display: block;
+}
+
+.sidebar-footer {
+  padding: 20px 24px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.sidebar-footer img { height: 22px; width: auto; opacity: 0.35; }
+.sidebar-footer p {
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  margin-top: 8px;
+}
+
+/* ═══════════════════════════════════════
+   MOBILE NAV
+   ═══════════════════════════════════════ */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: var(--ink);
+  z-index: 200;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.mobile-nav img { height: 26px; }
+
+.hamburger {
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  line-height: 1;
+}
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--ink);
+  z-index: 199;
+  padding: 16px 0;
+  overflow-y: auto;
+}
+
+.mobile-menu.open { display: block; }
+
+.mobile-menu a {
+  display: block;
+  padding: 12px 24px;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.mobile-menu a.active { color: var(--teal); }
+
+/* ═══════════════════════════════════════
+   MAIN CONTENT AREA
+   ═══════════════════════════════════════ */
+.main {
+  margin-left: var(--sidebar-w);
+  min-height: 100vh;
+}
+
+/* ═══════════════════════════════════════
+   COVER / HERO
+   ═══════════════════════════════════════ */
+.cover {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--ink) 0%, #0f1c2e 60%, #112233 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 80px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cover::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -20%;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34,186,180,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cover::after {
+  content: '';
+  position: absolute;
+  bottom: -20%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,115,74,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cover-logos {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 1;
+}
+
+.cover-logos img { height: 44px; width: auto; }
+
+.cover-logos .divider {
+  width: 1px;
+  height: 32px;
+  background: rgba(255,255,255,0.2);
+}
+
+.cover-label {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.cover h1 {
+  font-family: var(--font-heading);
+  font-size: 64px;
+  font-weight: 400;
+  color: var(--white);
+  line-height: 1.1;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.cover .subtitle {
+  font-size: 20px;
+  color: rgba(255,255,255,0.55);
+  max-width: 500px;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
+
+.cover-meta {
+  margin-top: 56px;
+  display: flex;
+  gap: 48px;
+  position: relative;
+  z-index: 1;
+}
+
+.cover-meta .meta-item { text-align: center; }
+
+.cover-meta .meta-value {
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--teal);
+  line-height: 1;
+}
+
+.cover-meta .meta-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 6px;
+}
+
+.cover-footer {
+  position: absolute;
+  bottom: 40px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.25);
+  z-index: 1;
+}
+
+/* ═══════════════════════════════════════
+   SECTIONS (shared)
+   ═══════════════════════════════════════ */
+.section {
+  padding: 80px 48px;
+  max-width: calc(var(--section-max) + 96px);
+}
+
+.section-band {
+  background: var(--ink);
+  color: var(--white);
+  padding: 48px 48px;
+  max-width: 100%;
+}
+
+.section-band .badge {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: var(--coral);
+  color: var(--white);
+  margin-bottom: 12px;
+}
+
+.section-band h2 {
+  font-family: var(--font-heading);
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--white);
+}
+
+.section-band .band-sub {
+  font-size: 16px;
+  color: rgba(255,255,255,0.55);
+  margin-top: 8px;
+}
+
+/* ═══════════════════════════════════════
+   TYPOGRAPHY
+   ═══════════════════════════════════════ */
+h2 {
+  font-family: var(--font-heading);
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 24px;
+  color: var(--ink);
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+
+h4 {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 6px;
+}
+
+p { font-size: 16px; line-height: 1.7; }
+
+.label {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--coral);
+  margin-bottom: 12px;
+}
+
+/* ═══════════════════════════════════════
+   CARDS
+   ═══════════════════════════════════════ */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.card-coral { border-left: 4px solid var(--coral); }
+.card-teal { border-left: 4px solid var(--teal); }
+.card-red { border-left: 4px solid #c0392b; }
+
+.card h4.coral { color: var(--coral); }
+.card h4.teal { color: var(--teal); }
+.card h4.red { color: #e74c3c; }
+
+.card p { font-size: 15px; }
+.card p + p { margin-top: 10px; }
+
+/* 2-col brandscript grid */
+.bs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+/* ═══════════════════════════════════════
+   QUOTE BLOCK (One-Liners)
+   ═══════════════════════════════════════ */
+.quote-block {
+  position: relative;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 40px 48px;
+  margin: 40px 0;
+  text-align: center;
+}
+
+.quote-block p {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.quote-block .copy-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+/* ═══════════════════════════════════════
+   PEACE FRAMEWORK
+   ═══════════════════════════════════════ */
+.peace-container {
+  position: relative;
+  margin: 40px 0;
+  padding: 32px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.peace-container .copy-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.peace-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.peace-step:last-child { margin-bottom: 0; }
+
+.peace-letter {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--coral);
+  color: var(--white);
+  font-weight: 800;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.peace-step h3 {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--mid-gray);
+  margin-bottom: 4px;
+}
+
+.peace-step p { font-size: 16px; }
+
+/* ═══════════════════════════════════════
+   EXPLANATORY PARAGRAPH
+   ═══════════════════════════════════════ */
+.explainer {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 40px 48px;
+  margin: 40px 0;
+}
+
+.explainer p {
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--ink-light);
+}
+
+.explainer p + p { margin-top: 16px; }
+
+/* ═══════════════════════════════════════
+   COPY BUTTON
+   ═══════════════════════════════════════ */
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--light-gray);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--mid-gray);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.copy-btn:hover {
+  background: var(--teal-light);
+  border-color: var(--teal);
+  color: var(--teal-dark);
+}
+
+.copy-btn.copied {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: var(--white);
+}
+
+.copy-btn .icon-copy,
+.copy-btn .icon-check { width: 14px; height: 14px; }
+.copy-btn .icon-check { display: none; }
+.copy-btn.copied .icon-copy { display: none; }
+.copy-btn.copied .icon-check { display: inline; }
+.copy-btn .btn-label-copy { }
+.copy-btn .btn-label-copied { display: none; }
+.copy-btn.copied .btn-label-copy { display: none; }
+.copy-btn.copied .btn-label-copied { display: inline; }
+
+/* ═══════════════════════════════════════
+   HIGHLIGHT / TRANSFORMATION
+   ═══════════════════════════════════════ */
+.highlight {
+  background: var(--teal-light);
+  border: 1px solid rgba(34,186,180,0.15);
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+
+.highlight p { font-size: 15px; }
+
+/* ═══════════════════════════════════════
+   BACK TO TOP
+   ═══════════════════════════════════════ */
+.back-to-top {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--white);
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: all 0.3s;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.back-to-top:hover { background: var(--teal); }
+
+/* ═══════════════════════════════════════
+   SCROLL REVEAL
+   ═══════════════════════════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════
+   DATA TABLE & BADGES (Asset Inventory)
+   ═══════════════════════════════════════ */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.data-table thead tr { background: var(--light-gray); }
+
+.data-table th {
+  padding: 14px 20px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--mid-gray);
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table td {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.data-table tbody tr:last-child td { border-bottom: none; }
+
+.data-table .group-header td {
+  background: var(--light-gray);
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ink);
+  padding: 10px 20px;
+}
+
+.badge-must {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 50px;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--teal-light);
+  color: var(--teal-dark);
+}
+
+.badge-nice {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 50px;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--coral-light);
+  color: var(--coral-dark);
+}
+
+.badge-post {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 50px;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--light-gray);
+  color: var(--mid-gray);
+}
+
+.badge-done {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 50px;
+  font-size: 11px;
+  font-weight: 700;
+  background: #d4edda;
+  color: #155724;
+}
+
+/* ═══════════════════════════════════════
+   AUDIENCE CARDS (2x2 Grid)
+   ═══════════════════════════════════════ */
+.audience-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 32px;
+}
+
+.audience-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.audience-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+}
+
+.audience-card.employer::before { background: var(--coral); }
+.audience-card.broker::before { background: var(--teal); }
+.audience-card.physician::before { background: var(--ink); }
+.audience-card.employee::before { background: var(--mid-gray); }
+
+.audience-card .aud-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 50px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.audience-card.employer .aud-badge { background: var(--coral); color: white; }
+.audience-card.broker .aud-badge { background: var(--teal); color: white; }
+.audience-card.physician .aud-badge { background: var(--ink); color: white; }
+.audience-card.employee .aud-badge { background: var(--mid-gray); color: white; }
+
+.audience-card h3 {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+
+.audience-card .aud-sub {
+  font-size: 14px;
+  color: var(--mid-gray);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.audience-card .aud-cta {
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.audience-card.employer .aud-cta { background: var(--coral-light); color: var(--coral-dark); }
+.audience-card.broker .aud-cta { background: var(--teal-light); color: var(--teal-dark); }
+.audience-card.physician .aud-cta { background: var(--light-gray); color: var(--ink); }
+.audience-card.employee .aud-cta { background: var(--light-gray); color: var(--mid-gray); }
+
+.aud-copy-link {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.aud-copy-link:hover { text-decoration: underline; }
+.audience-card.employer .aud-copy-link { color: var(--coral); }
+.audience-card.broker .aud-copy-link { color: var(--teal); }
+.audience-card.physician .aud-copy-link { color: var(--ink-light); }
+.audience-card.employee .aud-copy-link { color: var(--mid-gray); }
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .sidebar { width: 220px; }
+  .main { margin-left: 220px; }
+  .cover h1 { font-size: 48px; }
+  .bs-grid { grid-template-columns: 1fr; }
+  .audience-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .mobile-nav { display: flex; }
+  .main { margin-left: 0; padding-top: 56px; }
+  .cover { min-height: calc(100vh - 56px); padding: 60px 24px; }
+  .data-table { font-size: 13px; }
+  .data-table th, .data-table td { padding: 10px 12px; }
+  .cover h1 { font-size: 36px; }
+  .cover-meta { gap: 24px; }
+  .cover-meta .meta-value { font-size: 28px; }
+  .section { padding: 48px 24px; }
+  .section-band { padding: 36px 24px; }
+  .section-band h2 { font-size: 28px; }
+  .bs-grid { grid-template-columns: 1fr; }
+  .quote-block { padding: 28px 24px; }
+  .quote-block p { font-size: 19px; }
+  .explainer { padding: 28px 24px; }
+  .peace-container { padding: 24px; }
+  .cover-logos img { height: 32px; }
+}
+
+/* ═══════════════════════════════════════
+   COLLAPSIBLE SECTIONS
+   ═══════════════════════════════════════ */
+.collapsible-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  padding: 16px 20px;
+  background: var(--light-gray);
+  border-radius: 8px;
+  margin-bottom: 16px;
+  transition: background 0.2s;
+}
+.collapsible-toggle:hover { background: #e9ecef; }
+.collapsible-toggle h3 { margin: 0; font-size: 15px; }
+.collapsible-toggle .toggle-icon {
+  font-size: 13px;
+  color: var(--mid-gray);
+  transition: transform 0.3s;
+}
+.collapsible-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+.collapsible-content.open { max-height: 8000px; }
+.collapsible-toggle.open .toggle-icon { transform: rotate(180deg); }
+
+/* ═══════════════════════════════════════
+   PRICING TABLE
+   ═══════════════════════════════════════ */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  margin: 32px 0;
+}
+.pricing-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px 28px;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.pricing-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+.pricing-card.recommended {
+  border: 2px solid var(--teal);
+  box-shadow: 0 4px 20px rgba(34,186,180,0.12);
+}
+.pricing-card.recommended::before {
+  content: 'Recommended';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--teal);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 16px;
+  border-radius: 50px;
+}
+.pricing-card .price {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1;
+  margin: 16px 0 4px;
+}
+.pricing-card .price-sub {
+  font-size: 13px;
+  color: var(--mid-gray);
+}
+.pricing-card .plan-name {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 4px;
+}
+.pricing-card .plan-desc {
+  font-size: 14px;
+  color: var(--mid-gray);
+  line-height: 1.5;
+  margin: 12px 0 20px;
+  min-height: 42px;
+}
+.pricing-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.pricing-card li {
+  font-size: 13px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--light-gray);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.4;
+}
+.pricing-card li:last-child { border-bottom: none; }
+.pricing-card li .check {
+  color: var(--teal);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.pricing-card li .dash {
+  color: var(--border);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.pricing-card .cat-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--mid-gray);
+  margin-top: 16px;
+  margin-bottom: 4px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.pricing-card .cat-label:first-of-type {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* Comparison table */
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.compare-table thead tr { background: var(--ink); }
+.compare-table th {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255,255,255,0.7);
+}
+.compare-table th:first-child { border-radius: 8px 0 0 0; }
+.compare-table th:last-child { border-radius: 0 8px 0 0; }
+.compare-table th.rec {
+  color: var(--teal);
+  background: rgba(34,186,180,0.08);
+}
+.compare-table td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.compare-table tbody tr:last-child td { border-bottom: none; }
+.compare-table .row-label {
+  font-weight: 600;
+  color: var(--ink);
+}
+.compare-table .group-row td {
+  background: var(--light-gray);
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ink);
+  padding: 8px 16px;
+}
+.compare-table .check-cell { color: var(--teal); font-weight: 700; }
+.compare-table .dash-cell { color: var(--border); }
+
+/* Phase timeline */
+.phase-timeline {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 16px;
+  margin: 32px 0;
+}
+.phase-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  position: relative;
+}
+.phase-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  border-radius: 12px 12px 0 0;
+}
+.phase-card.p1::before { background: var(--coral); }
+.phase-card.p2::before { background: var(--teal); }
+.phase-card.p3::before { background: var(--ink); }
+.phase-card.p4::before { background: var(--mid-gray); }
+.phase-card .phase-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.phase-card h4 {
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-bottom: 8px;
+}
+.phase-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.phase-card li {
+  font-size: 13px;
+  padding: 4px 0;
+  color: var(--ink-light);
+  line-height: 1.4;
+}
+
+@media (max-width: 1024px) {
+  .pricing-grid { grid-template-columns: 1fr; }
+  .phase-timeline { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .phase-timeline { grid-template-columns: 1fr; }
+}
+
+/* ═══════════════════════════════════════
+   PRINT
+   ═══════════════════════════════════════ */
+@media print {
+  .sidebar, .mobile-nav, .mobile-menu, .back-to-top, .copy-btn, .collapsible-toggle { display: none !important; }
+  .collapsible-content { max-height: none !important; overflow: visible !important; }
+  .main { margin-left: 0 !important; }
+  .cover { min-height: auto; padding: 60px 40px; break-after: page; }
+  .section { padding: 40px; }
+  .section-band { break-before: page; }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  body { background: white; }
+  .card, .quote-block, .peace-container, .explainer {
+    break-inside: avoid;
+    box-shadow: none;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     SIDEBAR TOC
+     ═══════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <img src="../assets/vxtra-logo-color.png" alt="Vxtra Health">
+  </div>
+  <nav>
+    <a href="#cover" class="active"><span class="nav-num"></span> Cover</a>
+    <a href="#summary"><span class="nav-num"></span> Executive Summary</a>
+    <div class="sidebar-group" id="messagingGroup">
+      <div class="sidebar-group-toggle" onclick="this.parentElement.classList.toggle('open')">
+        Messaging <span class="chevron">&#9654;</span>
+      </div>
+      <div class="sidebar-group-items">
+        <a href="#employer"><span class="nav-num">01</span> The Employer</a>
+        <a href="#broker"><span class="nav-num">02</span> The Broker</a>
+        <a href="#physician"><span class="nav-num">03</span> The Physician</a>
+        <a href="#employee"><span class="nav-num">04</span> The Employee</a>
+      </div>
+    </div>
+    <a href="#website"><span class="nav-num"></span> Website Concept</a>
+    <a href="#audiences"><span class="nav-num"></span> Audience Pages</a>
+    <a href="#assets"><span class="nav-num"></span> Asset Inventory</a>
+    <a href="#marketing-plan"><span class="nav-num"></span> Marketing Plan</a>
+    <a href="#next-steps"><span class="nav-num"></span> Next Steps</a>
+  </nav>
+  <div class="sidebar-footer">
+    <img src="../assets/bb-logo-white.png" alt="Business Builders">
+    <p>Prepared by Business Builders</p>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════
+     MOBILE NAV
+     ═══════════════════════════════════════ -->
+<div class="mobile-nav">
+  <img src="../assets/vxtra-logo-color.png" alt="Vxtra Health">
+  <button class="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">&#9776;</button>
+</div>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#cover" onclick="closeMobileMenu()">Cover</a>
+  <a href="#summary" onclick="closeMobileMenu()">Executive Summary</a>
+  <div class="sidebar-group" id="messagingGroupMobile">
+    <div class="sidebar-group-toggle" onclick="this.parentElement.classList.toggle('open')">
+      Messaging <span class="chevron">&#9654;</span>
+    </div>
+    <div class="sidebar-group-items">
+      <a href="#employer" onclick="closeMobileMenu()">01: The Employer</a>
+      <a href="#broker" onclick="closeMobileMenu()">02: The Broker</a>
+      <a href="#physician" onclick="closeMobileMenu()">03: The Physician</a>
+      <a href="#employee" onclick="closeMobileMenu()">04: The Employee</a>
+    </div>
+  </div>
+  <a href="#website" onclick="closeMobileMenu()">Website Concept</a>
+  <a href="#audiences" onclick="closeMobileMenu()">Audience Pages</a>
+  <a href="#assets" onclick="closeMobileMenu()">Asset Inventory</a>
+  <a href="#marketing-plan" onclick="closeMobileMenu()">Marketing Plan</a>
+  <a href="#next-steps" onclick="closeMobileMenu()">Next Steps</a>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MAIN CONTENT
+     ═══════════════════════════════════════ -->
+<main class="main">
+
+  <!-- SECTION 1: COVER -->
+  <section class="cover" id="cover">
+    <div class="cover-logos">
+      <img src="../assets/vxtra-logo-color.png" alt="Vxtra Health">
+      <div class="divider"></div>
+      <img src="../assets/bb-logo-white.png" alt="Business Builders">
+    </div>
+    <span class="cover-label">StoryBrand Blueprint Workshop</span>
+    <h1>StoryBrand<br>Blueprint</h1>
+    <p class="subtitle">Prepared for Vxtra Health<br>February 10–11, 2026</p>
+    <div class="cover-footer">Business Builders &times; Vxtra Health &nbsp;|&nbsp; St. Augustine, FL</div>
+  </section>
+
+  <!-- SECTION 2: EXECUTIVE SUMMARY -->
+  <section class="section" id="summary">
+    <div class="reveal">
+      <span class="label">Workshop Overview</span>
+      <h2>Executive Summary</h2>
+      <p style="max-width:720px; color:var(--mid-gray); margin-bottom:40px;">Over two days in St. Augustine, FL, the Vxtra Health leadership team and Business Builders worked through a comprehensive StoryBrand Blueprint workshop, identifying audiences, defining the villain, building messaging frameworks, and creating the strategic foundation for all future marketing.</p>
+    </div>
+
+    <!-- 7-Part Framework Visual -->
+    <div class="reveal" style="background:var(--ink); border-radius:12px; padding:32px; margin-bottom:40px;">
+      <h4 style="color:var(--teal); text-align:center; margin-bottom:24px;">The StoryBrand 7-Part Framework</h4>
+      <div style="display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap;">
+        <span style="background:var(--coral); color:white; padding:8px 16px; border-radius:8px; font-size:13px; font-weight:600;">Character</span>
+        <span style="color:rgba(255,255,255,0.3); font-size:18px;">&#8594;</span>
+        <span style="background:rgba(232,115,74,0.15); color:var(--coral); padding:8px 16px; border-radius:8px; font-size:13px; font-weight:600; border:1px solid rgba(232,115,74,0.3);">Problem</span>
+        <span style="color:rgba(255,255,255,0.3); font-size:18px;">&#8594;</span>
+        <span style="background:var(--teal); color:white; padding:8px 16px; border-radius:8px; font-size:13px; font-weight:600;">Guide</span>
+        <span style="color:rgba(255,255,255,0.3); font-size:18px;">&#8594;</span>
+        <span style="background:rgba(34,186,180,0.15); color:var(--teal); padding:8px 16px; border-radius:8px; font-size:13px; font-weight:600; border:1px solid rgba(34,186,180,0.3);">Plan</span>
+        <span style="color:rgba(255,255,255,0.3); font-size:18px;">&#8594;</span>
+        <span style="background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.7); padding:8px 16px; border-radius:8px; font-size:13px; font-weight:600; border:1px solid rgba(255,255,255,0.15);">CTA</span>
+        <span style="color:rgba(255,255,255,0.3); font-size:18px;">&#8594;</span>
+        <span style="background:rgba(192,57,43,0.15); color:#e74c3c; padding:8px 16px; border-radius:8px; font-size:13px; font-weight:600; border:1px solid rgba(192,57,43,0.3);">Failure</span>
+        <span style="color:rgba(255,255,255,0.15); font-size:14px;">/</span>
+        <span style="background:rgba(34,186,180,0.15); color:var(--teal); padding:8px 16px; border-radius:8px; font-size:13px; font-weight:600; border:1px solid rgba(34,186,180,0.3);">Success</span>
+      </div>
+    </div>
+
+    <!-- The Villain -->
+    <div class="reveal" style="margin-bottom:32px;">
+      <h3 style="margin-bottom:16px;">The Villain</h3>
+      <div style="background:var(--white); border:1px solid var(--border); border-left:4px solid var(--coral); border-radius:0 12px 12px 0; padding:28px 32px;">
+        <p style="font-size:17px; font-weight:600; color:var(--ink); margin-bottom:12px;">Health insurance companies</p>
+        <p style="font-family:var(--font-heading); font-style:italic; font-size:20px; line-height:1.5; color:var(--ink-light);">&ldquo;Health insurance companies have hijacked healthcare and make it very difficult for doctors and nurses to do what they do best.&rdquo;</p>
+        <p style="font-size:14px; color:var(--mid-gray); margin-top:10px;">- Larry Hightower</p>
+      </div>
+    </div>
+
+    <!-- The 4 ICPs -->
+    <div class="reveal" style="margin-bottom:32px;">
+      <h3 style="margin-bottom:16px;">Four Audiences Identified</h3>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        <div class="card card-coral">
+          <span style="display:inline-block; padding:3px 10px; border-radius:50px; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; background:var(--coral); color:white; margin-bottom:8px;">Hero #1</span>
+          <h3>Employers</h3>
+          <p>CEO or HR leader, 200–2,000 employees. Want transparent costs and a better experience for everyone.</p>
+        </div>
+        <div class="card card-teal">
+          <span style="display:inline-block; padding:3px 10px; border-radius:50px; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; background:var(--teal); color:white; margin-bottom:8px;">Hero #2</span>
+          <h3>Brokers</h3>
+          <p>Independent benefits advisors. Want a product the competition can't match.</p>
+        </div>
+        <div class="card" style="border-left:4px solid var(--mid-gray);">
+          <span style="display:inline-block; padding:3px 10px; border-radius:50px; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; border:1px solid var(--mid-gray); color:var(--mid-gray); margin-bottom:8px;">Enabler</span>
+          <h3>Physicians</h3>
+          <p>Want their agency restored. Buried in pre-authorizations and insurance bureaucracy.</p>
+        </div>
+        <div class="card" style="border-left:4px solid var(--mid-gray);">
+          <span style="display:inline-block; padding:3px 10px; border-radius:50px; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; border:1px solid var(--mid-gray); color:var(--mid-gray); margin-bottom:8px;">Beneficiary</span>
+          <h3>Employees</h3>
+          <p>The end beneficiary. Want care without fear, confusion, or financial stress.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Strategic Decisions -->
+    <div class="reveal" style="margin-bottom:32px;">
+      <h3 style="margin-bottom:16px;">Key Strategic Decisions</h3>
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:12px; padding:28px 32px;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+          <div>
+            <h4 style="color:var(--teal); margin-bottom:8px;">Positioning</h4>
+            <p style="font-size:14px;">Vxtra owns the problem of <strong>health insurance costs + terrible experience</strong>, not "healthcare is broken."</p>
+          </div>
+          <div>
+            <h4 style="color:var(--teal); margin-bottom:8px;">Go-To-Market</h4>
+            <p style="font-size:14px;">Employers are the primary hero. Brokers are the gateway. Physicians come second as the model proves itself.</p>
+          </div>
+          <div>
+            <h4 style="color:var(--teal); margin-bottom:8px;">Primary CTA</h4>
+            <p style="font-size:14px;"><strong>&ldquo;Schedule a Call&rdquo;</strong> for employers and brokers. <strong>&ldquo;Join the Network&rdquo;</strong> for physicians.</p>
+          </div>
+          <div>
+            <h4 style="color:var(--teal); margin-bottom:8px;">Core Differentiator</h4>
+            <p style="font-size:14px;">The &ldquo;Our Town&rdquo; model: local employers + local physicians + Fortune 100 technology, in secondary markets.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Messaging Rules -->
+    <div class="reveal">
+      <h3 style="margin-bottom:16px;">Messaging Rules</h3>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+        <div class="card card-teal">
+          <h4 class="teal">Always Say</h4>
+          <p><strong>&ldquo;Physician&rdquo;</strong> or <strong>&ldquo;Doctor&rdquo;</strong>: never &ldquo;provider&rdquo;</p>
+          <p>&ldquo;Educate without offending&rdquo;</p>
+          <p>Dollar amounts, not percentages</p>
+          <p>&ldquo;Our money&rdquo; (not &ldquo;my money&rdquo;)</p>
+          <p>&ldquo;Avoidable cost&rdquo; (not fraud/waste)</p>
+        </div>
+        <div class="card card-red">
+          <h4 class="red">Never Say</h4>
+          <p><strong>&ldquo;Provider&rdquo;</strong>: &ldquo;They&rsquo;re not freaking providers. They&rsquo;re physicians.&rdquo;</p>
+          <p><strong>&ldquo;Healthcare is broken&rdquo;</strong>: the problem is how it&rsquo;s paid for</p>
+          <p>Insurance jargon (EOB, TPA, PBM, NADAC)</p>
+          <p>High cognitive load sentences</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: EMPLOYER -->
+  <div class="section-band" id="employer">
+    <span class="badge">ICP #1</span>
+    <h2>The Employer</h2>
+    <p class="band-sub">Self-Funded, 200–2,000 Employees</p>
+  </div>
+
+  <section class="section">
+    <!-- BRANDSCRIPT -->
+    <div class="reveal">
+      <span class="label">BrandScript</span>
+      <h2>Employer Messaging Framework</h2>
+    </div>
+
+    <div class="bs-grid">
+      <!-- LEFT COLUMN -->
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="card card-coral reveal">
+          <h4 class="coral">Character</h4>
+          <p>A CEO or HR leader in a company with 200 to 2,000 employees.</p>
+          <p style="color:var(--teal); margin-top:12px;"><strong>Want:</strong> Transparent costs and a better experience for everyone.</p>
+        </div>
+        <div class="card reveal">
+          <h4 class="coral">Problem</h4>
+          <p><strong>External:</strong> Health insurance costs too much and the experience is terrible for everyone</p>
+          <p><strong>Internal:</strong> Trapped, frustrated, and powerless</p>
+          <p><strong>Philosophical:</strong> &ldquo;It&rsquo;s just plain wrong that it&rsquo;s so expensive and the experience is so bad for everyone.&rdquo;</p>
+        </div>
+        <div class="card card-teal reveal">
+          <h4 class="teal">Guide</h4>
+          <p><strong>Empathy:</strong> &ldquo;We know how frustrating the entire insurance industry can be.&rdquo;</p>
+          <p><strong>Authority:</strong> Decades of experience on both sides of the table. 30+ years delivering healthcare and financing it. Fortune 100 technology, transparent data.</p>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="card reveal">
+          <h4 class="teal">Plan</h4>
+          <p><strong>1.</strong> Schedule a conversation</p>
+          <p><strong>2.</strong> See what you qualify for</p>
+          <p><strong>3.</strong> Be free from the chains of traditional insurance options</p>
+          <p style="margin-top:12px;"><strong>CTA:</strong> <span style="color:var(--teal); font-weight:700;">&ldquo;Schedule a Call&rdquo;</span></p>
+        </div>
+        <div class="card card-red reveal">
+          <h4 class="red">Failure</h4>
+          <p>&#8226; Costs compound year over year in all the wrong ways</p>
+          <p>&#8226; Top talent leaves (68% cite benefits)</p>
+          <p>&#8226; Employees miss more work due to inefficient health insurance</p>
+          <p>&#8226; No one is happy with the experience of using their health insurance when they really need it</p>
+        </div>
+        <div class="card card-teal reveal">
+          <h4 class="teal">Success</h4>
+          <p>&#8226; Predictable, lower costs</p>
+          <p>&#8226; Transparent data</p>
+          <p>&#8226; Hire and retain top talent</p>
+        </div>
+        <div class="highlight reveal">
+          <p><strong>Transformation:</strong> From trapped &#8594; Free. From dreading renewal season &#8594; Confident in predictable costs. From powerless &#8594; Leading the change.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ONE-LINER -->
+    <div class="reveal">
+      <span class="label" style="margin-top:56px; display:block;">One-Liner</span>
+      <div class="quote-block">
+        <button class="copy-btn" onclick="copyText(this)">
+          <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
+          <span class="btn-label-copy">Copy</span>
+          <span class="btn-label-copied">Copied!</span>
+        </button>
+        <p>Health insurance costs are increasing at an unsustainable rate, leaving employers feeling trapped. Vxtra Health provides a way out with a tech-forward platform that connects with the best local physicians to achieve predictable costs and better outcomes.</p>
+      </div>
+    </div>
+
+    <!-- PEACE FRAMEWORK -->
+    <div class="reveal">
+      <span class="label">PEACE Framework</span>
+      <div class="peace-container">
+        <button class="copy-btn" onclick="copyText(this)">
+          <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
+          <span class="btn-label-copy">Copy</span>
+          <span class="btn-label-copied">Copied!</span>
+        </button>
+
+        <div class="peace-step">
+          <div class="peace-letter">P</div>
+          <div>
+            <h3>Problem</h3>
+            <p>&ldquo;Health insurance costs are crushing your business.&rdquo;</p>
+          </div>
+        </div>
+        <div class="peace-step">
+          <div class="peace-letter">E</div>
+          <div>
+            <h3>Empathy</h3>
+            <p>&ldquo;You shouldn&rsquo;t have to choose between taking care of your people and protecting your bottom line.&rdquo;</p>
+          </div>
+        </div>
+        <div class="peace-step">
+          <div class="peace-letter">A</div>
+          <div>
+            <h3>Answer</h3>
+            <p>&ldquo;Vxtra Health gives your company access to the same healthcare technology and drug pricing that only Fortune 100 companies have had, with transparent data, local physicians, and costs you can actually track and control.&rdquo;</p>
+          </div>
+        </div>
+        <div class="peace-step">
+          <div class="peace-letter">C</div>
+          <div>
+            <h3>Change</h3>
+            <p>&ldquo;Be the reason your company finally has health insurance it can be proud of.&rdquo;</p>
+          </div>
+        </div>
+        <div class="peace-step">
+          <div class="peace-letter">E</div>
+          <div>
+            <h3>End Result</h3>
+            <p>&ldquo;Your employees get better care from physicians they trust, your costs become predictable and your data becomes transparent.&rdquo;</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXPLANATORY PARAGRAPH -->
+    <div class="reveal">
+      <span class="label">Explanatory Paragraph</span>
+      <div class="explainer">
+        <p>Health insurance costs keep going up, the experience keeps getting worse, and you&rsquo;re left feeling like there&rsquo;s nothing you can do about it. You&rsquo;re not alone, and it doesn&rsquo;t have to be this way.</p>
+        <p>Vxtra Health is a new kind of health plan, built from the ground up around the employer, the employee, and the physician. Our model connects your company with the best local physicians and transparent pricing, so you always know what you&rsquo;re paying and who&rsquo;s taking care of your people.</p>
+        <p>The process is simple:</p>
+        <p class="plan-steps"><strong>1.</strong> Schedule a conversation<br><strong>2.</strong> See what you qualify for<br><strong>3.</strong> Experience health insurance that actually works</p>
+        <p>Schedule a call today, and find out if Vxtra is the right fit for your company.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 4: BROKER -->
+  <div class="section-band" id="broker">
+    <span class="badge">ICP #2</span>
+    <h2>The Broker</h2>
+    <p class="band-sub">Benefits Advisor</p>
+  </div>
+
+  <section class="section">
+    <!-- BRANDSCRIPT -->
+    <div class="reveal">
+      <span class="label">BrandScript</span>
+      <h2>Broker Messaging Framework</h2>
+    </div>
+
+    <div class="bs-grid">
+      <!-- LEFT COLUMN -->
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="card card-coral reveal">
+          <h4 class="coral">Character</h4>
+          <p>A broker selling the same networks and products as everyone else.</p>
+          <p style="color:var(--teal); margin-top:12px;"><strong>Want:</strong> A product the competition can&rsquo;t match.</p>
+        </div>
+        <div class="card reveal">
+          <h4 class="coral">Problem</h4>
+          <p><strong>External:</strong> It's hard to stand out when every broker is selling the same plans</p>
+          <p><strong>Internal:</strong> Replaceable</p>
+          <p><strong>Philosophical:</strong> Innovative brokers should be able to compete and win</p>
+        </div>
+        <div class="card card-teal reveal">
+          <h4 class="teal">Guide</h4>
+          <p><strong>Empathy:</strong> &ldquo;It&rsquo;s exhausting trying to stand out with the same products as everyone else.&rdquo;</p>
+          <p><strong>Authority:</strong> 30+ years of industry experience. Access to Fortune 100 technology, more transparent data, local and personal care orchestration for employees.</p>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="card reveal">
+          <h4 class="teal">Plan</h4>
+          <p><strong>1.</strong> Have a conversation</p>
+          <p><strong>2.</strong> Get exclusive plan access</p>
+          <p><strong>3.</strong> Retain and win new clients</p>
+          <p style="margin-top:12px;"><strong>CTA:</strong> <span style="color:var(--teal); font-weight:700;">&ldquo;Schedule a Call&rdquo;</span></p>
+        </div>
+        <div class="card card-red reveal">
+          <h4 class="red">Failure</h4>
+          <p>&#8226; Lose clients</p>
+          <p>&#8226; Limited differentiation</p>
+          <p>&#8226; Revenue stagnates</p>
+          <p>&#8226; Another agency could share Vxtra first</p>
+        </div>
+        <div class="card card-teal reveal">
+          <h4 class="teal">Success</h4>
+          <p>&#8226; A product no competitor can match</p>
+          <p>&#8226; Existing business secured</p>
+          <p>&#8226; New business pipeline full</p>
+          <p>&#8226; An improved experience for all</p>
+        </div>
+        <div class="highlight reveal">
+          <p><strong>Transformation:</strong> From competing with the same products &#8594; Offering something no one else has. From vulnerable &#8594; Successfully scalable.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ONE-LINER -->
+    <div class="reveal">
+      <span class="label" style="margin-top:56px; display:block;">One-Liner</span>
+      <div class="quote-block">
+        <button class="copy-btn" onclick="copyText(this)">
+          <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
+          <span class="btn-label-copy">Copy</span>
+          <span class="btn-label-copied">Copied!</span>
+        </button>
+        <p>Brokers are all selling the same thing. Vxtra Health offers a plan built around the employer, the employee, and the physician, with transparent costs and a better experience for everyone.</p>
+      </div>
+    </div>
+
+    <!-- PEACE FRAMEWORK -->
+    <div class="reveal">
+      <span class="label">PEACE Framework</span>
+      <div class="peace-container">
+        <button class="copy-btn" onclick="copyText(this)">
+          <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
+          <span class="btn-label-copy">Copy</span>
+          <span class="btn-label-copied">Copied!</span>
+        </button>
+
+        <div class="peace-step">
+          <div class="peace-letter">P</div>
+          <div>
+            <h3>Problem</h3>
+            <p>&ldquo;It&rsquo;s hard to differentiate yourself in the marketplace. Everyone is selling the same thing.&rdquo;</p>
+          </div>
+        </div>
+        <div class="peace-step">
+          <div class="peace-letter">E</div>
+          <div>
+            <h3>Empathy</h3>
+            <p>&ldquo;It&rsquo;s exhausting trying to stand out when you&rsquo;re selling the same solutions as every other broker in town.&rdquo;</p>
+          </div>
+        </div>
+        <div class="peace-step">
+          <div class="peace-letter">A</div>
+          <div>
+            <h3>Answer</h3>
+            <p>&ldquo;Vxtra Health gives you a transparent health plan backed by Fortune 100 technology that your competitors don&rsquo;t have access to.&rdquo;</p>
+          </div>
+        </div>
+        <div class="peace-step">
+          <div class="peace-letter">C</div>
+          <div>
+            <h3>Change</h3>
+            <p>&ldquo;Be the broker who brings something nobody else can offer.&rdquo;</p>
+          </div>
+        </div>
+        <div class="peace-step">
+          <div class="peace-letter">E</div>
+          <div>
+            <h3>End Result</h3>
+            <p>&ldquo;Your clients save real money, your book of business is protected, and employers come to you because you&rsquo;re the one with the plan that actually works.&rdquo;</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXPLANATORY PARAGRAPH -->
+    <div class="reveal">
+      <span class="label">Explanatory Paragraph</span>
+      <div class="explainer">
+        <p>You already know the problem. Every broker in town is quoting the same carriers, offering the same networks, and hoping the renewal doesn&rsquo;t go sideways. It&rsquo;s exhausting, and it makes you replaceable.</p>
+        <p>We built Vxtra Health because we believe brokers deserve a better option to bring to the table. Our plan is designed around the employer, the employee, and the physician, backed by the same technology that Fortune 100 companies use, with transparent costs and care that&rsquo;s actually coordinated locally.</p>
+        <p>The process is simple:</p>
+        <p class="plan-steps"><strong>1.</strong> Have a conversation<br><strong>2.</strong> Get exclusive plan access<br><strong>3.</strong> Retain and win new clients</p>
+        <p>Schedule a call today. Before another broker in your market does.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: PHYSICIAN -->
+  <div class="section-band" id="physician">
+    <span class="badge">ICP #3</span>
+    <h2>The Physician</h2>
+    <p class="band-sub">Independent Physicians &amp; Practice Owners</p>
+  </div>
+
+  <section class="section">
+    <!-- BRANDSCRIPT -->
+    <div class="reveal">
+      <span class="label">BrandScript</span>
+      <h2>Physician Messaging Framework</h2>
+    </div>
+
+    <div class="bs-grid">
+      <!-- LEFT COLUMN -->
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="card card-coral reveal">
+          <h4 class="coral">Character</h4>
+          <p>A physician buried in pre-authorizations and insurance bureaucracy.</p>
+          <p style="color:var(--teal); margin-top:12px;"><strong>Want:</strong> Practice medicine instead of insurance.</p>
+        </div>
+        <div class="card reveal">
+          <h4 class="coral">Problem</h4>
+          <p><strong>External:</strong> Insurance companies control clinical decisions</p>
+          <p><strong>Internal:</strong> Frustrated and demoralized</p>
+          <p><strong>Philosophical:</strong> Physicians should practice medicine, not fight insurance companies</p>
+        </div>
+        <div class="card card-teal reveal">
+          <h4 class="teal">Guide</h4>
+          <p><strong>Empathy:</strong> &ldquo;You didn&rsquo;t spend a decade in training to fight pre-auth forms.&rdquo;</p>
+          <p><strong>Authority:</strong> 30+ years on both sides of healthcare. Building physician practices and financing health plans. Backed by Fortune 100 technology that handles the data so you can focus on patients.</p>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="card reveal">
+          <h4 class="teal">Plan</h4>
+          <p><strong>1.</strong> Join the Vxtra network</p>
+          <p><strong>2.</strong> Work directly with local employers</p>
+          <p><strong>3.</strong> Practice medicine your way</p>
+          <p style="margin-top:12px;"><strong>CTA:</strong> <span style="color:var(--teal); font-weight:700;">&ldquo;Join the Network&rdquo;</span></p>
+        </div>
+        <div class="card card-red reveal">
+          <h4 class="red">Failure</h4>
+          <p>&#8226; More pre-authorizations</p>
+          <p>&#8226; Less autonomy</p>
+          <p>&#8226; 80% of hospital-employed physicians want out</p>
+        </div>
+        <div class="card card-teal reveal">
+          <h4 class="teal">Success</h4>
+          <p>&#8226; Agency restored</p>
+          <p>&#8226; Community-centered care</p>
+          <p>&#8226; Independent practice in a community that knows your name</p>
+        </div>
+        <div class="highlight reveal">
+          <p><strong>Transformation:</strong> From fighting insurance bureaucracy &#8594; Making clinical decisions. From losing independence &#8594; Running your own practice.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ONE-LINER -->
+    <div class="reveal">
+      <span class="label" style="margin-top:56px; display:block;">One-Liner</span>
+      <div class="quote-block">
+        <button class="copy-btn" onclick="copyText(this)">
+          <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
+          <span class="btn-label-copy">Copy</span>
+          <span class="btn-label-copied">Copied!</span>
+        </button>
+        <p>Insurance companies control how you practice medicine. Vxtra Health removes them from the equation, connecting you directly with local employers while technology handles the data. You treat patients your way, in a community that knows your name.</p>
+      </div>
+    </div>
+
+    <!-- PEACE FRAMEWORK -->
+    <div class="reveal">
+      <span class="label">PEACE Framework</span>
+      <div class="peace-container">
+        <button class="copy-btn" onclick="copyText(this)">
+          <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
+          <span class="btn-label-copy">Copy</span>
+          <span class="btn-label-copied">Copied!</span>
+        </button>
+
+        <div class="peace-step">
+          <div class="peace-letter">P</div>
+          <div>
+            <h3>Problem</h3>
+            <p>&ldquo;Insurance companies are practicing medicine for you.&rdquo;</p>
+          </div>
+        </div>
+        <div class="peace-step">
+          <div class="peace-letter">E</div>
+          <div>
+            <h3>Empathy</h3>
+            <p>&ldquo;You didn&rsquo;t spend a decade in training to fight pre-authorization forms and get told how to treat your own patients by someone who&rsquo;s never seen them.&rdquo;</p>
+          </div>
+        </div>
+        <div class="peace-step">
+          <div class="peace-letter">A</div>
+          <div>
+            <h3>Answer</h3>
+            <p>&ldquo;Vxtra Health puts physicians, not insurance companies, back in charge of patient care. You work directly with local employers and their employees, supported by technology that handles the claims and data so you can focus on medicine.&rdquo;</p>
+          </div>
+        </div>
+        <div class="peace-step">
+          <div class="peace-letter">C</div>
+          <div>
+            <h3>Change</h3>
+            <p>&ldquo;Practice medicine the way you always intended to.&rdquo;</p>
+          </div>
+        </div>
+        <div class="peace-step">
+          <div class="peace-letter">E</div>
+          <div>
+            <h3>End Result</h3>
+            <p>&ldquo;Your patients trust you, not a call center. You make the clinical decisions. And you run a practice in a community that knows your name.&rdquo;</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No explanatory paragraph for Physician -->
+  </section>
+
+  <!-- SECTION 6: EMPLOYEE -->
+  <div class="section-band" id="employee">
+    <span class="badge">ICP #4</span>
+    <h2>The Employee</h2>
+    <p class="band-sub">End Beneficiary</p>
+  </div>
+
+  <section class="section">
+    <!-- BRANDSCRIPT -->
+    <div class="reveal">
+      <span class="label">BrandScript</span>
+      <h2>Employee Messaging Framework</h2>
+    </div>
+
+    <div class="bs-grid">
+      <!-- LEFT COLUMN -->
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="card card-coral reveal">
+          <h4 class="coral">Character</h4>
+          <p>An employee who dreads going to the doctor because of cost.</p>
+          <p style="color:var(--teal); margin-top:12px;"><strong>Want:</strong> High quality healthcare without the worry of a denied claim.</p>
+        </div>
+        <div class="card reveal">
+          <h4 class="coral">Problem</h4>
+          <p><strong>External:</strong> Healthcare is confusing and way too expensive</p>
+          <p><strong>Internal:</strong> Anxious and frustrated</p>
+          <p><strong>Philosophical:</strong> Everyone deserves affordable, accessible care</p>
+        </div>
+        <div class="card card-teal reveal">
+          <h4 class="teal">Guide</h4>
+          <p><strong>Empathy:</strong> &ldquo;Nobody should dread going to the doctor because they&rsquo;re afraid of what it&rsquo;ll cost.&rdquo;</p>
+          <p><strong>Authority:</strong> A new way to do health insurance with the best local physicians, in your town, backed by Fortune 100 technology.</p>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="card reveal">
+          <h4 class="teal">Plan</h4>
+          <p><strong>1.</strong> Ask your employer about Vxtra Health</p>
+          <p><strong>2.</strong> Use your benefits without barriers</p>
+          <p><strong>3.</strong> Get the care you need</p>
+          <p style="margin-top:12px;"><strong>CTA:</strong> <span style="color:var(--teal); font-weight:700;">&ldquo;See the Benefits&rdquo;</span></p>
+        </div>
+        <div class="card card-red reveal">
+          <h4 class="red">Failure</h4>
+          <p>&#8226; Avoids care out of fear</p>
+          <p>&#8226; Small problems become emergencies</p>
+          <p>&#8226; Dreads every bill</p>
+        </div>
+        <div class="card card-teal reveal">
+          <h4 class="teal">Success</h4>
+          <p>&#8226; $0 copays, $0 deductibles</p>
+          <p>&#8226; A real relationship with their doctor</p>
+          <p>&#8226; Care without dread</p>
+        </div>
+        <div class="highlight reveal">
+          <p><strong>Transformation:</strong> From avoiding care due to cost &#8594; Getting the care they need. From dreading the bill &#8594; Never worrying about it.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ONE-LINER -->
+    <div class="reveal">
+      <span class="label" style="margin-top:56px; display:block;">One-Liner</span>
+      <div class="quote-block">
+        <button class="copy-btn" onclick="copyText(this)">
+          <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
+          <span class="btn-label-copy">Copy</span>
+          <span class="btn-label-copied">Copied!</span>
+        </button>
+        <p>Healthcare is confusing and too expensive, and most people dread going to the doctor because of what it might cost. Your employer partnered with Vxtra Health to give you local doctors who know you, with lower costs and no insurance runaround. You call your doctor, you get seen, you get the care you need, and you don&rsquo;t dread the bill.</p>
+      </div>
+    </div>
+
+    <!-- PEACE FRAMEWORK -->
+    <div class="reveal">
+      <span class="label">PEACE Framework</span>
+      <div class="peace-container">
+        <button class="copy-btn" onclick="copyText(this)">
+          <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
+          <span class="btn-label-copy">Copy</span>
+          <span class="btn-label-copied">Copied!</span>
+        </button>
+
+        <div class="peace-step">
+          <div class="peace-letter">P</div>
+          <div>
+            <h3>Problem</h3>
+            <p>&ldquo;Healthcare is confusing and way too expensive.&rdquo;</p>
+          </div>
+        </div>
+        <div class="peace-step">
+          <div class="peace-letter">E</div>
+          <div>
+            <h3>Empathy</h3>
+            <p>&ldquo;Nobody should dread going to the doctor because they&rsquo;re afraid of what it&rsquo;ll cost.&rdquo;</p>
+          </div>
+        </div>
+        <div class="peace-step">
+          <div class="peace-letter">A</div>
+          <div>
+            <h3>Answer</h3>
+            <p>&ldquo;Your employer has partnered with Vxtra Health to connect you with local physicians who actually know you, with lower out-of-pocket costs and none of the insurance runaround.&rdquo;</p>
+          </div>
+        </div>
+        <div class="peace-step">
+          <div class="peace-letter">C</div>
+          <div>
+            <h3>Change</h3>
+            <p>&ldquo;Be someone who actually uses their healthcare, without the stress.&rdquo;</p>
+          </div>
+        </div>
+        <div class="peace-step">
+          <div class="peace-letter">E</div>
+          <div>
+            <h3>End Result</h3>
+            <p>&ldquo;You call your doctor, you get an appointment, you get the care you need, and you don&rsquo;t dread opening the bill.&rdquo;</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No explanatory paragraph for Employee -->
+  </section>
+
+  <!-- SECTION 7: WEBSITE CONCEPT -->
+  <div class="section-band" id="website">
+    <h2>Website Concept</h2>
+    <p class="band-sub">StoryBrand-Based Homepage Prototype</p>
+  </div>
+
+  <section class="section">
+    <div class="reveal">
+      <p style="max-width:720px; color:var(--mid-gray); margin-bottom:32px;">Based on the messaging frameworks developed during the workshop, we&rsquo;ve built an interactive homepage prototype that puts the StoryBrand structure into action, leading with the employer problem, positioning Vxtra as the guide, and driving toward a clear call to action.</p>
+    </div>
+
+    <div class="reveal" style="background:var(--white); border:1px solid var(--border); border-radius:12px; padding:40px; text-align:center;">
+      <div style="margin-bottom:24px;">
+        <span style="display:inline-block; width:64px; height:64px; border-radius:16px; background:var(--teal-light); color:var(--teal); font-size:28px; line-height:64px; margin-bottom:16px;">&#9997;</span>
+      </div>
+      <h3 style="font-family:var(--font-heading); font-size:24px; font-weight:400; margin-bottom:12px;">Interactive Homepage Prototype</h3>
+      <p style="color:var(--mid-gray); max-width:480px; margin:0 auto 28px;">Review the full homepage layout with hero section, problem staircase, &ldquo;Our Town&rdquo; model, value stack, authority section, and call-to-action flow.</p>
+      <a href="../website/index-v3.html" target="_blank" rel="noopener" style="display:inline-block; padding:14px 36px; background:var(--teal); color:var(--white); text-decoration:none; border-radius:8px; font-weight:700; font-size:15px; transition:background 0.2s;">View Website Prototype &rarr;</a>
+    </div>
+
+    <div class="reveal" style="margin-top:24px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;">
+      <div class="card" style="text-align:center;">
+        <h4 class="teal" style="margin-bottom:10px;">Hero Section</h4>
+        <p>Headline, sub-copy, and dual CTAs built from the employer PEACE framework</p>
+      </div>
+      <div class="card" style="text-align:center;">
+        <h4 class="teal" style="margin-bottom:10px;">Our Town Model</h4>
+        <p>Hub-and-spoke visual showing how employers, physicians, and Vxtra connect</p>
+      </div>
+      <div class="card" style="text-align:center;">
+        <h4 class="teal" style="margin-bottom:10px;">Authority &amp; Proof</h4>
+        <p>Key stats, Fortune 100 technology positioning, and social proof section</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       AUDIENCE PAGES PREVIEW
+       ═══════════════════════════════════ -->
+  <div class="section-band" id="audiences">
+    <h2>Audience Pages Preview</h2>
+    <p class="band-sub">What each landing page will say at a glance</p>
+  </div>
+
+  <section class="section">
+    <div class="reveal">
+      <p style="max-width:720px; color:var(--mid-gray); margin-bottom:8px;">Each audience gets a dedicated landing page built from their StoryBrand BrandScript. Full copy, wireframes, and page specs are in our working documents. Here are the headlines and primary calls to action.</p>
+    </div>
+
+    <div class="audience-grid">
+      <div class="audience-card employer reveal">
+        <span class="aud-badge">Employers</span>
+        <h3>Health insurance costs are crushing your business. <em>We built a way out.</em></h3>
+        <p class="aud-sub">Vxtra Health connects self-insured employers with Fortune 100 technology and the best local physicians for predictable costs and better outcomes.</p>
+        <span class="aud-cta">Schedule a Call</span>
+        <br><a href="../website/copy-viewer.html#employer" class="aud-copy-link" target="_blank">View Full Page Copy &rarr;</a>
+      </div>
+
+      <div class="audience-card broker reveal">
+        <span class="aud-badge">Brokers</span>
+        <h3>Every broker in town is selling the same thing. You don&rsquo;t have to.</h3>
+        <p class="aud-sub">A plan built around the employer, the employee, and the physician, with transparent costs and a better experience for everyone.</p>
+        <span class="aud-cta">Schedule a Call</span>
+        <br><a href="../website/copy-viewer.html#broker" class="aud-copy-link" target="_blank">View Full Page Copy &rarr;</a>
+      </div>
+
+      <div class="audience-card physician reveal">
+        <span class="aud-badge">Physicians</span>
+        <h3>Insurance companies control how you practice medicine. Vxtra Health removes them from the equation.</h3>
+        <p class="aud-sub">Work directly with local employers while technology handles the data. You treat patients your way, in a community that knows your name.</p>
+        <span class="aud-cta">Join the Network</span>
+        <br><a href="../website/copy-viewer.html#physician" class="aud-copy-link" target="_blank">View Full Page Copy &rarr;</a>
+      </div>
+
+      <div class="audience-card employee reveal">
+        <span class="aud-badge">Employees</span>
+        <h3>Your employer just gave you something incredible.</h3>
+        <p class="aud-sub">Local doctors who know you, $0 copays, $0 deductibles, and you never have to worry about the bill.</p>
+        <span class="aud-cta">See the Benefits</span>
+        <br><a href="../website/copy-viewer.html#employee" class="aud-copy-link" target="_blank">View Full Page Copy &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ASSET INVENTORY -->
+  <div class="section-band" id="assets">
+    <h2>Asset Inventory</h2>
+    <p class="band-sub">Everything we&rsquo;ll create for the Augusta pilot launch</p>
+  </div>
+
+  <section class="section">
+    <div class="reveal">
+      <p style="max-width:720px; color:var(--mid-gray); margin-bottom:16px;">Every marketing asset needed to launch the Augusta pilot by July 2026, organized by category with priority and target date. Detailed briefs for each item live in our working documents.</p>
+      <div style="display:flex; gap:16px; margin-bottom:32px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:6px;"><span class="badge-done">Completed</span><span style="font-size:13px; color:var(--mid-gray);">13 assets</span></div>
+        <div style="display:flex; align-items:center; gap:6px;"><span class="badge-must">Must Have</span><span style="font-size:13px; color:var(--mid-gray);">30 assets</span></div>
+        <div style="display:flex; align-items:center; gap:6px;"><span class="badge-nice">Nice to Have</span><span style="font-size:13px; color:var(--mid-gray);">10 assets</span></div>
+        <div style="display:flex; align-items:center; gap:6px;"><span class="badge-post">Post-Launch</span><span style="font-size:13px; color:var(--mid-gray);">4 assets</span></div>
+      </div>
+    </div>
+
+    <!-- COMPLETED ASSETS (Collapsible) -->
+    <div class="reveal">
+      <div class="collapsible-toggle open" onclick="toggleCollapsible(this)">
+        <h3>Completed Assets <span style="font-weight:400; color:var(--teal); font-size:14px;">(13 items)</span></h3>
+        <span class="toggle-icon">&#9660;</span>
+      </div>
+      <div class="collapsible-content open">
+        <div style="background:var(--white); border:1px solid #b7dfb9; border-radius:12px; overflow:hidden; margin-bottom:32px;">
+          <table class="data-table">
+            <thead>
+              <tr style="background:#d4edda;">
+                <th style="width:50%; color:#155724;">Completed Asset</th>
+                <th style="width:25%; color:#155724;">Category</th>
+                <th style="width:25%; color:#155724;">Delivered</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="group-header" style="background:#eaf5eb;"><td colspan="3">Brand Messaging</td></tr>
+              <tr><td>Employer BrandScript (7-part StoryBrand)</td><td><span class="badge-done">Completed</span></td><td>Feb 11, 2026</td></tr>
+              <tr><td>Broker BrandScript (7-part StoryBrand)</td><td><span class="badge-done">Completed</span></td><td>Feb 11, 2026</td></tr>
+              <tr><td>Physician BrandScript (7-part StoryBrand)</td><td><span class="badge-done">Completed</span></td><td>Feb 14, 2026</td></tr>
+              <tr><td>Employee BrandScript (7-part StoryBrand)</td><td><span class="badge-done">Completed</span></td><td>Feb 14, 2026</td></tr>
+              <tr><td>One-Liners (all 4 audiences)</td><td><span class="badge-done">Completed</span></td><td>Feb 14, 2026</td></tr>
+              <tr><td>PEACE Framework Sound Bites (all 4 audiences)</td><td><span class="badge-done">Completed</span></td><td>Feb 14, 2026</td></tr>
+
+              <tr class="group-header" style="background:#eaf5eb;"><td colspan="3">Website Copy &amp; Design</td></tr>
+              <tr><td>Homepage Copy (full StoryBrand structure)</td><td><span class="badge-done">Completed</span></td><td>Feb 14, 2026</td></tr>
+              <tr><td>Homepage Prototype (interactive mockup)</td><td><span class="badge-done">Completed</span></td><td>Feb 14, 2026</td></tr>
+              <tr><td>Broker Landing Page Copy</td><td><span class="badge-done">Completed</span></td><td>Feb 14, 2026</td></tr>
+              <tr><td>Physician Landing Page Copy</td><td><span class="badge-done">Completed</span></td><td>Feb 14, 2026</td></tr>
+              <tr><td>Employee Landing Page Copy</td><td><span class="badge-done">Completed</span></td><td>Feb 14, 2026</td></tr>
+
+              <tr class="group-header" style="background:#eaf5eb;"><td colspan="3">Strategy &amp; Planning</td></tr>
+              <tr><td>StoryBrand Blueprint (this document)</td><td><span class="badge-done">Completed</span></td><td>Feb 14, 2026</td></tr>
+              <tr><td>Day 2 Workshop Presentation</td><td><span class="badge-done">Completed</span></td><td>Feb 11, 2026</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- REMAINING ASSETS (Collapsible) -->
+    <div class="reveal">
+      <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+        <h3>Remaining Assets <span style="font-weight:400; color:var(--coral); font-size:14px;">(44 items)</span></h3>
+        <span class="toggle-icon">&#9660;</span>
+      </div>
+      <div class="collapsible-content">
+        <div style="background:var(--white); border:1px solid var(--border); border-radius:12px; overflow:hidden;">
+          <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:50%;">Asset</th>
+            <th style="width:25%;">Priority</th>
+            <th style="width:25%;">Target</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- WEBSITE PAGES -->
+          <tr class="group-header"><td colspan="3">Website Pages</td></tr>
+          <tr><td>Homepage (StoryBrand structure)</td><td><span class="badge-must">Must Have</span></td><td>April 2026</td></tr>
+          <tr><td>Employer Landing Page</td><td><span class="badge-must">Must Have</span></td><td>May 2026</td></tr>
+          <tr><td>Broker Landing Page</td><td><span class="badge-must">Must Have</span></td><td>May 2026</td></tr>
+          <tr><td>Physician Landing Page</td><td><span class="badge-must">Must Have</span></td><td>May 2026</td></tr>
+          <tr><td>Employee Landing Page</td><td><span class="badge-must">Must Have</span></td><td>June 2026</td></tr>
+          <tr><td>About Page</td><td><span class="badge-must">Must Have</span></td><td>April 2026</td></tr>
+          <tr><td>Contact Page</td><td><span class="badge-must">Must Have</span></td><td>April 2026</td></tr>
+          <tr><td>Blog / Resources Hub</td><td><span class="badge-nice">Nice to Have</span></td><td>May 2026</td></tr>
+
+          <!-- INTERACTIVE TOOLS -->
+          <tr class="group-header"><td colspan="3">Interactive Tools</td></tr>
+          <tr><td>Employer Cost Calculator</td><td><span class="badge-must">Must Have</span></td><td>June 2026</td></tr>
+          <tr><td>Employer Qualification Tool</td><td><span class="badge-must">Must Have</span></td><td>June 2026</td></tr>
+
+          <!-- SALES ENABLEMENT -->
+          <tr class="group-header"><td colspan="3">Sales Enablement</td></tr>
+          <tr><td>Broker Presentation Deck (15&ndash;20 slides)</td><td><span class="badge-must">Must Have</span></td><td>April 2026</td></tr>
+          <tr><td>Civic Group Presentation Deck</td><td><span class="badge-must">Must Have</span></td><td>April 2026</td></tr>
+          <tr><td>Employer Presentation Deck</td><td><span class="badge-must">Must Have</span></td><td>May 2026</td></tr>
+          <tr><td>Qualification Checklist (internal)</td><td><span class="badge-must">Must Have</span></td><td>April 2026</td></tr>
+          <tr><td>ROI Calculator / Analysis Tool</td><td><span class="badge-must">Must Have</span></td><td>May 2026</td></tr>
+          <tr><td>Objection Handling Guide</td><td><span class="badge-must">Must Have</span></td><td>May 2026</td></tr>
+          <tr><td>Case Study Template</td><td><span class="badge-post">Post-Launch</span></td><td>Oct 2026</td></tr>
+          <tr><td>Competitive Comparison Sheet</td><td><span class="badge-nice">Nice to Have</span></td><td>May 2026</td></tr>
+
+          <!-- VIDEO CONTENT -->
+          <tr class="group-header"><td colspan="3">Video Content</td></tr>
+          <tr><td>Brand Story Video (3&ndash;5 min)</td><td><span class="badge-must">Must Have</span></td><td>April 2026</td></tr>
+          <tr><td>FAQ Video Series (12+ videos)</td><td><span class="badge-must">Must Have</span></td><td>Jul&ndash;Sep 2026</td></tr>
+          <tr><td>LinkedIn Short-Form Clips</td><td><span class="badge-must">Must Have</span></td><td>May 2026+</td></tr>
+          <tr><td>Civic Group Presentation Insert</td><td><span class="badge-nice">Nice to Have</span></td><td>May 2026</td></tr>
+          <tr><td>Employer Testimonial Video</td><td><span class="badge-post">Post-Launch</span></td><td>Oct 2026</td></tr>
+          <tr><td>Physician Testimonial Video</td><td><span class="badge-post">Post-Launch</span></td><td>Oct 2026</td></tr>
+
+          <!-- PRINT MATERIALS -->
+          <tr class="group-header"><td colspan="3">Print Materials</td></tr>
+          <tr><td>Broker Sales Sheet (1-page)</td><td><span class="badge-must">Must Have</span></td><td>April 2026</td></tr>
+          <tr><td>Employer Overview Brochure</td><td><span class="badge-must">Must Have</span></td><td>April 2026</td></tr>
+          <tr><td>Employee Welcome Packet</td><td><span class="badge-must">Must Have</span></td><td>June 2026</td></tr>
+          <tr><td>Business Cards</td><td><span class="badge-must">Must Have</span></td><td>March 2026</td></tr>
+          <tr><td>Trade Show / Event Banner</td><td><span class="badge-must">Must Have</span></td><td>April 2026</td></tr>
+          <tr><td>Physician Recruitment Packet</td><td><span class="badge-must">Must Have</span></td><td>May 2026</td></tr>
+          <tr><td>Pocket Guide (&ldquo;What is Vxtra Health?&rdquo;)</td><td><span class="badge-nice">Nice to Have</span></td><td>April 2026</td></tr>
+          <tr><td>Table Display Materials</td><td><span class="badge-nice">Nice to Have</span></td><td>May 2026</td></tr>
+
+          <!-- DIGITAL MARKETING -->
+          <tr class="group-header"><td colspan="3">Digital Marketing</td></tr>
+          <tr><td>Employer Lead Magnet (PDF Guide)</td><td><span class="badge-must">Must Have</span></td><td>May 2026</td></tr>
+          <tr><td>Broker Lead Magnet (Market Brief)</td><td><span class="badge-must">Must Have</span></td><td>May 2026</td></tr>
+          <tr><td>Employer Nurture Email Sequence (6&ndash;8)</td><td><span class="badge-must">Must Have</span></td><td>June 2026</td></tr>
+          <tr><td>Broker Nurture Email Sequence (5&ndash;6)</td><td><span class="badge-must">Must Have</span></td><td>June 2026</td></tr>
+          <tr><td>Physician Outreach Sequence (4&ndash;5)</td><td><span class="badge-must">Must Have</span></td><td>June 2026</td></tr>
+          <tr><td>Employee Welcome Email Series (3&ndash;4)</td><td><span class="badge-must">Must Have</span></td><td>July 2026</td></tr>
+          <tr><td>LinkedIn Post Templates (12&ndash;15)</td><td><span class="badge-must">Must Have</span></td><td>May 2026</td></tr>
+          <tr><td>Monthly Newsletter Template</td><td><span class="badge-nice">Nice to Have</span></td><td>July 2026</td></tr>
+          <tr><td>LinkedIn Sponsored Content Ads</td><td><span class="badge-nice">Nice to Have</span></td><td>June 2026</td></tr>
+          <tr><td>Google Remarketing Banners</td><td><span class="badge-nice">Nice to Have</span></td><td>June 2026</td></tr>
+          <tr><td>Meta Remarketing Ads</td><td><span class="badge-nice">Nice to Have</span></td><td>July 2026</td></tr>
+          <tr><td>Webinar Landing Page</td><td><span class="badge-post">Post-Launch</span></td><td>Q4 2026</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       MARKETING PLAN
+       ═══════════════════════════════════ -->
+  <div class="section-band" id="marketing-plan">
+    <h2>12-Month Marketing Plan</h2>
+    <p class="band-sub">March 2026 &ndash; February 2027</p>
+  </div>
+
+  <section class="section">
+    <div class="reveal">
+      <p style="max-width:720px; color:var(--mid-gray); margin-bottom:16px;">Every activity ladders up to one goal: <strong>get 5,000+ covered lives on the Vxtra platform by Q1 2027</strong> through broker-led employer acquisition in secondary markets. The plan is organized into four phases aligned with Vxtra&rsquo;s funding timeline and market readiness.</p>
+    </div>
+
+    <!-- Success Metrics -->
+    <div class="reveal" style="margin-bottom:40px;">
+      <div style="background:var(--ink); border-radius:12px; padding:32px; display:grid; grid-template-columns:repeat(4, 1fr); gap:24px; text-align:center;">
+        <div>
+          <p style="font-size:32px; font-weight:800; color:var(--teal); line-height:1;">5,000+</p>
+          <p style="font-size:12px; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px; margin-top:6px;">Covered Lives</p>
+        </div>
+        <div>
+          <p style="font-size:32px; font-weight:800; color:var(--teal); line-height:1;">15+</p>
+          <p style="font-size:12px; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px; margin-top:6px;">Letters of Intent</p>
+        </div>
+        <div>
+          <p style="font-size:32px; font-weight:800; color:var(--teal); line-height:1;">8</p>
+          <p style="font-size:12px; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px; margin-top:6px;">Active Brokers</p>
+        </div>
+        <div>
+          <p style="font-size:32px; font-weight:800; color:var(--coral); line-height:1;">2</p>
+          <p style="font-size:12px; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px; margin-top:6px;">Markets Live</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Milestones -->
+    <div class="reveal" style="margin-bottom:40px;">
+      <h3 style="margin-bottom:16px;">Key Milestones</h3>
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:12px; overflow:hidden;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:30%;">Date</th>
+              <th style="width:70%;">Milestone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>March 1, 2026</strong></td><td>Capital Rx funding; active preparation begins</td></tr>
+            <tr><td><strong>April 2026</strong></td><td>Website live, broker sales tools ready, speaking circuit begins</td></tr>
+            <tr><td><strong>May 2026</strong></td><td>Employer outreach starts, landing pages live, lead magnets deployed</td></tr>
+            <tr><td><strong>June 2026</strong></td><td>Letters of intent target (10 employers, Augusta)</td></tr>
+            <tr><td><strong>July 1, 2026</strong></td><td>Go-live: first employers on system</td></tr>
+            <tr><td><strong>October 1, 2026</strong></td><td>500 employees on system; case study collection begins</td></tr>
+            <tr><td><strong>January 1, 2027</strong></td><td>Renewal-cycle conversions; Gainesville market entry</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Phase Timeline -->
+    <div class="reveal" style="margin-bottom:40px;">
+      <h3 style="margin-bottom:16px;">Phase Overview</h3>
+      <div class="phase-timeline">
+        <div class="phase-card p1">
+          <p class="phase-label" style="color:var(--coral);">Phase 1</p>
+          <h4>Foundation</h4>
+          <p style="font-size:12px; color:var(--mid-gray); margin-bottom:12px;">March &ndash; April 2026</p>
+          <ul>
+            <li>Website launch (vxtrahealth.com)</li>
+            <li>HubSpot CRM setup &amp; automation</li>
+            <li>Brand story videos (4 audiences)</li>
+            <li>Sales collateral &amp; decks</li>
+            <li>Larry LinkedIn optimization</li>
+            <li>GA / Tag Manager / pixels</li>
+            <li>Lead magnet &amp; nurture sequences</li>
+          </ul>
+        </div>
+        <div class="phase-card p2">
+          <p class="phase-label" style="color:var(--teal);">Phase 2</p>
+          <h4>Market Entry</h4>
+          <p style="font-size:12px; color:var(--mid-gray); margin-bottom:12px;">May &ndash; June 2026</p>
+          <ul>
+            <li>Interactive cost calculator &amp; qualification tool</li>
+            <li>LinkedIn Sponsored Content campaigns</li>
+            <li>Google &amp; Meta remarketing live</li>
+            <li>FAQ Video Series #1&ndash;#6</li>
+            <li>Employer outreach begins</li>
+            <li>Physician recruitment materials</li>
+            <li>Target: 10 letters of intent</li>
+          </ul>
+        </div>
+        <div class="phase-card p3">
+          <p class="phase-label" style="color:var(--ink);">Phase 3</p>
+          <h4>Launch</h4>
+          <p style="font-size:12px; color:var(--mid-gray); margin-bottom:12px;">July &ndash; September 2026</p>
+          <ul>
+            <li>Go-live: first employers on system</li>
+            <li>FAQ Videos #7&ndash;#12 completed</li>
+            <li>Newsletter template &amp; first issue</li>
+            <li>A/B testing &amp; landing page optimization</li>
+            <li>First webinar production</li>
+            <li>Gainesville groundwork begins</li>
+            <li>Target: 500 employees</li>
+          </ul>
+        </div>
+        <div class="phase-card p4">
+          <p class="phase-label" style="color:var(--mid-gray);">Phase 4</p>
+          <h4>Growth</h4>
+          <p style="font-size:12px; color:var(--mid-gray); margin-bottom:12px;">October 2026 &ndash; February 2027</p>
+          <ul>
+            <li>Case studies &amp; testimonial videos</li>
+            <li>Gainesville formal launch</li>
+            <li>Investor-facing materials</li>
+            <li>January renewal push</li>
+            <li>Full marketing performance review</li>
+            <li>2027 marketing plan draft</li>
+            <li>Target: 5,000+ covered lives</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Channel Strategy -->
+    <div class="reveal" style="margin-bottom:40px;">
+      <h3 style="margin-bottom:16px;">Channel Strategy</h3>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+        <div class="card card-teal">
+          <h4 class="teal" style="margin-bottom:12px;">Owned Channels</h4>
+          <p><strong>Website</strong> &mdash; Lead generation, credibility, SEO</p>
+          <p><strong>Blog</strong> &mdash; 2&ndash;3x/month, thought leadership</p>
+          <p><strong>Email (HubSpot)</strong> &mdash; Automated nurture + monthly newsletter</p>
+          <p><strong>Larry&rsquo;s LinkedIn</strong> &mdash; 2&ndash;3x/week, primary thought leadership</p>
+          <p><strong>FAQ Video Series</strong> &mdash; 12+ videos, authority &amp; content engine</p>
+        </div>
+        <div class="card card-coral">
+          <h4 class="coral" style="margin-bottom:12px;">Paid &amp; Earned Channels</h4>
+          <p><strong>LinkedIn Sponsored</strong> &mdash; Employer/broker targeting ($1,500&ndash;3,000/mo)</p>
+          <p><strong>Google Remarketing</strong> &mdash; Retarget website visitors ($500&ndash;1,000/mo)</p>
+          <p><strong>Meta Remarketing</strong> &mdash; Extended retargeting ($500&ndash;1,000/mo)</p>
+          <p><strong>Civic group speaking</strong> &mdash; 2&ndash;3x/month, local authority</p>
+          <p><strong>Webinars</strong> &mdash; Quarterly, gated lead generation</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Multiplication -->
+    <div class="reveal">
+      <h3 style="margin-bottom:16px;">Content Engine: The Multiplication Model</h3>
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:12px; padding:32px; text-align:center;">
+        <div style="display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; margin-bottom:20px;">
+          <span style="background:var(--coral); color:white; padding:10px 20px; border-radius:8px; font-size:14px; font-weight:700;">1 FAQ Video</span>
+          <span style="color:var(--mid-gray); font-size:20px;">&#8594;</span>
+          <span style="background:var(--teal-light); color:var(--teal-dark); padding:8px 14px; border-radius:8px; font-size:13px; font-weight:600;">Blog Post</span>
+          <span style="background:var(--teal-light); color:var(--teal-dark); padding:8px 14px; border-radius:8px; font-size:13px; font-weight:600;">2&ndash;3 LinkedIn Posts</span>
+          <span style="background:var(--teal-light); color:var(--teal-dark); padding:8px 14px; border-radius:8px; font-size:13px; font-weight:600;">Newsletter Feature</span>
+          <span style="background:var(--teal-light); color:var(--teal-dark); padding:8px 14px; border-radius:8px; font-size:13px; font-weight:600;">Social Clip</span>
+          <span style="background:var(--teal-light); color:var(--teal-dark); padding:8px 14px; border-radius:8px; font-size:13px; font-weight:600;">Sales Talking Point</span>
+        </div>
+        <p style="font-family:var(--font-heading); font-size:22px; color:var(--ink);">12 FAQ videos = <span style="color:var(--teal);">60+ content pieces</span> across channels</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       NEXT STEPS (Pricing Proposal)
+       ═══════════════════════════════════ -->
+  <div class="section-band" id="next-steps">
+    <h2>Next Steps</h2>
+    <p class="band-sub">Engagement Options &amp; Pricing</p>
+  </div>
+
+  <section class="section">
+    <div class="reveal">
+      <p style="max-width:720px; color:var(--mid-gray); margin-bottom:16px;">Three engagement options to bring the blueprint and marketing plan to life. All plans build on the StoryBrand Blueprint completed February 10&ndash;11, 2026 and begin March 1, 2026.</p>
+    </div>
+
+    <!-- Pricing Cards -->
+    <div class="reveal">
+      <div class="pricing-grid">
+        <!-- MINIMUM -->
+        <div class="pricing-card">
+          <p class="plan-name" style="color:var(--mid-gray);">Minimum</p>
+          <p class="price">$8,500<span style="font-size:16px; font-weight:500; color:var(--mid-gray);">/mo</span></p>
+          <p class="price-sub">+ $1,500&ndash;2,500/mo ad spend</p>
+          <p class="plan-desc">Execution-only. Launches the business with essential deliverables.</p>
+
+          <p class="cat-label">Website &amp; Digital</p>
+          <ul>
+            <li><span class="check">&#10003;</span> Full website build (vxtrahealth.com)</li>
+            <li><span class="check">&#10003;</span> GA, Tag Manager, remarketing pixels</li>
+            <li><span class="check">&#10003;</span> HubSpot CRM setup + 1 nurture sequence</li>
+            <li><span class="check">&#10003;</span> 1 lead magnet</li>
+            <li><span class="dash">&mdash;</span> <span style="color:var(--mid-gray);">Interactive tools</span></li>
+          </ul>
+
+          <p class="cat-label">Video</p>
+          <ul>
+            <li><span class="check">&#10003;</span> 2 Brand Story Videos</li>
+            <li><span class="check">&#10003;</span> 6 FAQ Videos</li>
+            <li><span class="dash">&mdash;</span> <span style="color:var(--mid-gray);">Testimonial videos</span></li>
+          </ul>
+
+          <p class="cat-label">Sales &amp; Content</p>
+          <ul>
+            <li><span class="check">&#10003;</span> Broker sheet, brochure, 1 deck, cards</li>
+            <li><span class="check">&#10003;</span> 1 blog/mo, LinkedIn 1x/week</li>
+            <li><span class="dash">&mdash;</span> <span style="color:var(--mid-gray);">Newsletter, case studies, webinars</span></li>
+            <li><span class="dash">&mdash;</span> <span style="color:var(--mid-gray);">Paid media management</span></li>
+          </ul>
+
+          <p class="cat-label">Strategy</p>
+          <ul>
+            <li><span class="dash">&mdash;</span> <span style="color:var(--mid-gray);">No Fractional CMO</span></li>
+            <li><span class="dash">&mdash;</span> <span style="color:var(--mid-gray);">No Gainesville prep</span></li>
+            <li><span class="dash">&mdash;</span> <span style="color:var(--mid-gray);">No investor materials</span></li>
+          </ul>
+
+          <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border); text-align:center;">
+            <p style="font-size:13px; color:var(--mid-gray);">12-month: <strong style="color:var(--ink);">$102,000</strong> + media</p>
+          </div>
+        </div>
+
+        <!-- TARGET (Recommended) -->
+        <div class="pricing-card recommended">
+          <p class="plan-name" style="color:var(--teal);">Target</p>
+          <p class="price">$17,000<span style="font-size:16px; font-weight:500; color:var(--mid-gray);">/mo</span></p>
+          <p class="price-sub">+ $2,500&ndash;5,000/mo ad spend</p>
+          <p class="plan-desc">The full 12-month marketing plan. ~80 BB-owned deliverables across four phases.</p>
+
+          <p class="cat-label">Website &amp; Digital</p>
+          <ul>
+            <li><span class="check">&#10003;</span> Full website build</li>
+            <li><span class="check">&#10003;</span> GA, Tag Manager, remarketing pixels</li>
+            <li><span class="check">&#10003;</span> Full HubSpot + 4 automation sequences</li>
+            <li><span class="check">&#10003;</span> 2 lead magnets</li>
+            <li><span class="check">&#10003;</span> Cost calculator + qualification tool</li>
+          </ul>
+
+          <p class="cat-label">Video</p>
+          <ul>
+            <li><span class="check">&#10003;</span> 4 Brand Story Videos (all audiences)</li>
+            <li><span class="check">&#10003;</span> 12 FAQ Videos</li>
+            <li><span class="check">&#10003;</span> 2 testimonial videos</li>
+          </ul>
+
+          <p class="cat-label">Sales &amp; Content</p>
+          <ul>
+            <li><span class="check">&#10003;</span> All collateral (3 decks, sheets, packets, cards)</li>
+            <li><span class="check">&#10003;</span> 2&ndash;3 blogs/mo, LinkedIn 2&ndash;3x/week</li>
+            <li><span class="check">&#10003;</span> Monthly newsletter</li>
+            <li><span class="check">&#10003;</span> 2 case studies</li>
+            <li><span class="check">&#10003;</span> Paid media (LinkedIn, Google, Meta)</li>
+            <li><span class="check">&#10003;</span> Quarterly webinar</li>
+          </ul>
+
+          <p class="cat-label">Strategy</p>
+          <ul>
+            <li><span class="check">&#10003;</span> Fractional CMO (Jay) &mdash; weekly sessions</li>
+            <li><span class="check">&#10003;</span> Gainesville market prep (Phase 4)</li>
+            <li><span class="check">&#10003;</span> Investor-facing materials</li>
+            <li><span class="check">&#10003;</span> A/B testing &amp; optimization</li>
+            <li><span class="check">&#10003;</span> 2027 marketing plan draft</li>
+          </ul>
+
+          <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--teal); text-align:center;">
+            <p style="font-size:13px; color:var(--mid-gray);">12-month: <strong style="color:var(--teal);">$204,000</strong> + media</p>
+          </div>
+        </div>
+
+        <!-- ACCELERATED -->
+        <div class="pricing-card">
+          <p class="plan-name" style="color:var(--coral);">Accelerated</p>
+          <p class="price">$24,000<span style="font-size:16px; font-weight:500; color:var(--mid-gray);">/mo</span></p>
+          <p class="price-sub">+ $5,000&ndash;8,000/mo ad spend</p>
+          <p class="plan-desc">Everything in Target with compressed timelines and higher volume.</p>
+
+          <p class="cat-label">Website &amp; Digital</p>
+          <ul>
+            <li><span class="check">&#10003;</span> Full website (delivered Month 1)</li>
+            <li><span class="check">&#10003;</span> GA, Tag Manager, remarketing pixels</li>
+            <li><span class="check">&#10003;</span> Full HubSpot + advanced scoring</li>
+            <li><span class="check">&#10003;</span> 2+ lead magnets</li>
+            <li><span class="check">&#10003;</span> Calculator + qualification + broker microsite</li>
+          </ul>
+
+          <p class="cat-label">Video</p>
+          <ul>
+            <li><span class="check">&#10003;</span> 4 Brand Story Videos (Month 1)</li>
+            <li><span class="check">&#10003;</span> 12+ FAQ Videos + additional series</li>
+            <li><span class="check">&#10003;</span> Ongoing testimonials + physician spotlights</li>
+          </ul>
+
+          <p class="cat-label">Sales &amp; Content</p>
+          <ul>
+            <li><span class="check">&#10003;</span> Everything in Target + broker microsite</li>
+            <li><span class="check">&#10003;</span> Weekly blog, LinkedIn 4&ndash;5x/week</li>
+            <li><span class="check">&#10003;</span> Monthly newsletter + monthly webinars</li>
+            <li><span class="check">&#10003;</span> 2+ case studies</li>
+            <li><span class="check">&#10003;</span> Paid media (higher budgets)</li>
+            <li><span class="check">&#10003;</span> Proactive PR/media campaign</li>
+          </ul>
+
+          <p class="cat-label">Strategy</p>
+          <ul>
+            <li><span class="check">&#10003;</span> Fractional CMO (Jay) &mdash; bi-weekly + expanded</li>
+            <li><span class="check">&#10003;</span> Gainesville pulled to Phase 2</li>
+            <li><span class="check">&#10003;</span> Investor materials</li>
+            <li><span class="check">&#10003;</span> 3 LinkedIn profiles (Larry + Sandra + company)</li>
+            <li><span class="check">&#10003;</span> 2027 marketing plan draft</li>
+          </ul>
+
+          <div style="margin-top:20px; padding-top:16px; border-top:1px solid var(--border); text-align:center;">
+            <p style="font-size:13px; color:var(--mid-gray);">12-month: <strong style="color:var(--ink);">$288,000</strong> + media</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ad Spend Breakdown -->
+    <div class="reveal" style="margin-top:40px; margin-bottom:40px;">
+      <h3 style="margin-bottom:16px;">Ad Spend Estimates <span style="font-weight:400; font-size:14px; color:var(--mid-gray);">(pass-through, no markup)</span></h3>
+      <div style="background:var(--white); border:1px solid var(--border); border-radius:12px; overflow:hidden;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:40%;">Channel</th>
+              <th style="width:20%;">Minimum</th>
+              <th style="width:20%;">Target</th>
+              <th style="width:20%;">Accelerated</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>LinkedIn Sponsored Content</td><td>&mdash;</td><td>$1,500&ndash;3,000/mo</td><td>$3,000&ndash;5,000/mo</td></tr>
+            <tr><td>Google Remarketing</td><td>$1,000&ndash;1,500/mo</td><td>$500&ndash;1,000/mo</td><td>$1,000&ndash;2,000/mo</td></tr>
+            <tr><td>Meta Remarketing</td><td>$500&ndash;1,000/mo</td><td>$500&ndash;1,000/mo</td><td>$1,000&ndash;1,500/mo</td></tr>
+            <tr style="background:var(--light-gray); font-weight:700;"><td>Total Ad Spend</td><td>$1,500&ndash;2,500/mo</td><td>$2,500&ndash;5,000/mo</td><td>$5,000&ndash;8,000/mo</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Terms -->
+    <div class="reveal" style="margin-bottom:40px;">
+      <h3 style="margin-bottom:16px;">Terms</h3>
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;">
+        <div class="card">
+          <h4 class="teal" style="margin-bottom:10px;">Commitment</h4>
+          <p>12-month engagement beginning March 1, 2026. 60-day written notice after the initial 6-month period.</p>
+        </div>
+        <div class="card">
+          <h4 class="teal" style="margin-bottom:10px;">Reviews</h4>
+          <p>Quarterly performance and scope reviews. Scope adjustments at quarterly reviews with mutual agreement.</p>
+        </div>
+        <div class="card">
+          <h4 class="teal" style="margin-bottom:10px;">Payment</h4>
+          <p>Monthly retainer invoiced on the 1st, net 15. Ad spend billed at actual, net 15. All assets owned by Vxtra.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Our Recommendation -->
+    <div class="reveal" style="margin-bottom:40px;">
+      <div style="background:linear-gradient(135deg, var(--ink) 0%, var(--ink-light) 100%); border-radius:12px; padding:40px; color:var(--white);">
+        <p style="font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--teal); margin-bottom:12px;">Our Recommendation</p>
+        <p style="font-family:var(--font-heading); font-size:24px; line-height:1.4; margin-bottom:16px; color:var(--white);">The Target Plan at $17,000/mo</p>
+        <p style="color:rgba(255,255,255,0.7); margin-bottom:24px; max-width:680px;">Delivers everything in the 12-month marketing plan &mdash; approximately 80 BB-owned deliverables across four phases. Includes Fractional CMO oversight from Jon, giving Vxtra senior marketing leadership without a full-time hire. Calibrated to reach 5,000 covered lives.</p>
+        <div style="display:flex; gap:24px; flex-wrap:wrap;">
+          <div>
+            <p style="font-size:13px; color:var(--teal); font-weight:700; text-transform:uppercase; letter-spacing:1px;">Engagement</p>
+            <p style="color:rgba(255,255,255,0.9); font-size:15px;">12-month partnership</p>
+          </div>
+          <div>
+            <p style="font-size:13px; color:var(--teal); font-weight:700; text-transform:uppercase; letter-spacing:1px;">Approach</p>
+            <p style="color:rgba(255,255,255,0.9); font-size:15px;">Fractional CMO</p>
+          </div>
+          <div>
+            <p style="font-size:13px; color:var(--teal); font-weight:700; text-transform:uppercase; letter-spacing:1px;">Go-Live Target</p>
+            <p style="color:rgba(255,255,255,0.9); font-size:15px;">July 1, 2026</p>
+          </div>
+          <div>
+            <p style="font-size:13px; color:var(--teal); font-weight:700; text-transform:uppercase; letter-spacing:1px;">Monthly Investment</p>
+            <p style="color:rgba(255,255,255,0.9); font-size:15px;">$17,000 + media</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Before the Call -->
+    <div class="reveal" style="margin-bottom:40px;">
+      <h3 style="margin-bottom:16px;">Before the Call, Please Review</h3>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+        <div class="card">
+          <h4 class="coral" style="margin-bottom:10px;">Messaging Accuracy</h4>
+          <p>Do the BrandScripts accurately capture each audience&rsquo;s pain, motivation, and aspirational identity?</p>
+        </div>
+        <div class="card">
+          <h4 class="coral" style="margin-bottom:10px;">One-Liners</h4>
+          <p>Could Larry say each one-liner naturally in conversation? Do they create curiosity?</p>
+        </div>
+        <div class="card">
+          <h4 class="coral" style="margin-bottom:10px;">Website Prototype</h4>
+          <p>Does the homepage flow feel right? Any sections to add, remove, or reorder?</p>
+        </div>
+        <div class="card">
+          <h4 class="coral" style="margin-bottom:10px;">Engagement Level</h4>
+          <p>Which plan feels right: Minimum, Target, or Accelerated? We&rsquo;ll walk through the details on the call.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="reveal">
+      <div style="background:linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%); border-radius:12px; padding:48px; text-align:center; color:var(--white);">
+        <p style="font-family:var(--font-heading); font-size:28px; line-height:1.3; margin-bottom:12px;">Ready to bring the blueprint to life?</p>
+        <p style="font-size:16px; opacity:0.85; margin-bottom:28px; max-width:480px; margin-left:auto; margin-right:auto;">Schedule a 30-minute call to walk through these options and select the right plan for Vxtra&rsquo;s launch.</p>
+        <a href="mailto:jay@businessbldrs.com?subject=Vxtra%20Health%20%E2%80%94%20Schedule%20Follow-Up%20Call" style="display:inline-block; padding:16px 40px; background:var(--white); color:var(--teal-dark); text-decoration:none; border-radius:8px; font-weight:700; font-size:16px; transition:transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,0.15)'" onmouseout="this.style.transform='none';this.style.boxShadow='none'">Schedule a Call &rarr;</a>
+        <p style="font-size:14px; opacity:0.6; margin-top:16px;">Jay Owen &nbsp;|&nbsp; CEO, Business Builders &nbsp;|&nbsp; (904) 299-5017</p>
+      </div>
+    </div>
+
+    <!-- Closing -->
+    <div class="reveal" style="text-align:center; margin-top:64px; padding-bottom:40px;">
+      <img src="../assets/vxtra-logo-color.png" alt="Vxtra Health" style="height:36px; margin-bottom:16px; opacity:0.6;">
+      <p style="color:var(--mid-gray); font-size:14px;">Prepared by Business Builders &nbsp;|&nbsp; businessbldrs.com</p>
+      <p style="color:var(--mid-gray); font-size:13px; margin-top:4px;">February 2026</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0})">&#8593;</button>
+
+<script>
+/* Mobile Menu */
+function toggleMobileMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+function closeMobileMenu() {
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+
+/* IntersectionObserver - Active TOC highlighting */
+var sections = document.querySelectorAll('section[id], .section-band[id]');
+var navLinks = document.querySelectorAll('.sidebar nav a');
+
+var messagingSections = ['employer', 'broker', 'physician', 'employee'];
+var tocObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      navLinks.forEach(function(link) { link.classList.remove('active'); });
+      var active = document.querySelector('.sidebar nav a[href="#' + entry.target.id + '"]');
+      if (active) active.classList.add('active');
+      var group = document.getElementById('messagingGroup');
+      if (messagingSections.indexOf(entry.target.id) !== -1) {
+        group.classList.add('open');
+      } else {
+        group.classList.remove('open');
+      }
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+
+sections.forEach(function(s) { tocObserver.observe(s); });
+
+/* Scroll Reveal */
+var revealObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(function(el) { revealObserver.observe(el); });
+
+/* Back to Top */
+window.addEventListener('scroll', function() {
+  var btn = document.getElementById('backToTop');
+  if (window.scrollY > 600) {
+    btn.classList.add('visible');
+  } else {
+    btn.classList.remove('visible');
+  }
+});
+
+/* Collapsible Toggle */
+function toggleCollapsible(toggle) {
+  toggle.classList.toggle('open');
+  var content = toggle.nextElementSibling;
+  content.classList.toggle('open');
+}
+
+/* Copy to Clipboard */
+function copyText(btn) {
+  var container = btn.closest('.quote-block, .peace-container, .explainer');
+  var textEls = container.querySelectorAll('p');
+  var text = '';
+  textEls.forEach(function(el) { text += el.textContent.trim() + '\n\n'; });
+
+  navigator.clipboard.writeText(text.trim()).then(function() {
+    btn.classList.add('copied');
+    setTimeout(function() {
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>

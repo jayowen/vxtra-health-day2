@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vxtra Health: Page Copy Viewer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #22BAB4;
+  --teal-dark: #1a9e99;
+  --teal-light: #e6f7f6;
+  --coral: #E8734A;
+  --coral-dark: #d45e36;
+  --coral-light: #fdf0eb;
+  --ink: #1B2A3D;
+  --ink-light: #2d3f55;
+  --white: #ffffff;
+  --off-white: #f8f9fa;
+  --light-gray: #f1f3f5;
+  --mid-gray: #6c757d;
+  --border: #dee2e6;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-heading: 'DM Serif Display', Georgia, serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--off-white);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.top-bar {
+  background: var(--ink);
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.top-bar a {
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.top-bar a:hover { color: white; }
+
+.top-bar .title {
+  color: white;
+  font-family: var(--font-heading);
+  font-size: 18px;
+}
+
+.tabs {
+  display: flex;
+  gap: 0;
+  background: var(--white);
+  border-bottom: 2px solid var(--border);
+  padding: 0 32px;
+  position: sticky;
+  top: 49px;
+  z-index: 99;
+}
+
+.tab {
+  padding: 14px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--mid-gray);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.tab:hover { color: var(--ink); }
+
+.tab.active { color: var(--ink); }
+.tab[data-tab="employer"].active { border-bottom-color: var(--coral); color: var(--coral-dark); }
+.tab[data-tab="broker"].active { border-bottom-color: var(--teal); color: var(--teal-dark); }
+.tab[data-tab="physician"].active { border-bottom-color: var(--ink); color: var(--ink); }
+.tab[data-tab="employee"].active { border-bottom-color: var(--mid-gray); color: var(--ink); }
+
+.content-area {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* Rendered markdown styles */
+.tab-panel h1 {
+  font-family: var(--font-heading);
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.tab-panel h2 {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 400;
+  margin-top: 40px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.3;
+}
+
+.tab-panel h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+.tab-panel h4 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: 16px;
+  margin-bottom: 6px;
+}
+
+.tab-panel p {
+  margin-bottom: 12px;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.tab-panel em { font-style: italic; }
+
+.tab-panel strong { font-weight: 700; }
+
+.tab-panel ul, .tab-panel ol {
+  margin-bottom: 12px;
+  padding-left: 24px;
+}
+
+.tab-panel li {
+  margin-bottom: 4px;
+  font-size: 15px;
+}
+
+.tab-panel hr {
+  border: none;
+  border-top: 2px solid var(--border);
+  margin: 32px 0;
+}
+
+.tab-panel blockquote {
+  border-left: 4px solid var(--teal);
+  padding: 12px 20px;
+  margin: 16px 0;
+  background: var(--teal-light);
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  color: var(--ink-light);
+}
+
+.tab-panel blockquote p { margin-bottom: 0; }
+
+.tab-panel table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 14px;
+  background: var(--white);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.tab-panel th {
+  background: var(--light-gray);
+  padding: 10px 16px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--ink);
+}
+
+.tab-panel td {
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+}
+
+.tab-panel tr:hover td { background: var(--off-white); }
+
+.tab-panel code {
+  background: var(--light-gray);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.tab-panel pre {
+  background: var(--ink);
+  color: var(--off-white);
+  padding: 16px 20px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 16px 0;
+  font-size: 13px;
+}
+
+.tab-panel pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+/* Print styles */
+@media print {
+  .top-bar, .tabs { display: none; }
+  .content-area { padding: 20px; max-width: none; }
+  .tab-panel { display: block !important; page-break-before: always; }
+  .tab-panel:first-child { page-break-before: auto; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tabs { padding: 0 16px; overflow-x: auto; }
+  .tab { padding: 12px 16px; font-size: 13px; white-space: nowrap; }
+  .content-area { padding: 24px 16px 60px; }
+  .top-bar { padding: 12px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="../blueprint/vxtra-health-blueprint.html#audiences">&larr; Back to Blueprint</a>
+  <span class="title">Page Copy Viewer</span>
+  <span></span>
+</div>
+
+<div class="tabs">
+  <div class="tab" data-tab="employer">Employer</div>
+  <div class="tab" data-tab="broker">Broker</div>
+  <div class="tab" data-tab="physician">Physician</div>
+  <div class="tab" data-tab="employee">Employee</div>
+</div>
+
+<div class="content-area">
+  <div id="employer" class="tab-panel"></div>
+  <div id="broker" class="tab-panel"></div>
+  <div id="physician" class="tab-panel"></div>
+  <div id="employee" class="tab-panel"></div>
+</div>
+
+<script>
+// ─── Minimal Markdown Parser ───────────────────────────────────────
+// All content is hardcoded in this file (no external/user input) — safe for DOM insertion.
+const md = (function() {
+  function inline(s) {
+    s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    s = s.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    s = s.replace(/`(.+?)`/g, '<code>$1</code>');
+    s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, function(_, text, href) {
+      const a = document.createElement('a');
+      a.href = href;
+      a.textContent = text;
+      return a.outerHTML;
+    });
+    return s;
+  }
+
+  function parse(src) {
+    const lines = src.split('\n');
+    const container = document.createDocumentFragment();
+    let i = 0;
+
+    function appendHtml(html) {
+      const temp = document.createElement('div');
+      temp.innerHTML = html;
+      while (temp.firstChild) container.appendChild(temp.firstChild);
+    }
+
+    while (i < lines.length) {
+      const line = lines[i];
+
+      if (line.trim() === '') { i++; continue; }
+
+      const hm = line.match(/^(#{1,6})\s+(.*)/);
+      if (hm) {
+        const el = document.createElement('h' + hm[1].length);
+        el.innerHTML = inline(hm[2]);
+        container.appendChild(el);
+        i++; continue;
+      }
+
+      if (/^---+$/.test(line.trim())) {
+        container.appendChild(document.createElement('hr'));
+        i++; continue;
+      }
+
+      if (line.trim().startsWith('>')) {
+        let bq = '';
+        while (i < lines.length && lines[i].trim().startsWith('>')) {
+          bq += lines[i].trim().replace(/^>\s?/, '') + ' ';
+          i++;
+        }
+        const blockquote = document.createElement('blockquote');
+        const p = document.createElement('p');
+        p.innerHTML = inline(bq.trim());
+        blockquote.appendChild(p);
+        container.appendChild(blockquote);
+        continue;
+      }
+
+      if (line.includes('|') && i + 1 < lines.length && /^\|?\s*[-:]+/.test(lines[i + 1])) {
+        const headers = line.split('|').map(c => c.trim()).filter(c => c);
+        i += 2;
+        const rows = [];
+        while (i < lines.length && lines[i].includes('|') && lines[i].trim() !== '') {
+          rows.push(lines[i].split('|').map(c => c.trim()).filter(c => c));
+          i++;
+        }
+        const table = document.createElement('table');
+        const thead = document.createElement('thead');
+        const headRow = document.createElement('tr');
+        headers.forEach(function(h) { const th = document.createElement('th'); th.innerHTML = inline(h); headRow.appendChild(th); });
+        thead.appendChild(headRow);
+        table.appendChild(thead);
+        const tbody = document.createElement('tbody');
+        rows.forEach(function(r) {
+          const tr = document.createElement('tr');
+          r.forEach(function(c) { const td = document.createElement('td'); td.innerHTML = inline(c); tr.appendChild(td); });
+          tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
+        container.appendChild(table);
+        continue;
+      }
+
+      if (/^[-*]\s+/.test(line.trim())) {
+        const ul = document.createElement('ul');
+        while (i < lines.length && /^[-*]\s+/.test(lines[i].trim())) {
+          const li = document.createElement('li');
+          li.innerHTML = inline(lines[i].trim().replace(/^[-*]\s+/, ''));
+          ul.appendChild(li);
+          i++;
+        }
+        container.appendChild(ul);
+        continue;
+      }
+
+      if (/^\d+\.\s+/.test(line.trim())) {
+        const ol = document.createElement('ol');
+        while (i < lines.length && /^\d+\.\s+/.test(lines[i].trim())) {
+          const li = document.createElement('li');
+          li.innerHTML = inline(lines[i].trim().replace(/^\d+\.\s+/, ''));
+          ol.appendChild(li);
+          i++;
+        }
+        container.appendChild(ol);
+        continue;
+      }
+
+      let para = '';
+      while (i < lines.length && lines[i].trim() !== '' && !/^#{1,6}\s/.test(lines[i]) && !/^---/.test(lines[i].trim()) && !/^[-*]\s+/.test(lines[i].trim()) && !/^\d+\.\s+/.test(lines[i].trim()) && !lines[i].trim().startsWith('>') && !(lines[i].includes('|') && i + 1 < lines.length && /^\|?\s*[-:]+/.test(lines[i + 1] || ''))) {
+        para += lines[i].trim() + ' ';
+        i++;
+      }
+      if (para.trim()) {
+        const p = document.createElement('p');
+        p.innerHTML = inline(para.trim());
+        container.appendChild(p);
+      }
+    }
+
+    return container;
+  }
+
+  return { parse: parse };
+})();
+
+// ─── Embedded Copy Content ──────────────────────────────────────────
+// All content below is hardcoded from the project's .md copy files.
+// No external or user-supplied input is used.
+
+const copyData = {
+employer: `# Vxtra Health: Homepage Copy
+
+*Extracted from index-v2.html | Updated Feb 14, 2026*
+
+---
+
+## Navigation
+
+- How It Works
+- Our Town
+- Who We Help
+- Our Story
+- **CTA:** See How It Works
+- **CTA:** Schedule a Call
+
+---
+
+## 1. Hero
+
+**Label:** Now Launching in Augusta & Gainesville, GA
+
+**Headline:** Health insurance costs are crushing your business. *We built a way out.*
+
+**Subhead:** Vxtra Health is bringing physician-led health plans exclusively to self-insured employers in **Augusta** and **Gainesville, Georgia**, powered by Fortune 100 technology, local physicians, and **costs you can actually see and control.**
+
+**CTA Primary:** Schedule a Call
+**CTA Secondary:** See How It Works
+
+### Floating Cards
+- **$0** Copays & Deductibles
+- **30+** Years of Innovation
+
+### Proof Bar
+
+| Value | Label |
+|-------|-------|
+| 30+ Years | Physician-Led Experience |
+| $0 Copays & Deductibles | For Every Member |
+| Augusta & Gainesville | Exclusive Launch Markets |
+
+---
+
+## 2. The Problem
+
+**Section Label:** The Problem
+
+**Headline:** You shouldn\u2019t have to choose between taking care of your people and protecting your bottom line.
+
+### Card: For Employers
+**Headline:** Most self-insured employers pay more every year for plans designed for insurance company profits
+**Body:** Premiums rise 7-10% every year. At that rate, your healthcare spend doubles in a decade, and you\u2019re still getting the same legacy experience.
+
+### Card: For Brokers
+**Headline:** It\u2019s hard to stand out when every broker is selling the same plans
+**Body:** 60% of brokers are now owned by private equity that won\u2019t innovate. Independent brokers need a product the competition can\u2019t match.
+
+### Card: For Physicians
+**Headline:** Insurance companies have stripped physicians of their agency
+**Body:** Pre-authorizations, denials, and administrative overhead stand between doctors and their patients. Physicians should practice medicine, not fight paperwork.
+
+---
+
+## 3. Your Guide (Empathy + Authority)
+
+**Section Label:** Your Guide
+
+**Headline:** We\u2019ve been on every side of this table.
+
+### Quote
+> "We know what renewal season feels like. We know the frustration of watching insurance companies extract value while delivering less. We\u2019ve lived it."
+
+**Attribution:** Larry Hightower, Co-Founder & CEO
+*(Photo Coming Soon)*
+
+### Authority Cards
+
+**30+ Years Physician-Led**
+Founded and led by physicians who understand healthcare from the inside out, not insurance executives chasing margins.
+
+**Powered by Capital Rx**
+Our technology partner gives your company access to Judi, the first platform to process medical and prescription claims together. Transparent data visibility instead of waiting months for your own reports.
+
+**30+ Years of Operations**
+Three decades of health plan operations: processing claims, building contracts, managing sales, and running the technical side of health plans.
+
+**Physician-First Design**
+Every plan feature starts with one question: does this let physicians practice medicine the way it should be practiced?
+
+### Video Placeholder
+**Title:** Our Story: Coming Soon
+**Body:** A short video about why we started Vxtra Health and how we\u2019re changing healthcare for self-insured employers.
+
+---
+
+## 4. The Plan (3 Steps)
+
+**Section Label:** The Plan
+
+**Headline:** Three steps to benefits that actually work.
+
+### Step 1: Schedule a Conversation
+Tell us what\u2019s not working with your current plan. We\u2019ll listen. No pitch, no pressure, just a real conversation about your challenges.
+
+### Step 2: Get a Custom Plan Design
+Our physician-led team designs a plan around your workforce: $0 copays, $0 deductibles, zero pre-authorization requirements.
+
+### Step 3: Take Control of Your Health Plan
+Your costs stabilize with transparent data visibility. Your employees access benefits without barriers. Physicians focus on medicine, not insurance paperwork.
+
+**CTA:** Schedule Your Conversation
+
+---
+
+## 5. Our Town Model
+
+**Section Label:** The Our Town Model
+
+**Headline:** Augusta and Gainesville are the marketplace.
+
+**Subhead:** Vxtra Health connects employers with the best local doctors in your community, powered by the same technology Fortune 100 companies use, so your team gets better care at lower costs.
+
+### Hub
+Vxtra Health (center)
+
+### Spoke: Employers
+**Title:** Augusta & Gainesville Employers
+**Body:** Self-insured companies with 200-2,000 employees pool together for collective purchasing power and predictable costs.
+
+### Spoke: Brokers
+**Title:** Benefits Brokers
+**Body:** Your broker brings a differentiated product that no competitor can match, protecting existing business and winning new clients.
+
+### Spoke: Physicians
+**Title:** Local Physicians
+**Body:** The best independent doctors in your community, where the same treatment costs 40-70% less than a hospital system.
+
+### Bottom Statement
+In Augusta and Gainesville, **the dots are closer together**. Everyone knows everyone. We\u2019re building health insurance that works for the people who live and work here, not for insurance company shareholders.
+
+---
+
+## 6. The Difference (Before/After)
+
+**Section Label:** The Difference
+
+**Headline:** This is what \u201Cbetter\u201D looks like.
+
+**Subhead:** A side-by-side look at traditional plans versus the Vxtra Health approach.
+
+| Traditional Plans | Vxtra Health |
+|-------------------|--------------|
+| Copays on every visit | $0 copays |
+| High deductibles | $0 deductibles |
+| Pre-authorization required | No pre-authorization |
+| Months-old data | Transparent data visibility |
+| Misaligned incentives | Physician-aligned care |
+| 7-10% annual increases | Hundreds per employee per month in savings |
+| Employees avoid care | Employees get care |
+
+---
+
+## 7. The Outcome (Success)
+
+**Section Label:** The Outcome
+
+**Headline:** What happens when healthcare works the way it should.
+
+### Card: Employers
+**Subtitle:** Be the reason your company finally has health insurance it can be proud of
+**Body:** Predictable, lower costs with transparent data visibility. Employees who say \u201Cmy employer cares about me.\u201D Hero status to the board.
+
+### Card: Employees
+**Subtitle:** Be someone who actually uses their healthcare, without the stress
+**Body:** $0 copays, $0 deductibles. A real relationship with their doctor. Care without dread.
+
+### Card: Physicians
+**Subtitle:** Practice medicine the way you always intended to
+**Body:** Agency restored. Community-centered care. Independent practice in a community that knows your name.
+
+---
+
+## 8. The Stakes (Failure)
+
+**Section Label:** The Stakes
+
+**Headline:** The cost of doing nothing keeps going up.
+
+### Risk 1: Premiums will keep rising
+At 7%+ annually, your healthcare spend doubles in a decade. The math doesn\u2019t get friendlier with time.
+
+### Risk 2: Your best people will leave
+68% of employees say benefits are a top factor in staying. Subpar coverage drives top talent to competitors who invest in their people.
+
+### Risk 3: Care quality will decline
+When employees avoid care due to cost, small problems become expensive emergencies. Prevention is always cheaper than crisis.
+
+**Closing:** Every year of inaction is another year of 1,600% stock appreciation for insurance companies, funded by your premiums.
+
+---
+
+## 9. Who We Help (Audience Routing)
+
+**Section Label:** Who We Help
+
+**Headline:** Built for everyone who touches healthcare.
+
+### Card: Brokers
+Brokers are all selling the same thing. Vxtra Health offers a plan built around the employer, the employee, and the physician, with transparent costs and a better experience for everyone. Your clients save real money, your book of business is protected, and employers come to you because you\u2019re the one with the plan that actually works.
+
+### Card: Employers
+Most self-insured employers are paying more every year for health plans designed for insurance company profits, not their people. Vxtra Health gives employers with 200 to 2,000 employees a physician-led health plan with transparent data, local physicians, and costs you can actually see and control. Your employees get better care and your costs go down by hundreds of dollars per employee per month.
+
+### Card: Physicians
+Vxtra Health puts physicians back in charge of patient care, working directly with local employers and their employees, supported by technology that handles claims and data so doctors can focus on medicine. Your patients trust you, not a call center. You make the clinical decisions.
+
+### Card: Employees
+Your employer has partnered with Vxtra Health to connect you with local physicians who actually know you, with lower out-of-pocket costs and none of the insurance runaround. You call your doctor, you get an appointment, you get the care you need, and you don\u2019t dread opening the bill.
+
+---
+
+## 10. Final CTA
+
+**Section Label:** Take the First Step
+
+**Headline:** Be the reason your company finally has health insurance it can be proud of.
+
+**Body:** Vxtra Health is launching exclusively in Augusta and Gainesville, Georgia. No pitch, no pressure, just an honest conversation about your challenges and whether Vxtra is the right fit.
+
+**CTA Primary:** Schedule a Call
+**CTA Secondary:** Download Our Overview
+
+**Footer note:** Or email us directly at info@vxtrahealth.com
+
+---
+
+## 11. Footer
+
+**Tagline:** Physician-led health plans for self-insured employers in Augusta & Gainesville, GA.
+
+**Address:**
+2700 Cumberland Parkway
+Suite 140
+Atlanta, GA 30339
+
+**Links:**
+- Company: Our Story, Our Town Model
+- Learn More: How It Works, Who We Help
+- Connect: Schedule a Call, info@vxtrahealth.com
+
+---
+
+## Meta
+
+**Title:** Vxtra Health | Physician-Led Health Plans for Augusta, GA & Gainesville, GA Employers
+
+**Description:** Vxtra Health gives self-insured employers in Augusta and Gainesville, Georgia a physician-led health plan with $0 copays, $0 deductibles, and transparent data, powered by Fortune 100-level technology. Now accepting employers with 200 to 2,000 employees.`,
+
+broker: `# Vxtra Health: Broker Landing Page Copy
+
+*Structured from homepage-copy.md template | Created Feb 14, 2026*
+*All copy sourced from brandscript.md, peace-sound-bites.md, and one-liners.md*
+
+---
+
+## Navigation
+
+- How It Works
+- Our Town
+- Who We Help
+- Our Story
+- **CTA:** See How It Works
+- **CTA:** Schedule a Call
+
+---
+
+## 1. Hero
+
+**Label:** Now Launching in Augusta & Gainesville, GA
+
+**Headline:** It\u2019s hard to differentiate yourself in the marketplace. *Everyone is selling the same thing.*
+
+**Subhead:** Vxtra Health gives you a transparent health plan backed by Fortune 100 technology that your competitors don\u2019t have access to. Offer self-insured employers in **Augusta** and **Gainesville, Georgia** a physician-led plan with **$0 copays, $0 deductibles, and costs they can actually see and control.**
+
+**CTA Primary:** Schedule a Call
+**CTA Secondary:** See How It Works
+
+### Floating Cards
+- **$0** Copays & Deductibles
+- **30+** Years of Innovation
+
+### Proof Bar
+
+| Value | Label |
+|-------|-------|
+| 30+ Years | Physician-Led Experience |
+| $0 Copays & Deductibles | For Every Member |
+| Augusta & Gainesville | Exclusive Launch Markets |
+
+---
+
+## 2. The Problem
+
+**Section Label:** The Problem
+
+**Headline:** It\u2019s exhausting trying to stand out when you\u2019re selling the same solutions as every other broker in town.
+
+### Card: For Brokers
+**Headline:** It\u2019s hard to stand out when every broker is selling the same plans
+**Body:** 60% of brokers are now owned by private equity that won\u2019t innovate. Independent brokers need a product the competition can\u2019t match.
+
+### Card: For Employers
+**Headline:** Most self-insured employers pay more every year for plans designed for insurance company profits
+**Body:** Premiums rise 7-10% every year. At that rate, your clients\u2019 healthcare spend doubles in a decade, and they\u2019re still getting the same legacy experience.
+
+### Card: For Physicians
+**Headline:** Insurance companies have stripped physicians of their agency
+**Body:** Pre-authorizations, denials, and administrative overhead stand between doctors and their patients. Physicians should practice medicine, not fight paperwork.
+
+---
+
+## 3. Your Guide (Empathy + Authority)
+
+**Section Label:** Your Guide
+
+**Headline:** We\u2019ve been on every side of this table.
+
+### Quote
+> "It\u2019s exhausting trying to stand out with the same solutions as every other broker in town. We\u2019ve lived that frustration. We built something different."
+
+**Attribution:** Larry Hightower, Co-Founder & CEO
+*(Photo Coming Soon)*
+
+### Authority Cards
+
+**30+ Years Physician-Led**
+Founded and led by physicians who understand healthcare from the inside out, not insurance executives chasing margins.
+
+**Powered by Capital Rx**
+Our technology partner gives your clients access to Judi, the first platform to process medical and prescription claims together. Transparent data visibility instead of waiting months for their own reports.
+
+**30+ Years of Operations**
+Three decades of health plan operations: processing claims, building contracts, managing sales, and running the technical side of health plans.
+
+**Physician-First Design**
+Every plan feature starts with one question: does this let physicians practice medicine the way it should be practiced?
+
+### Video Placeholder
+**Title:** Our Story: Coming Soon
+**Body:** A short video about why we started Vxtra Health and how we\u2019re giving brokers a product the competition can\u2019t match.
+
+---
+
+## 4. The Plan (3 Steps)
+
+**Section Label:** The Plan
+
+**Headline:** Three steps to a product no competitor can match.
+
+### Step 1: Have a Conversation
+Tell us about your book of business and what your clients are dealing with. No pitch, no pressure, just a real conversation about what you need to win.
+
+### Step 2: Get Exclusive Plan Access
+Vxtra Health is launching exclusively in Augusta and Gainesville. You get access to a physician-led plan backed by Fortune 100 technology that no other broker in your market can offer.
+
+### Step 3: Retain and Win New Clients
+Your existing business is protected with a better product. New employers come to you because you\u2019re the broker with the plan that actually works.
+
+**CTA:** Schedule Your Conversation
+
+---
+
+## 5. Our Town Model
+
+**Section Label:** The Our Town Model
+
+**Headline:** Augusta and Gainesville are the marketplace.
+
+**Subhead:** Vxtra Health connects employers with the best local doctors in your community, powered by the same technology Fortune 100 companies use. You bring the employers. We bring everything else.
+
+### Hub
+Vxtra Health (center)
+
+### Spoke: Brokers
+**Title:** Benefits Brokers
+**Body:** You bring a differentiated product that no competitor can match. Your existing business is protected and new clients come to you because you\u2019re the one with the plan that actually works.
+
+### Spoke: Employers
+**Title:** Augusta & Gainesville Employers
+**Body:** Self-insured companies with 200-2,000 employees pool together for collective purchasing power and predictable costs. Your clients get better care at lower costs.
+
+### Spoke: Physicians
+**Title:** Local Physicians
+**Body:** The best independent doctors in the community, where the same treatment costs 40-70% less than a hospital system. Your clients\u2019 employees get care from physicians they trust.
+
+### Bottom Statement
+In Augusta and Gainesville, **the dots are closer together**. Everyone knows everyone. You\u2019re the broker who brings a health plan built for the people who live and work here, not for insurance company shareholders.
+
+---
+
+## 6. The Difference (Before/After)
+
+**Section Label:** The Difference
+
+**Headline:** This is what you can offer that nobody else can.
+
+**Subhead:** A side-by-side look at what you\u2019re selling today versus what you could be selling with Vxtra Health.
+
+| What You\u2019re Selling Today | What You Sell with Vxtra |
+|---------------------------|------------------------|
+| Same networks as every competitor | Exclusive plan access in your market |
+| Copays on every visit | $0 copays for your clients\u2019 employees |
+| High deductibles | $0 deductibles |
+| Pre-authorization required | No pre-authorization |
+| Months-old data for your clients | Transparent data visibility |
+| 7-10% annual increases | Hundreds per employee per month in savings |
+| Clients who shop every renewal | Clients who stay because the plan works |
+
+---
+
+## 7. The Outcome (Success)
+
+**Section Label:** The Outcome
+
+**Headline:** What happens when you offer something nobody else can.
+
+### Card: Brokers
+**Subtitle:** Be the broker who brings something nobody else can offer
+**Body:** A product no competitor can match. Existing business secured. New business pipeline full. An improved experience for everyone your clients employ.
+
+### Card: Employers
+**Subtitle:** Be the reason your company finally has health insurance it can be proud of
+**Body:** Your clients get predictable, lower costs with transparent data visibility. Their employees say \u201Cmy employer cares about me.\u201D Hero status to the board.
+
+### Card: Physicians
+**Subtitle:** Practice medicine the way you always intended to
+**Body:** Agency restored. Community-centered care. Independent practice in a community that knows your name.
+
+---
+
+## 8. The Stakes (Failure)
+
+**Section Label:** The Stakes
+
+**Headline:** The cost of waiting keeps going up.
+
+### Risk 1: You could lose clients
+When another broker brings Vxtra to your clients first, you\u2019re the one explaining why you didn\u2019t. Independent brokers who don\u2019t differentiate lose business to those who do.
+
+### Risk 2: Revenue stagnates with limited differentiation
+60% of brokers are now owned by private equity. If you\u2019re selling the same plans as everyone else, you\u2019re competing on relationship alone. That\u2019s not a strategy.
+
+### Risk 3: Another agency could share Vxtra first
+Vxtra is launching exclusively in Augusta and Gainesville. The broker who brings it to the market first wins. The one who waits loses the advantage.
+
+**Closing:** Every year of inaction is another year of selling the same plans as every other broker in town while your clients pay more for less.
+
+---
+
+## 9. Who We Help (Audience Routing)
+
+**Section Label:** Who We Help
+
+**Headline:** Built for everyone who touches healthcare.
+
+### Card: Employers
+Most self-insured employers are paying more every year for health plans designed for insurance company profits, not their people. Vxtra Health gives employers with 200 to 2,000 employees a physician-led health plan with transparent data, local physicians, and costs you can actually see and control. Your employees get better care and your costs go down by hundreds of dollars per employee per month.
+
+### Card: Physicians
+Vxtra Health puts physicians back in charge of patient care, working directly with local employers and their employees, supported by technology that handles claims and data so doctors can focus on medicine. Your patients trust you, not a call center. You make the clinical decisions.
+
+### Card: Employees
+Your employer has partnered with Vxtra Health to connect you with local physicians who actually know you, with lower out-of-pocket costs and none of the insurance runaround. You call your doctor, you get an appointment, you get the care you need, and you don\u2019t dread opening the bill.
+
+---
+
+## 10. Final CTA
+
+**Section Label:** Take the First Step
+
+**Headline:** Be the broker who brings something nobody else can offer.
+
+**Body:** Vxtra Health is launching exclusively in Augusta and Gainesville, Georgia. No pitch, no pressure, just an honest conversation about your book of business and whether Vxtra is the right fit for your clients.
+
+**CTA Primary:** Schedule a Call
+**CTA Secondary:** Download Our Overview
+
+**Footer note:** Or email us directly at info@vxtrahealth.com
+
+---
+
+## 11. Footer
+
+**Tagline:** Physician-led health plans for self-insured employers in Augusta & Gainesville, GA.
+
+**Address:**
+2700 Cumberland Parkway
+Suite 140
+Atlanta, GA 30339
+
+**Links:**
+- Company: Our Story, Our Town Model
+- Learn More: How It Works, Who We Help
+- Connect: Schedule a Call, info@vxtrahealth.com
+
+---
+
+## Meta
+
+**Title:** Vxtra Health | Broker Partner Program for Augusta & Gainesville, GA
+
+**Description:** Vxtra Health gives independent brokers in Augusta and Gainesville, Georgia exclusive access to a physician-led health plan with $0 copays, $0 deductibles, and transparent data, powered by Fortune 100 technology. Differentiate your book of business with a product no competitor can match.`,
+
+physician: `# Vxtra Health: Physician Landing Page Copy
+
+*Structured from homepage-copy.md template | Created Feb 14, 2026*
+*All copy sourced from brandscript.md, peace-sound-bites.md, and one-liners.md*
+
+---
+
+## Navigation
+
+- How It Works
+- Our Town
+- Who We Help
+- Our Story
+- **CTA:** See How It Works
+- **CTA:** Join the Network
+
+---
+
+## 1. Hero
+
+**Label:** Now Launching in Augusta & Gainesville, GA
+
+**Headline:** Insurance companies are practicing medicine for you. *We built a way out.*
+
+**Subhead:** Vxtra Health puts physicians, not insurance companies, back in charge of patient care. You work directly with local employers and their employees in **Augusta** and **Gainesville, Georgia**, supported by technology that handles the claims and data **so you can focus on medicine.**
+
+**CTA Primary:** Join the Network
+**CTA Secondary:** See How It Works
+
+### Floating Cards
+- **$0** Copays & Deductibles
+- **30+** Years of Innovation
+
+### Proof Bar
+
+| Value | Label |
+|-------|-------|
+| 30+ Years | Physician-Led Experience |
+| $0 Copays & Deductibles | For Every Member |
+| Augusta & Gainesville | Exclusive Launch Markets |
+
+---
+
+## 2. The Problem
+
+**Section Label:** The Problem
+
+**Headline:** You didn\u2019t spend a decade in training to fight pre-authorization forms and get told how to treat your own patients by someone who\u2019s never seen them.
+
+### Card: For Physicians
+**Headline:** Insurance companies have stripped physicians of their agency
+**Body:** Pre-authorizations, denials, and administrative overhead stand between doctors and their patients. Physicians should practice medicine, not fight paperwork.
+
+### Card: For Employers
+**Headline:** Most self-insured employers pay more every year for plans designed for insurance company profits
+**Body:** Premiums rise 7-10% every year. The employers in your community deserve better, and so do the patients you treat.
+
+### Card: For Brokers
+**Headline:** It\u2019s hard to stand out when every broker is selling the same plans
+**Body:** 60% of brokers are now owned by private equity that won\u2019t innovate. The brokers bringing Vxtra to local employers are the ones creating real change.
+
+---
+
+## 3. Your Guide (Empathy + Authority)
+
+**Section Label:** Your Guide
+
+**Headline:** We\u2019ve been on every side of this table.
+
+### Quote
+> "You didn\u2019t spend a decade in training to fight pre-auth forms. We know what it feels like when insurance companies stand between you and your patients. We built Vxtra to change that."
+
+**Attribution:** Larry Hightower, Co-Founder & CEO
+*(Photo Coming Soon)*
+
+### Authority Cards
+
+**30+ Years Physician-Led**
+Founded and led by physicians who understand healthcare from the inside out, not insurance executives chasing margins.
+
+**Powered by Capital Rx**
+Our technology partner handles claims processing and data through Judi, the first platform to process medical and prescription claims together. The technology works so you don\u2019t have to fight it.
+
+**30+ Years of Operations**
+Three decades of health plan operations: processing claims, building contracts, managing sales, and running the technical side of health plans.
+
+**Physician-First Design**
+Every plan feature starts with one question: does this let physicians practice medicine the way it should be practiced?
+
+### Video Placeholder
+**Title:** Our Story: Coming Soon
+**Body:** A short video about why we started Vxtra Health and how we\u2019re putting physicians back in charge of patient care.
+
+---
+
+## 4. The Plan (3 Steps)
+
+**Section Label:** The Plan
+
+**Headline:** Three steps to practicing medicine your way.
+
+### Step 1: Join the Vxtra Network
+Connect with us to learn how the Vxtra model works and what it means for your practice. No corporate contracts, no loss of autonomy, just a conversation.
+
+### Step 2: Work Directly with Local Employers
+You partner with self-insured employers in Augusta and Gainesville. Their employees become your patients. No pre-authorizations, no insurance interference, no call centers making clinical decisions.
+
+### Step 3: Practice Medicine Your Way
+You make the clinical decisions. Your patients trust you, not a 1-800 number. And you run an independent practice in a community that knows your name.
+
+**CTA:** Join the Network
+
+---
+
+## 5. Our Town Model
+
+**Section Label:** The Our Town Model
+
+**Headline:** Augusta and Gainesville are the marketplace.
+
+**Subhead:** Vxtra Health connects employers with the best local doctors in your community, powered by the same technology Fortune 100 companies use. You are the physician these employers and their employees trust with their care.
+
+### Hub
+Vxtra Health (center)
+
+### Spoke: Physicians
+**Title:** Local Physicians
+**Body:** The best independent doctors in the community. You treat patients directly, without insurance company interference, and the same treatment costs 40-70% less than a hospital system.
+
+### Spoke: Employers
+**Title:** Augusta & Gainesville Employers
+**Body:** Self-insured companies with 200-2,000 employees pool together for collective purchasing power. Their employees are your patients, and they\u2019re coming to you because their plan sends them to the best local doctors.
+
+### Spoke: Brokers
+**Title:** Benefits Brokers
+**Body:** Local brokers bring employers to the Vxtra network. They\u2019re the ones connecting the employers in your community with a plan that values independent physicians.
+
+### Bottom Statement
+In Augusta and Gainesville, **the dots are closer together**. Everyone knows everyone. Vxtra is building health insurance that works for the physicians, employers, and employees who live and work here, not for insurance company shareholders.
+
+---
+
+## 6. The Difference (Before/After)
+
+**Section Label:** The Difference
+
+**Headline:** This is what practicing medicine should look like.
+
+**Subhead:** A side-by-side look at your current insurance experience versus practicing with Vxtra Health.
+
+| Traditional Insurance | Vxtra Health |
+|-----------------------|--------------|
+| Pre-authorization required for treatment | No pre-authorization |
+| Insurance companies make clinical decisions | You make clinical decisions |
+| Patients avoid care due to cost | Patients access care with $0 copays and $0 deductibles |
+| Administrative overhead and denials | Technology handles claims and data |
+| Hospital employment eroding independence | Independent practice supported |
+| Patients assigned by network rules | Patients choose you because their plan values local doctors |
+| Physician pay declining year over year | Fair compensation aligned with patient care |
+
+---
+
+## 7. The Outcome (Success)
+
+**Section Label:** The Outcome
+
+**Headline:** What happens when physicians lead healthcare again.
+
+### Card: Physicians
+**Subtitle:** Practice medicine the way you always intended to
+**Body:** Agency restored. Community-centered care. Independent practice in a community that knows your name. You make the clinical decisions, and your patients trust you.
+
+### Card: Employers
+**Subtitle:** Be the reason your company finally has health insurance it can be proud of
+**Body:** Predictable, lower costs with transparent data visibility. Employees who say \u201Cmy employer cares about me.\u201D Hero status to the board.
+
+### Card: Employees
+**Subtitle:** Be someone who actually uses their healthcare, without the stress
+**Body:** $0 copays, $0 deductibles. A real relationship with their doctor. Care without dread.
+
+---
+
+## 8. The Stakes (Failure)
+
+**Section Label:** The Stakes
+
+**Headline:** The cost of doing nothing keeps going up.
+
+### Risk 1: More pre-authorizations, less autonomy
+Insurance companies are tightening controls every year. Every renewal cycle adds more administrative overhead and takes more clinical decision-making out of your hands.
+
+### Risk 2: 80% of hospital-employed physicians want out
+Hospital systems are buying up specialists and independent practices. Physician pay is down 33% since 2001. The window to maintain independence is narrowing.
+
+### Risk 3: Your patients are avoiding care
+When patients dread the cost of a visit, small problems become expensive emergencies. The insurance system is failing the people you trained to help.
+
+**Closing:** Every year of inaction is another year of insurance companies standing between you and your patients.
+
+---
+
+## 9. Who We Help (Audience Routing)
+
+**Section Label:** Who We Help
+
+**Headline:** Built for everyone who touches healthcare.
+
+### Card: Employers
+Most self-insured employers are paying more every year for health plans designed for insurance company profits, not their people. Vxtra Health gives employers with 200 to 2,000 employees a physician-led health plan with transparent data, local physicians, and costs you can actually see and control. Your employees get better care and your costs go down by hundreds of dollars per employee per month.
+
+### Card: Brokers
+Brokers are all selling the same thing. Vxtra Health offers a plan built around the employer, the employee, and the physician, with transparent costs and a better experience for everyone. Your clients save real money, your book of business is protected, and employers come to you because you\u2019re the one with the plan that actually works.
+
+### Card: Employees
+Your employer has partnered with Vxtra Health to connect you with local physicians who actually know you, with lower out-of-pocket costs and none of the insurance runaround. You call your doctor, you get an appointment, you get the care you need, and you don\u2019t dread opening the bill.
+
+---
+
+## 10. Final CTA
+
+**Section Label:** Take the First Step
+
+**Headline:** Practice medicine the way you always intended to.
+
+**Body:** Vxtra Health is launching exclusively in Augusta and Gainesville, Georgia. No corporate contracts, no loss of autonomy, just a conversation about how the Vxtra model works and whether it\u2019s the right fit for your practice.
+
+**CTA Primary:** Join the Network
+**CTA Secondary:** Download Our Overview
+
+**Footer note:** Or email us directly at info@vxtrahealth.com
+
+---
+
+## 11. Footer
+
+**Tagline:** Physician-led health plans for self-insured employers in Augusta & Gainesville, GA.
+
+**Address:**
+2700 Cumberland Parkway
+Suite 140
+Atlanta, GA 30339
+
+**Links:**
+- Company: Our Story, Our Town Model
+- Learn More: How It Works, Who We Help
+- Connect: Join the Network, info@vxtrahealth.com
+
+---
+
+## Meta
+
+**Title:** Vxtra Health | Join the Physician Network in Augusta & Gainesville, GA
+
+**Description:** Vxtra Health puts physicians back in charge of patient care in Augusta and Gainesville, Georgia. No pre-authorizations, no insurance interference. Work directly with local employers, supported by Fortune 100 technology that handles claims and data so you can focus on medicine.`,
+
+employee: `# Vxtra Health: Employee Landing Page Copy
+
+*Structured from homepage-copy.md template | Created Feb 14, 2026*
+*All copy sourced from brandscript.md, peace-sound-bites.md, and one-liners.md*
+
+---
+
+## Navigation
+
+- How It Works
+- Your Benefits
+- Who We Help
+- Our Story
+- **CTA:** See How It Works
+- **CTA:** See the Benefits
+
+---
+
+## 1. Hero
+
+**Label:** Your Employer Has Partnered with Vxtra Health
+
+**Headline:** Healthcare is confusing and way too expensive. *Your employer found a better way.*
+
+**Subhead:** Your employer has partnered with Vxtra Health to connect you with local physicians who actually know you, with **lower out-of-pocket costs** and none of the insurance runaround. **$0 copays, $0 deductibles,** and care from doctors in **Augusta** and **Gainesville, Georgia** who treat you like a person, not a claim number.
+
+**CTA Primary:** See the Benefits
+**CTA Secondary:** See How It Works
+
+### Floating Cards
+- **$0** Copays & Deductibles
+- **$0** Pre-Authorization Hassle
+
+### Proof Bar
+
+| Value | Label |
+|-------|-------|
+| $0 Copays | On Every Visit |
+| $0 Deductibles | For Every Member |
+| Local Physicians | Who Actually Know You |
+
+---
+
+## 2. The Problem
+
+**Section Label:** The Problem
+
+**Headline:** Nobody should dread going to the doctor because they\u2019re afraid of what it\u2019ll cost.
+
+### Card: For Employees
+**Headline:** Healthcare is confusing and way too expensive
+**Body:** You put off appointments because you\u2019re worried about the bill. You avoid care because deductibles are too high. And when you do go, you feel like a number, not a person.
+
+### Card: For Employers
+**Headline:** Most self-insured employers pay more every year for plans designed for insurance company profits
+**Body:** Your employer sees it too. Premiums rise every year, and the experience gets worse for everyone. That\u2019s why they partnered with Vxtra Health.
+
+### Card: For Physicians
+**Headline:** Insurance companies have stripped physicians of their agency
+**Body:** Your doctor wants to focus on you, not paperwork. Pre-authorizations, denials, and administrative overhead stand between physicians and the care they want to give you.
+
+---
+
+## 3. Your Guide (Empathy + Authority)
+
+**Section Label:** Your Guide
+
+**Headline:** We built this for you.
+
+### Quote
+> "Nobody should dread going to the doctor because they\u2019re afraid of what it\u2019ll cost. We know that fear. We built Vxtra to take it away."
+
+**Attribution:** Larry Hightower, Co-Founder & CEO
+*(Photo Coming Soon)*
+
+### Authority Cards
+
+**$0 Copays, $0 Deductibles**
+Every visit, every time. No surprise bills, no fine print. You see your doctor and you don\u2019t worry about the cost.
+
+**Physicians Who Know You**
+Your care comes from local doctors in your community who treat you like a person, not a claim number. You call your doctor, you get an appointment.
+
+**Powered by Fortune 100 Technology**
+The same technology used by the largest companies in the country now works for you. Your claims are processed faster and your care is coordinated, not fragmented.
+
+**No Pre-Authorization**
+No waiting for an insurance company to approve the care your doctor already recommended. Your doctor makes the decisions, not a call center.
+
+### Video Placeholder
+**Title:** Your Benefits: Coming Soon
+**Body:** A short video about how Vxtra Health works for you and your family.
+
+---
+
+## 4. The Plan (3 Steps)
+
+**Section Label:** The Plan
+
+**Headline:** Three steps to care without the stress.
+
+### Step 1: Ask Your Employer About Vxtra Health
+Your employer has partnered with Vxtra Health to give you a better healthcare experience. Ask your HR team how to enroll and what\u2019s covered.
+
+### Step 2: Use Your Benefits Without Barriers
+$0 copays. $0 deductibles. No pre-authorization. You call your doctor, you get an appointment, and you get the care you need.
+
+### Step 3: Get the Care You Need
+A real relationship with a local physician who knows you. Care without dread. And you don\u2019t worry about opening the bill.
+
+**CTA:** See the Benefits
+
+---
+
+## 5. How It Works (Simplified Our Town)
+
+**Section Label:** How It Works
+
+**Headline:** Better care from doctors who know your name.
+
+**Subhead:** Vxtra Health connects you with the best local doctors in your community. Your employer chose this plan so you can get care from physicians who treat you like a person, backed by technology that makes everything simpler.
+
+### What You Get
+
+**Local Physicians**
+Doctors in Augusta and Gainesville who know you and your family. Not a random doctor in a call center. Your physician, in your community.
+
+**$0 Out-of-Pocket**
+$0 copays and $0 deductibles on every visit. No surprise bills. No fine print.
+
+**No Insurance Runaround**
+No pre-authorization. No claim denials for care your doctor recommended. No fighting with an insurance company to get what you need.
+
+**Care Navigation**
+When your doctor recommends follow-up care, a real person helps you schedule everything. X-rays, blood work, specialist visits. You don\u2019t have to figure it out alone.
+
+---
+
+## 6. The Difference (Before/After)
+
+**Section Label:** The Difference
+
+**Headline:** This is what your healthcare looks like now.
+
+**Subhead:** A side-by-side look at what you had before versus what you get with Vxtra Health.
+
+| Your Old Plan | Vxtra Health |
+|---------------|--------------|
+| Copays on every visit | $0 copays |
+| High deductibles before coverage kicks in | $0 deductibles |
+| Pre-authorization required | No pre-authorization |
+| Dread opening the bill | No surprise bills |
+| Random doctors who don\u2019t know you | Local physicians who know your name |
+| Call center for questions | Care navigation from a real person |
+| Avoid care because of cost | Get the care you need, when you need it |
+
+---
+
+## 7. The Outcome (Success)
+
+**Section Label:** The Outcome
+
+**Headline:** What happens when you can actually use your healthcare.
+
+### Card: Your Health
+**Subtitle:** Be someone who actually uses their healthcare, without the stress
+**Body:** $0 copays, $0 deductibles. You call your doctor, you get an appointment, you get the care you need, and you don\u2019t dread opening the bill.
+
+### Card: Your Doctor
+**Subtitle:** A real relationship with a physician who knows you
+**Body:** Your doctor focuses on you, not paperwork. No pre-authorizations standing between you and the care you need. A physician in your community who treats you like a person.
+
+### Card: Your Family
+**Subtitle:** Peace of mind for the people who matter most
+**Body:** Your family gets the same benefits. $0 copays, $0 deductibles, and care from local doctors who know them by name.
+
+---
+
+## 8. The Stakes (Failure)
+
+**Section Label:** The Stakes
+
+**Headline:** Avoiding care doesn\u2019t make the problem go away.
+
+### Risk 1: Small problems become emergencies
+When you skip appointments because of cost, minor issues turn into major ones. Prevention is always less expensive and less painful than crisis.
+
+### Risk 2: You dread every bill
+The anxiety of not knowing what a visit will cost keeps you from getting the care you need. You shouldn\u2019t have to choose between your health and your wallet.
+
+### Risk 3: You lose the relationship with your doctor
+Insurance networks shuffle you between physicians who don\u2019t know your history. You deserve a doctor who knows you, not one who\u2019s reading your chart for the first time.
+
+**Closing:** Your employer chose Vxtra Health so you don\u2019t have to make these tradeoffs. $0 copays, $0 deductibles, and local doctors who know your name.
+
+---
+
+## 9. Who We Help (Audience Routing)
+
+**Section Label:** Who We Help
+
+**Headline:** Built for everyone who touches healthcare.
+
+### Card: Employers
+Most self-insured employers are paying more every year for health plans designed for insurance company profits, not their people. Vxtra Health gives employers with 200 to 2,000 employees a physician-led health plan with transparent data, local physicians, and costs you can actually see and control. Your employees get better care and your costs go down by hundreds of dollars per employee per month.
+
+### Card: Brokers
+Brokers are all selling the same thing. Vxtra Health offers a plan built around the employer, the employee, and the physician, with transparent costs and a better experience for everyone. Your clients save real money, your book of business is protected, and employers come to you because you\u2019re the one with the plan that actually works.
+
+### Card: Physicians
+Vxtra Health puts physicians back in charge of patient care, working directly with local employers and their employees, supported by technology that handles claims and data so doctors can focus on medicine. Your patients trust you, not a call center. You make the clinical decisions.
+
+---
+
+## 10. Final CTA
+
+**Section Label:** Take the First Step
+
+**Headline:** Be someone who actually uses their healthcare, without the stress.
+
+**Body:** Your employer has partnered with Vxtra Health to give you a better healthcare experience in Augusta and Gainesville, Georgia. Ask your HR team how to get started.
+
+**CTA Primary:** See the Benefits
+**CTA Secondary:** Talk to Your HR Team
+
+**Footer note:** Or email us directly at info@vxtrahealth.com
+
+---
+
+## 11. Footer
+
+**Tagline:** Physician-led health plans for self-insured employers in Augusta & Gainesville, GA.
+
+**Address:**
+2700 Cumberland Parkway
+Suite 140
+Atlanta, GA 30339
+
+**Links:**
+- Company: Our Story, How It Works
+- Learn More: Your Benefits, Who We Help
+- Connect: See the Benefits, info@vxtrahealth.com
+
+---
+
+## Meta
+
+**Title:** Vxtra Health | Employee Benefits in Augusta & Gainesville, GA
+
+**Description:** Your employer partnered with Vxtra Health to give you $0 copays, $0 deductibles, and care from local physicians in Augusta and Gainesville, Georgia who actually know you. No pre-authorization, no insurance runaround, and no dreading the bill.`
+};
+
+// ─── Tab Logic ──────────────────────────────────────────────────────
+
+function activateTab(tabName) {
+  document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+
+  const tab = document.querySelector('.tab[data-tab="' + tabName + '"]');
+  const panel = document.getElementById(tabName);
+
+  if (tab && panel) {
+    tab.classList.add('active');
+    panel.classList.add('active');
+
+    // Render content if not already rendered
+    if (!panel.dataset.rendered) {
+      const rendered = md.parse(copyData[tabName]);
+      panel.appendChild(rendered);
+      panel.dataset.rendered = 'true';
+    }
+  }
+
+  // Update URL hash without scrolling
+  history.replaceState(null, '', '#' + tabName);
+}
+
+// Click handlers
+document.querySelectorAll('.tab').forEach(function(tab) {
+  tab.addEventListener('click', function() { activateTab(tab.dataset.tab); });
+});
+
+// Initialize from hash or default to employer
+const hash = location.hash.replace('#', '');
+const validTabs = ['employer', 'broker', 'physician', 'employee'];
+activateTab(validTabs.indexOf(hash) !== -1 ? hash : 'employer');
+
+// Handle hash changes (back/forward navigation)
+window.addEventListener('hashchange', function() {
+  const h = location.hash.replace('#', '');
+  if (validTabs.indexOf(h) !== -1) activateTab(h);
+});
+</script>
+
+</body>
+</html>
