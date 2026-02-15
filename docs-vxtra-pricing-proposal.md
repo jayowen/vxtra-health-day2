@@ -27,7 +27,7 @@ All three plans build on the StoryBrand Blueprint work completed February 10–1
 | **FAQ Videos** | 6 | 12 | 12 + additional series |
 | **Sales Collateral** | Broker Sales Sheet, Employer Brochure, 1 Presentation Deck, Business Cards | All design deliverables (broker sheet, employer brochure, physician packet, 3 presentation decks, business cards) | Everything in Target + broker-specific microsite |
 | **Interactive Tools** | — | Cost Calculator + Qualification Tool | Cost Calculator + Qualification Tool |
-| **HubSpot CRM** | Setup + 1 nurture sequence | Full setup + 4+ automation sequences | Full setup + 4+ sequences + advanced scoring |
+| **HubSpot CRM** | Setup + 1 nurture sequence + 2 hrs/mo support | Full setup + 4+ automation sequences + 4 hrs/mo support | Full setup + 4+ sequences + advanced scoring + 6 hrs/mo support |
 | **Blog Content** | 1/month | 2–3/month | Weekly |
 | **LinkedIn Drafting** | 1x/week | 2–3x/week | 4–5x/week (Larry + Sandra + company page) |
 | **Lead Magnets** | 1 (employer guide) | 2 (employer guide + broker market brief) | 2 + additional gated assets |
@@ -42,7 +42,8 @@ All three plans build on the StoryBrand Blueprint work completed February 10–1
 | **Investor-Facing Materials** | — | Included | Included |
 | **2027 Marketing Plan** | — | Draft included | Draft included |
 | **Additional Landing Pages** | — | — | Broker microsite + extra LP variants |
-| **Fractional CMO (Jay)** | — | Weekly strategy sessions + executive oversight | Bi-weekly sessions + expanded scope |
+| **Hosting & Website Support** | Hosting + unlimited maintenance & support | Hosting + unlimited maintenance & support | Hosting + unlimited maintenance & support |
+| **Fractional CMO (Jay)** | — | Monthly session (1 hr) + quarterly planning (3 hrs) | Monthly session (1 hr) + quarterly planning (3 hrs) |
 | **Analytics & Reporting** | GA + Tag Manager + pixels | Full analytics + monthly performance reviews | Full analytics + bi-weekly performance reviews |
 
 ---
@@ -57,6 +58,7 @@ All three plans build on the StoryBrand Blueprint work completed February 10–1
 - Full website build (vxtrahealth.com) with StoryBrand messaging
 - Google Analytics, Tag Manager, and remarketing pixel setup
 - HubSpot CRM cleanup, pipeline configuration, and 1 employer nurture sequence (4 emails)
+- HubSpot support (up to 2 hours/month)
 - 1 lead magnet: "The Smart CEO's Guide to Self-Funded Health Plans"
 
 **Video Production**
@@ -74,13 +76,17 @@ All three plans build on the StoryBrand Blueprint work completed February 10–1
 - LinkedIn post drafting: 1x/week for Larry's personal profile
 - Larry LinkedIn profile optimization
 
+**Hosting & Support**
+- Website hosting
+- Unlimited website maintenance & support
+
 **Not included:** Fractional CMO, interactive tools (calculator, qualification), paid media management, case studies, testimonial videos, newsletter production, webinar production, Gainesville market prep, investor materials, A/B testing, PR outreach, additional presentation decks, physician/employee brand videos.
 
 ---
 
 ### Target Plan — $17,000/mo (Recommended)
 
-**What it does:** Delivers the full 12-month marketing plan — approximately 80 BB-owned deliverables across four phases. Includes Fractional CMO oversight from Jon, giving Vxtra senior marketing leadership without a full-time hire.
+**What it does:** Delivers the full 12-month marketing plan — approximately 80 BB-owned deliverables across four phases. Includes Fractional CMO oversight from Jay, giving Vxtra senior marketing leadership without a full-time hire.
 
 **Everything in Minimum, plus:**
 
@@ -89,6 +95,7 @@ All three plans build on the StoryBrand Blueprint work completed February 10–1
 - Employer Qualification Tool ("Do you qualify for Vxtra Health?")
 - Blog/Resources hub with 2+ articles at launch
 - 3 additional HubSpot automation sequences (broker nurture, physician outreach, employee welcome)
+- HubSpot support expanded to 4 hours/month
 - A/B testing on key landing pages
 
 **Video Production**
@@ -119,7 +126,7 @@ All three plans build on the StoryBrand Blueprint work completed February 10–1
 - Monthly optimization and reporting
 
 **Strategic**
-- Fractional CMO (Jay): weekly strategy sessions, executive marketing oversight
+- Fractional CMO (Jay): monthly strategy session (1 hr) + quarterly planning (3 hrs)
 - Quarterly webinar production and promotion
 - Gainesville market prep (Phase 4: landing page, localized messaging, broker materials)
 - Investor-facing materials for private placement support
@@ -152,13 +159,14 @@ All three plans build on the StoryBrand Blueprint work completed February 10–1
 - Additional landing page variants for campaign-specific targeting
 - Sandra's LinkedIn profile optimization + content drafting
 - Vxtra company LinkedIn page management
+- HubSpot support expanded to 6 hours/month
 
 **Proactive PR**
 - Active media outreach campaign (Augusta Chronicle, Augusta Business Journal, healthcare trade press)
 - Press releases for key milestones (launch, partnerships, covered lives thresholds)
 
 **Fractional CMO (Jay)**
-- Bi-weekly strategy sessions (vs. weekly)
+- Monthly strategy session (1 hr) + quarterly planning (3 hrs)
 - Expanded scope: brand governance, competitive intelligence, market expansion planning
 
 ---
