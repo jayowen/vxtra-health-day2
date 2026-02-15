@@ -55,7 +55,7 @@ Character → Problem → Guide → Plan → CTA → Failure / Success
 
 ### Never Say
 
-- **"Provider"**: "They're not freaking providers. They're physicians."
+- **"Provider"**: "They're not providers. They're physicians."
 - **"Healthcare is broken"**: the problem is how it's paid for
 - Insurance jargon (EOB, TPA, PBM, NADAC)
 - High cognitive load sentences
