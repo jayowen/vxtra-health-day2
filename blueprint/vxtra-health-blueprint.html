@@ -1350,6 +1350,21 @@ p { font-size: 16px; line-height: 1.7; }
 
   <!-- SECTION 2: EXECUTIVE SUMMARY -->
   <section class="section" id="summary">
+    <div class="feedback-bar" data-section="summary">
+      <span class="feedback-bar-label">Executive Summary</span>
+      <div class="feedback-bar-actions">
+        <button class="feedback-btn approve" onclick="setFeedback('summary','approved',this)"><span class="fb-icon">&#10003;</span> Looks Good</button>
+        <button class="feedback-btn changes" onclick="setFeedback('summary','changes',this)"><span class="fb-icon">&#9998;</span> Needs Changes</button>
+        <span class="feedback-saved" id="saved-summary">Saved</span>
+      </div>
+    </div>
+    <div class="feedback-comment" id="comment-summary">
+      <textarea placeholder="What needs to change?" id="commentText-summary"></textarea>
+      <div class="feedback-comment-actions">
+        <button class="feedback-comment-save" onclick="saveComment('summary')">Save Comment</button>
+        <span class="feedback-saved" id="savedComment-summary">Saved</span>
+      </div>
+    </div>
     <div class="reveal">
       <span class="label">Workshop Overview</span>
       <h2>Executive Summary</h2>
@@ -2831,7 +2846,7 @@ p { font-size: 16px; line-height: 1.7; }
 
 <!-- FEEDBACK PROGRESS PILL -->
 <a class="feedback-progress" id="feedbackProgress" onclick="document.getElementById('feedback-summary-section').scrollIntoView({behavior:'smooth'})">
-  <span id="progressText">0/9 reviewed</span>
+  <span id="progressText">0/10 reviewed</span>
   <div class="feedback-progress-bar"><div class="feedback-progress-fill" id="progressFill" style="width:0%"></div></div>
 </a>
 
@@ -2919,6 +2934,7 @@ function copyText(btn) {
 var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzfkXASakf7Wmedw95rHbUIWch8MBvkw431YHYy76qOf6At2OKUdBRwO_xraSJLPojwBw/exec';
 
 var FB_SECTIONS = [
+  { id: 'summary', label: 'Executive Summary' },
   { id: 'employer', label: 'Employer Messaging' },
   { id: 'broker', label: 'Broker Messaging' },
   { id: 'physician', label: 'Physician Messaging' },
@@ -3018,8 +3034,9 @@ function updateProgress() {
   FB_SECTIONS.forEach(function(s) {
     if (state[s.id] && state[s.id].status) count++;
   });
-  document.getElementById('progressText').textContent = count + '/9 reviewed';
-  document.getElementById('progressFill').style.width = Math.round((count / 9) * 100) + '%';
+  var total = FB_SECTIONS.length;
+  document.getElementById('progressText').textContent = count + '/' + total + ' reviewed';
+  document.getElementById('progressFill').style.width = Math.round((count / total) * 100) + '%';
 }
 
 function renderSummary() {
