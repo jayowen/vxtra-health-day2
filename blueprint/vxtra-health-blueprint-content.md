@@ -114,7 +114,7 @@ From trapped → Free. From dreading renewal season → Confident in predictable
 
 > Health insurance costs are increasing at an unsustainable rate, leaving employers feeling trapped. Vxtra Health provides a way out with a tech-forward platform that connects with the best local physicians to achieve predictable costs and better outcomes.
 
-## PEACE Framework
+## StoryBrand Soundbites
 
 **P — Problem**
 "Health insurance costs are crushing your business."
@@ -200,7 +200,7 @@ From competing with the same products → Offering something no one else has. Fr
 
 > Brokers are all selling the same thing. Vxtra Health offers a plan built around the employer, the employee, and the physician, with transparent costs and a better experience for everyone.
 
-## PEACE Framework
+## StoryBrand Soundbites
 
 **P — Problem**
 "It's hard to differentiate yourself in the marketplace. Everyone is selling the same thing."
@@ -284,7 +284,7 @@ From fighting insurance bureaucracy → Making clinical decisions. From losing i
 
 > Insurance companies control how you practice medicine. Vxtra Health removes them from the equation, connecting you directly with local employers while technology handles the data. You treat patients your way, in a community that knows your name.
 
-## PEACE Framework
+## StoryBrand Soundbites
 
 **P — Problem**
 "Insurance companies are practicing medicine for you."
@@ -354,7 +354,7 @@ From avoiding care due to cost → Getting the care they need. From dreading the
 
 > Healthcare is confusing and too expensive, and most people dread going to the doctor because of what it might cost. Your employer partnered with Vxtra Health to give you local doctors who know you, with lower costs and no insurance runaround. You call your doctor, you get seen, you get the care you need, and you don't dread the bill.
 
-## PEACE Framework
+## StoryBrand Soundbites
 
 **P — Problem**
 "Healthcare is confusing and way too expensive."
@@ -385,7 +385,7 @@ Review the full homepage layout with hero section, problem staircase, "Our Town"
 
 | Section | Description |
 |---------|-------------|
-| **Hero Section** | Headline, sub-copy, and dual CTAs built from the employer PEACE framework |
+| **Hero Section** | Headline, sub-copy, and dual CTAs built from the employer StoryBrand Soundbites |
 | **Our Town Model** | Hub-and-spoke visual showing how employers, physicians, and Vxtra connect |
 | **Authority & Proof** | Key stats, Fortune 100 technology positioning, and social proof section |
 
@@ -453,7 +453,7 @@ Every marketing asset needed to launch the Augusta pilot by July 2026, organized
 | Physician BrandScript (7-part StoryBrand) | Completed | Feb 14, 2026 |
 | Employee BrandScript (7-part StoryBrand) | Completed | Feb 14, 2026 |
 | One-Liners (all 4 audiences) | Completed | Feb 14, 2026 |
-| PEACE Framework Sound Bites (all 4 audiences) | Completed | Feb 14, 2026 |
+| StoryBrand Soundbites Sound Bites (all 4 audiences) | Completed | Feb 14, 2026 |
 
 ### Website Copy & Design
 
