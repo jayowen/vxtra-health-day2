@@ -203,10 +203,11 @@ Ad spend is a pass-through cost — billed at actual spend with no markup. Busin
 
 ## Terms
 
-- **Engagement:** 12-month commitment beginning March 1, 2026
+- **Engagement:** 12-month minimum commitment beginning March 1, 2026
 - **Quarterly Reviews:** Formal performance and scope review at the end of each quarter
 - **Adjustment Clause:** Scope can be adjusted at quarterly reviews with mutual agreement
-- **Termination:** 60-day written notice after the initial 6-month period
+- **Cancellation (Minimum plan):** 60-day written notice after the initial 12 months
+- **Cancellation (Target & Accelerated):** 45-day written notice after the initial 12 months
 - **Payment:** Monthly retainer invoiced on the 1st, net 15
 - **Ad Spend:** Billed monthly at actual spend, net 15
 - **Ownership:** All creative assets, content, and deliverables are owned by Vxtra Health upon payment
