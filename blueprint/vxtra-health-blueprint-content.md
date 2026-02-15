@@ -1,4 +1,4 @@
-# StoryBrand Blueprint
+# Business Growth System
 
 **Prepared for Vxtra Health**
 February 10–11, 2026
