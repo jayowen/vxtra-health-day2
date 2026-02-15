@@ -39,7 +39,7 @@ Character → Problem → Guide → Plan → CTA → Failure / Success
 | Area | Decision |
 |------|----------|
 | **Positioning** | Vxtra owns the problem of **health insurance costs + terrible experience**, not "healthcare is broken." |
-| **Go-To-Market** | Employers are the primary hero. Brokers are the gateway. Physicians come second as the model proves itself. |
+| **Go-To-Market** | Employers are the primary hero. Brokers are the gateway. |
 | **Primary CTA** | **"Schedule a Call"** for employers and brokers. **"Join the Network"** for physicians. |
 | **Core Differentiator** | The "Our Town" model: local employers + local physicians + Fortune 100 technology, in secondary markets. |
 
