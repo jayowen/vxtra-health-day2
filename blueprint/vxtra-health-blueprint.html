@@ -1266,6 +1266,7 @@ p { font-size: 16px; line-height: 1.7; }
     <input type="text" id="reviewerNameInput" placeholder="e.g. Larry" autocomplete="off">
     <br>
     <button onclick="saveReviewerName()">Continue</button>
+    <div style="margin-top:14px"><a href="#" onclick="skipReviewerName();return false" style="color:var(--mid-gray);font-size:13px;text-decoration:underline">Just viewing — skip</a></div>
   </div>
 </div>
 
@@ -2961,7 +2962,28 @@ function saveReviewerName() {
   var name = document.getElementById('reviewerNameInput').value.trim();
   if (!name) return;
   localStorage.setItem('vxtra-reviewer', name);
+  localStorage.removeItem('vxtra-viewonly');
   document.getElementById('reviewerModal').classList.add('hidden');
+  logLogin(name);
+}
+
+function skipReviewerName() {
+  localStorage.setItem('vxtra-viewonly', '1');
+  document.getElementById('reviewerModal').classList.add('hidden');
+  document.querySelectorAll('.feedback-bar, .feedback-comment, .feedback-progress, .feedback-summary').forEach(function(el) {
+    el.style.display = 'none';
+  });
+  logLogin('(view-only)');
+}
+
+function logLogin(name) {
+  if (!APPS_SCRIPT_URL) return;
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ reviewer: name, section: '—', status: 'Logged In', comment: '' })
+  }).catch(function() {});
 }
 
 function showSavedToast(id) {
@@ -3106,8 +3128,14 @@ function restoreFeedbackState() {
 
 // Init on page load
 (function() {
-  if (!getReviewerName()) {
+  var isViewOnly = localStorage.getItem('vxtra-viewonly') === '1';
+  if (!getReviewerName() && !isViewOnly) {
     document.getElementById('reviewerModal').classList.remove('hidden');
+  }
+  if (isViewOnly) {
+    document.querySelectorAll('.feedback-bar, .feedback-comment, .feedback-progress, .feedback-summary').forEach(function(el) {
+      el.style.display = 'none';
+    });
   }
   restoreFeedbackState();
   updateProgress();
