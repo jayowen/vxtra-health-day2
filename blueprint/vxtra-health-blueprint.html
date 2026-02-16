@@ -3261,6 +3261,10 @@ function restoreFeedbackState() {
 
 // Init on page load
 (function() {
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('review') === 'true') {
+    localStorage.removeItem('vxtra-viewonly');
+  }
   var isViewOnly = localStorage.getItem('vxtra-viewonly') === '1';
   if (!getReviewerName() && !isViewOnly) {
     document.getElementById('reviewerModal').classList.remove('hidden');
